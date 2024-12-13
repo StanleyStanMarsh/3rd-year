@@ -1,0 +1,387 @@
+\documentclass[a4paper, final]{article}
+%\usepackage{literat} % Нормальные шрифты
+\usepackage[14pt]{extsizes} % для того чтобы задать нестандартный 14-ый размер шрифта
+\usepackage{cmap}
+\usepackage[T2A]{fontenc}
+\usepackage[cp1251]{inputenc}
+\usepackage[russian]{babel}
+\usepackage{amsmath}
+\usepackage[left=25mm, top=20mm, right=20mm, bottom=20mm, footskip=10mm]{geometry}
+\usepackage{ragged2e} %для растягивания по ширине
+\usepackage{setspace} %для межстрочного интервала
+\usepackage{moreverb} %для работы с листингами
+\usepackage{indentfirst} % для абзацного отступа
+\usepackage{moreverb} %для печати в листинге исходного кода программ
+\renewcommand\verbatimtabsize{4\relax}
+\renewcommand\listingoffset{0.2em} %отступ от номеров строк в листинге
+\renewcommand{\arraystretch}{1.4} % изменяю высоту строки в таблице
+\usepackage[font=small, singlelinecheck=false, justification=raggedleft, format=plain, labelsep=period]{caption} %для настройки заголовка таблицы
+\usepackage{amssymb}
+\usepackage{listings} %листинги
+\usepackage{xcolor} % цвета
+\usepackage{hyperref}% для гиперссылок
+\usepackage{enumitem} %для перечислений
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{multirow}
+
+%\makeatletter 
+%\@namedef{ver@float.sty}{3000/12/31}
+%\makeatother
+
+\usepackage{minted}
+%\usemintedstyle{vs}
+\definecolor{LightGray}{gray}{0.9}
+
+\setlist[enumerate,itemize]{leftmargin=1.2cm} %отступ в перечислениях
+
+\hypersetup{colorlinks,
+	allcolors=[RGB]{010 090 200}} %красивые гиперссылки (не красные)
+	
+\captionsetup{justification=centering}
+
+
+\begin{document}
+
+		% НАЧАЛО ТИТУЛЬНОГО ЛИСТА
+	\begin{center}
+		\hfill \break
+		\hfill \break
+		\normalsize{МИНИСТЕРСТВО НАУКИ И ВЫСШЕГО ОБРАЗОВАНИЯ РОССИЙСКОЙ ФЕДЕРАЦИИ\\
+			федеральное государственное автономное образовательное учреждение высшего образования «Санкт-Петербургский политехнический университет Петра Великого»\\[10pt]}
+		\normalsize{Институт компьютерных наук и кибербезопасности}\\[10pt] 
+		\normalsize{Высшая школа технологий искусственного интеллекта}\\[10pt] 
+		\normalsize{Направление: 02.03.01 <<Математика и компьютерные науки>>}\\
+		
+		\hfill \break
+		\hfill \break
+		\hfill \break
+		\hfill \break
+		\large{Тестирование в Haskell}\\
+		\large{\textit{Практическое задание 4}}\\
+		\hfill \break
+		\hfill \break
+		\hfill \break
+		
+		\hfill \break
+		\hfill \break
+	\end{center}
+	
+	\small{ 
+		\begin{tabular}{lrrl}
+			\!\!\!Студент, & \hspace{2cm} & & \\
+			\!\!\!группы 5130201/20101 & \hspace{2cm} & \underline{\hspace{3cm}} &Астафьев И. Е. \\\\
+			\!\!\!Преподаватель & \hspace{2cm} &  \underline{\hspace{3cm}} &  Моторин Д. Е.\\\\
+			&&\hspace{5cm}
+		\end{tabular}
+		\begin{flushright}
+			<<\underline{\hspace{1cm}}>>\underline{\hspace{2.5cm}} 2024г.
+		\end{flushright}
+	}
+	
+	\hfill \break
+	\begin{center} \small{Санкт-Петербург, 2024} \end{center}
+	\thispagestyle{empty} % выключаем отображение номера для этой страницы
+	
+	% КОНЕЦ ТИТУЛЬНОГО ЛИСТА
+	\newpage
+	
+	\tableofcontents
+	
+	\newpage
+
+\section*{Введение}
+	\addcontentsline{toc}{section}{Введение}
+		
+	В данном отчете описаны результаты выполнения практического задания: тестирование свойств в Haskell.
+
+\textbf{Постановка задачи:}
+	Создать проект в stack. Функции записать в библиотеку Lib.hs и ограничить доступ к вспомогательным функциям. Тесты записать в Spec.hs.
+
+	Функция 1: Написать функцию сложения по модулю addMod :: Int -> Int -> Int -> Int, которая принимает три целых числа: два слагаемых и модуль, и возвращает сумму двух чисел по модулю. Используя QuickCheck, проверить следующие свойства:
+\begin{enumerate}
+	\item Сложение по модулю: \texttt{(addMod х у m) mod m == (x + y) mod m}.
+	\item Нейтральный элемент: \texttt{addMod х 0 m == x mod m}.
+	\item Коммутативность: \texttt{addMod x у m == addMod y x m}.
+\end{enumerate}
+
+Функция 2: Написать функцию swapTuple :: [(a, b)] -> [(b, а)], которая меняет местами элементы кортежа в списке кортежей. Используя QuickCheck, проверить следующие свойства:
+\begin{enumerate}
+	\item Двойное применение функции возвращает оригинальный список кортежей: swapTuple (swapTuple [(х, у)]) == [*x, y)].
+	\item Если элементы списка кортежей равны, то результат будет одинаковым: swapTuple [(x, x)] == [(x, x)]
+	\item Результат должен содержать те же элементы для каждого кортежа из списка: fst (swapTuple [(х, у)]) == у и snd (swapTuple [(х, у)1) == х.
+\end{enumerate}
+ 
+\newpage
+	
+	\section{Теоретические сведения}
+
+\subsection{Сложение чисел по модулю}
+
+Сложение чисел по модулю — это арифметическая операция, в которой сумма двух чисел вычисляется с последующим приведением результата к остатку от деления на заданное число (модуль). В математике это записывается следующим образом:
+
+\[
+(x + y) \mod m
+\]
+
+где:
+\begin{itemize}
+    \item \(x, y\) — исходные числа,
+    \item \(m\) — модуль (положительное целое число),
+    \item \((x + y) \mod m\) — остаток от деления суммы \(x + y\) на \(m\).
+\end{itemize}
+
+Операция сложения по модулю широко используется в различных областях, таких как теория чисел, криптография, программирование, компьютерные науки и цифровая обработка сигналов.
+
+\subsubsection*{Свойства сложения по модулю}
+Сложение чисел по модулю обладает рядом свойств, аналогичных обычному сложению:
+
+\begin{enumerate}
+    \item \textbf{Коммутативность:}
+    \[
+    (x + y) \mod m = (y + x) \mod m
+    \]
+    Порядок чисел не влияет на результат.
+
+    \item \textbf{Ассоциативность:}
+    \[
+    ((x + y) + z) \mod m = (x + (y + z)) \mod m
+    \]
+    Скобки можно расставлять любым образом.
+
+    \item \textbf{Существование нейтрального элемента:}
+    \[
+    (x + 0) \mod m = x \mod m
+    \]
+    Число \(0\) является нейтральным элементом для сложения по модулю.
+
+    \item \textbf{Закрытость:}
+    Если \(x \mod m\) и \(y \mod m\) принадлежат множеству \(\{0, 1, 2, \dots, m-1\}\), то результат сложения \((x + y) \mod m\) также принадлежит этому множеству.
+
+    \item \textbf{Редукция:}
+    Если \(x, y \geq m\), то перед выполнением сложения по модулю можно привести числа к остаткам:
+    \[
+    ((x \mod m) + (y \mod m)) \mod m = (x + y) \mod m
+    \]
+    Это позволяет работать с большими числами, предварительно уменьшая их размер.
+\end{enumerate}
+
+\subsubsection*{Алгоритм вычисления}
+Для выполнения сложения по модулю выполняются следующие шаги:
+\begin{enumerate}
+    \item Найти сумму чисел \(x + y\).
+    \item Разделить полученную сумму на модуль \(m\).
+    \item Найти остаток от деления, который и будет результатом.
+\end{enumerate}
+
+Формула для вычисления остатка:
+\[
+r = (x + y) - m \cdot \left\lfloor \frac{x + y}{m} \right\rfloor
+\]
+где \(\lfloor z \rfloor\) — это целая часть числа \(z\).
+
+Сложение по модулю используется, например, в хэш-функциях, генерации псевдослучайных чисел, шифровании и решении систем сравнений.
+
+\subsection{Перестановка элементов}
+\subsubsection*{Функция \texttt{swap}}
+Функция \texttt{swap} — это преобразование, которое принимает пару (кортеж) \((a, b)\) и возвращает новую пару с элементами, поменянными местами: \((b, a)\). Сигнатура:
+\[
+\texttt{swap} :: (a, b) \to (b, a)
+\]
+
+\subsubsection*{Пара (кортеж)}
+Пара (кортеж) в Haskell — это структура, состоящая из двух значений, которые могут иметь разные типы. Обозначается как \((a, b)\), где \(a\) и \(b\) — типы элементов.
+
+\subsubsection*{Список}
+Список в Haskell — это упорядоченная коллекция элементов одного типа. Списки обозначаются квадратными скобками, например, \([a, b, c]\). Пустой список обозначается как \([]\).
+
+\subsection{Тестирование свойств и библиотека QuickCheck}
+
+\subsubsection*{Тестирование свойств (Property Testing)}
+Тестирование свойств (property testing) — это подход к тестированию программ, при котором проверяются общие свойства функций вместо проверки отдельных конкретных случаев. Свойства определяются в виде логических утверждений (предикатов), которые должны выполняться для всех допустимых входных данных. Это позволяет тестировать функции на большом наборе случайных данных, а не только на заранее подготовленных примерах.
+
+Основные преимущества:
+\begin{itemize}
+    \item Автоматическое создание тестовых данных.
+    \item Обнаружение краевых случаев (edge cases).
+    \item Удобство выражения общих правил для проверки функций.
+\end{itemize}
+
+\subsubsection*{QuickCheck}
+QuickCheck — это библиотека для тестирования свойств в Haskell. Она автоматически генерирует случайные входные данные для функции и проверяет, выполняется ли заданное свойство. Если свойство нарушается, QuickCheck предоставляет контрпример, который демонстрирует, при каких входных данных функция работает некорректно.
+
+\subsubsection*{Основные элементы QuickCheck}
+\begin{itemize}
+    \item \textbf{Свойства (properties):} Это логические выражения, которые описывают поведение функции. Например:
+    \[
+    \texttt{prop\_commutative :: Int -> Int -> Bool}
+    \]
+    проверяет свойство коммутативности для сложения.
+
+    \item \textbf{Класс \texttt{Arbitrary}:} Этот класс отвечает за автоматическую генерацию случайных данных. Для пользовательских типов можно определять свои правила генерации, реализуя экземпляр \texttt{Arbitrary}.
+
+    \item \textbf{Функция \texttt{quickCheck}:} Основной инструмент, который запускает тестирование свойства на случайных данных. Например:
+    \[
+    \texttt{quickCheck prop\_commutative}
+    \]
+\end{itemize}
+
+\newpage
+
+\section{Реализация программы}
+
+Полный исходный код представлен в \hyperref[sec:createCode]{Приложение A. Код программы}.
+
+\subsection{Функция addMod}
+
+Функция \texttt{addMod} выполняет сложение двух чисел по модулю, возвращая остаток от деления их суммы на заданное значение модуля. Она принимает три параметра: два числа и модуль. Сначала вычисляется сумма чисел, затем определяется, сколько раз модуль полностью укладывается в эту сумму, после чего из суммы вычитается соответствующее количество модулей. Результатом является число в диапазоне от \(0\) до \(m - 1\), где \(m\) — значение модуля.
+
+
+\subsection{Функция swapTuple}
+
+Функция \texttt{swapTuple} принимает список кортежей и возвращает новый список, где элементы каждого кортежа поменяны местами. Для этого она применяет функцию \texttt{swap}, которая меняет местами элементы одного кортежа, ко всем элементам списка, используя функцию \texttt{map}.
+
+\subsection{Тестирование}
+
+Для тестирования функций \texttt{addMod} и \texttt{swapTuple} используется библиотека \texttt{QuickCheck}, которая позволяет проверять свойства функций на больших наборах случайных данных. Основные этапы тестирования включают в себя следующие шаги:
+
+\begin{enumerate}
+
+\item Формулировка свойств: Определяются свойства, которые должна удовлетворять каждая функция. Для функции \texttt{addMod} тестируются:
+\begin{itemize}
+   \item Корректность вычисления остатка через сравнение с встроенной операцией \texttt{mod}.
+   \item Нейтральность прибавления нуля.
+   \item Коммутативность сложения.
+\end{itemize}
+   Для функции \texttt{swapTuple} тестируются:
+\begin{itemize}
+   \item Двойное применение возвращает исходный список.
+   \item Результат содержит те же элементы для каждого кортежа.
+   \item Каждое значение из кортежа корректно меняется местами.
+\end{itemize}
+
+\item Автоматическая генерация данных: \texttt{QuickCheck} автоматически генерирует тестовые данные для проверки свойств. Для предотвращения деления на ноль при работе с модулями используется модификатор \texttt{Positive}, который ограничивает генерацию только положительных чисел.
+
+\item Проверка свойств: Для каждого свойства, описанного в виде функции, \texttt{QuickCheck} многократно вызывает её с разными случайными входными данными. Результаты сравниваются с ожидаемыми значениями, и если хотя бы одно из свойств не выполняется, тест завершается с сообщением об ошибке.
+
+\item Результат тестирования: В \texttt{main} все тесты запускаются с помощью \texttt{quickCheck}, а их успешное прохождение завершается выводом строки \texttt{"ALL TESTS ARE PASSED"}.
+
+\end{enumerate}
+
+Таким образом, тестирование подтверждает, что функции \texttt{addMod} и \texttt{swapTuple} работают корректно в большинстве случаев, предусмотренных их контрактом.
+
+\newpage
+
+\section{Результаты}
+
+Результаты прохождения тестов, описанных выше, представлены на  Рис. \ref{fig1:1}. 
+\begin{center}
+	\includegraphics[scale = 1]{pic.png}
+	\captionof{figure}{Результаты прохождения тестов} 
+	\label{fig1:1}
+\end{center}
+
+	Были написаны тесты и проверены с помощью QuickCheck. Было проверено, что функции удовлетворяют свойствам, описанным в постановке задачи к практической работе. По результатам работы программы, можно увидеть, что все тесты пройдены успешно.
+	
+	\newpage
+
+\section*{Заключение}
+	\addcontentsline{toc}{section}{Заключение}
+
+
+	В ходе выполнения данного отчета были успешно реализованы две функции на языке программирования Haskell: функция сложения по модулю addMod и функция обмена элементов кортежа в списке swapTuple. Для каждой из этих функций было проведено тестирование свойств с использованием библиотеки QuickCheck. Все проверяемые свойства показали корректную работу функций при различных входных данных.
+
+Таким образом, поставленные задачи выполнены полностью: созданы необходимые функции, ограничены права доступа к вспомогательным функциям, проведены тесты и подтверждена правильность работы функций через проверку их свойств.
+
+\newpage
+
+\section*{Приложение A. Код программы}
+\addcontentsline{toc}{section}{Приложение A. Код программы}
+\label{sec:createCode}
+
+\textbf{Lib.hs}
+
+\begin{minted}[
+	frame=lines,
+	framesep=2mm,
+	baselinestretch=1.2,
+	bgcolor=LightGray,
+	fontsize=\footnotesize,
+	linenos,
+	breaklines
+	]{haskell}
+module Lib
+    ( addMod
+    , swapTuple
+    ) where
+
+addMod :: Int -> Int -> Int -> Int
+addMod firstSummand secondSummand modulo = sum - modulo * floor(fromIntegral sum / fromIntegral modulo)
+    where sum = firstSummand + secondSummand
+
+swap :: (a, b) -> (b, a)
+swap (a, b) = (b, a)
+
+swapTuple :: [(a, b)] -> [(b, a)]
+swapTuple tupleList = map swap tupleList
+\end{minted}
+%$
+
+\textbf{Spec.hs}
+\begin{minted}[
+	frame=lines,
+	framesep=2mm,
+	baselinestretch=1.2,
+	bgcolor=LightGray,
+	fontsize=\footnotesize,
+	linenos,
+	breaklines
+	]{haskell}
+import Lib
+import Test.QuickCheck
+
+-- без Positive - исключение деление на 0 (даже на `mod`)
+prop_withBuiltinAddMod :: Int -> Int -> Positive Int -> Bool
+prop_withBuiltinAddMod x y (Positive m) = (addMod x y m) `mod` m == (x + y) `mod` m
+
+prop_neutralElement :: Int -> Positive Int -> Bool
+prop_neutralElement x (Positive m) = addMod x 0 m == x `mod` m
+
+prop_commutativity :: Int -> Int -> Positive Int -> Bool
+prop_commutativity x y (Positive m) = addMod x y m == addMod y x m
+
+prop_doubleApply :: (Eq a, Eq b, Arbitrary a, Arbitrary b) => [(a, b)] -> Bool
+prop_doubleApply xs = swapTuple (swapTuple xs) == xs
+
+prop_sameElements :: (Eq a, Arbitrary a) => [a] -> Bool
+prop_sameElements xs = swapTuple (zip xs xs) == zip xs xs
+
+prop_swapEqualityElements :: (Eq a, Eq b, Arbitrary a, Arbitrary b) => [(a, b)] -> Bool
+prop_swapEqualityElements xs = all checkSwap xs
+  where
+    checkSwap (x, y) = 
+      let swapped = swapTuple [(x, y)]
+      in fst (head swapped) == y && snd (head swapped) == x
+
+main :: IO ()
+main = do
+    putStrLn "FOR addMod:"
+    quickCheck prop_withBuiltinAddMod
+
+    quickCheck prop_neutralElement
+
+    quickCheck prop_commutativity
+
+    putStrLn "FOR swapTuple:"
+
+    quickCheck (prop_doubleApply :: [(Int, Char)] -> Bool)
+
+    quickCheck (prop_sameElements :: [Char] -> Bool)
+
+    quickCheck (prop_swapEqualityElements :: [(Int, Char)] -> Bool)
+
+    putStrLn "ALL TESTS ARE PASSED"
+\end{minted}
+%$
+
+\end{document}

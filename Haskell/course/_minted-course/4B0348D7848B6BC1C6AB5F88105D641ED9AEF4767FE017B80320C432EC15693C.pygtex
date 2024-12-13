@@ -1,0 +1,145 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kr}{module}\PYG{+w}{ }\PYG{n+nn}{Lib}
+\PYG{+w}{    }\PYG{p}{(}\PYG{+w}{ }\PYG{n+nf}{parseAndPrint}
+\PYG{+w}{    }\PYG{p}{,}\PYG{+w}{ }\PYG{n+nf}{readFileLines}
+\PYG{+w}{    }\PYG{p}{)}\PYG{+w}{ }\PYG{k+kr}{where}
+
+\PYG{k+kr}{import}\PYG{+w}{ }\PYG{n+nn}{Data.Text}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{Text}\PYG{p}{)}
+\PYG{k+kr}{import}\PYG{+w}{ }\PYG{k}{qualified}\PYG{+w}{ }\PYG{n+nn}{Data.Text}\PYG{+w}{ }\PYG{k}{as}\PYG{+w}{ }\PYG{n}{T}
+\PYG{k+kr}{import}\PYG{+w}{ }\PYG{k}{qualified}\PYG{+w}{ }\PYG{n+nn}{Data.ByteString}\PYG{+w}{ }\PYG{k}{as}\PYG{+w}{ }\PYG{n}{B}
+\PYG{k+kr}{import}\PYG{+w}{ }\PYG{k}{qualified}\PYG{+w}{ }\PYG{n+nn}{Data.Text.Encoding}\PYG{+w}{ }\PYG{k}{as}\PYG{+w}{ }\PYG{n}{TE}
+\PYG{k+kr}{import}\PYG{+w}{ }\PYG{k}{qualified}\PYG{+w}{ }\PYG{n+nn}{Data.Text.IO}\PYG{+w}{ }\PYG{k}{as}\PYG{+w}{ }\PYG{n}{TIO}
+\PYG{k+kr}{import}\PYG{+w}{ }\PYG{n+nn}{Control.Applicative}
+\PYG{k+kr}{import}\PYG{+w}{ }\PYG{n+nn}{Data.Char}\PYG{+w}{ }\PYG{p}{(}\PYG{n+nf}{digitToInt}\PYG{p}{,}\PYG{+w}{ }\PYG{n+nf}{intToDigit}\PYG{p}{)}
+\PYG{k+kr}{import}\PYG{+w}{ }\PYG{n+nn}{Data.Bits}\PYG{+w}{ }\PYG{p}{((}\PYG{o}{.\PYGZam{}.}\PYG{p}{),}\PYG{+w}{ }\PYG{p}{(}\PYG{o}{.|.}\PYG{p}{),}\PYG{+w}{ }\PYG{n+nf}{xor}\PYG{p}{)}
+\PYG{k+kr}{import}\PYG{+w}{ }\PYG{n+nn}{Numeric}\PYG{+w}{ }\PYG{p}{(}\PYG{n+nf}{showIntAtBase}\PYG{p}{)}
+
+\PYG{k+kr}{newtype}\PYG{+w}{ }\PYG{k+kt}{Parser}\PYG{+w}{ }\PYG{n}{a}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kt}{Parser}\PYG{+w}{ }\PYG{p}{\PYGZob{}}\PYG{+w}{ }\PYG{n}{runParser}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Text}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Maybe}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{Text}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{a}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZcb{}}
+
+\PYG{k+kr}{instance}\PYG{+w}{ }\PYG{k+kt}{Functor}\PYG{+w}{ }\PYG{k+kt}{Parser}\PYG{+w}{ }\PYG{k+kr}{where}
+\PYG{+w}{    }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} хотим применить func над результатом парсера p}
+\PYG{+w}{    }\PYG{n}{fmap}\PYG{+w}{ }\PYG{n}{func}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{Parser}\PYG{+w}{ }\PYG{n}{p}\PYG{p}{)}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kt}{Parser}\PYG{+w}{ }\PYG{n}{f}\PYG{+w}{ }\PYG{k+kr}{where}
+\PYG{+w}{        }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} парсер f возвращает:}
+\PYG{+w}{        }\PYG{n}{f}\PYG{+w}{ }\PYG{n}{origText}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kr}{case}\PYG{+w}{ }\PYG{n}{p}\PYG{+w}{ }\PYG{n}{origText}\PYG{+w}{ }\PYG{k+kr}{of}
+\PYG{+w}{            }\PYG{k+kt}{Nothing}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Nothing}\PYG{+w}{ }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Nothing, если парсер p возвращает Nothing}
+\PYG{+w}{            }\PYG{k+kt}{Just}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{remainingP}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{resP}\PYG{p}{)}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Just}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{remainingP}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{func}\PYG{+w}{ }\PYG{n}{resP}\PYG{p}{)}\PYG{+w}{ }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} (остаток, resP обработанный функцией func), если p возвращает (остаток, resP)}
+
+\PYG{k+kr}{instance}\PYG{+w}{ }\PYG{k+kt}{Applicative}\PYG{+w}{ }\PYG{k+kt}{Parser}\PYG{+w}{ }\PYG{k+kr}{where}
+\PYG{+w}{    }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} возвращаем всегда (изначальная строка, передаваемое значение)}
+\PYG{+w}{    }\PYG{n}{pure}\PYG{+w}{ }\PYG{n}{text}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kt}{Parser}\PYG{+w}{ }\PYG{p}{(}\PYG{n+nf}{\PYGZbs{}}\PYG{n}{orig}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Just}\PYG{p}{(}\PYG{n}{orig}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{text}\PYG{p}{))}
+
+\PYG{+w}{    }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} хотим чтобы был парсер, который применяет к остатку 1 парсера 2 парсер,}
+\PYG{+w}{    }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} а затем применяет 1 парсер ко 2}
+\PYG{+w}{    }\PYG{p}{(}\PYG{k+kt}{Parser}\PYG{+w}{ }\PYG{n}{u}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{\PYGZlt{}*\PYGZgt{}}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{Parser}\PYG{+w}{ }\PYG{n}{v}\PYG{p}{)}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kt}{Parser}\PYG{+w}{ }\PYG{n}{f}\PYG{+w}{ }\PYG{k+kr}{where}
+\PYG{+w}{        }\PYG{n}{f}\PYG{+w}{ }\PYG{n}{origText}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kr}{case}\PYG{+w}{ }\PYG{n}{u}\PYG{+w}{ }\PYG{n}{origText}\PYG{+w}{ }\PYG{k+kr}{of}
+\PYG{+w}{            }\PYG{k+kt}{Nothing}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Nothing}
+\PYG{+w}{            }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} remainingU \PYGZhy{} остаток 1 парсера}
+\PYG{+w}{            }\PYG{k+kt}{Just}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{remainingU}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{resU}\PYG{p}{)}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kr}{case}\PYG{+w}{ }\PYG{n}{v}\PYG{+w}{ }\PYG{n}{remainingU}\PYG{+w}{ }\PYG{k+kr}{of}
+\PYG{+w}{                }\PYG{k+kt}{Nothing}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Nothing}
+\PYG{+w}{                }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} remainingV \PYGZhy{} итоговый остаток, resU применяем над resV}
+\PYG{+w}{                }\PYG{k+kt}{Just}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{remainingV}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{resV}\PYG{p}{)}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Just}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{remainingV}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{resU}\PYG{+w}{ }\PYG{n}{resV}\PYG{p}{)}
+
+\PYG{k+kr}{instance}\PYG{+w}{ }\PYG{k+kt}{Alternative}\PYG{+w}{ }\PYG{k+kt}{Parser}\PYG{+w}{ }\PYG{k+kr}{where}
+\PYG{+w}{    }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} парсер всегда возвращающий Nothing}
+\PYG{+w}{    }\PYG{n}{empty}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kt}{Parser}\PYG{+w}{ }\PYG{o}{\PYGZdl{}}\PYG{+w}{ }\PYG{n+nf}{\PYGZbs{}}\PYG{k+kr}{\PYGZus{}}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Nothing}
+
+\PYG{+w}{    }\PYG{k+kt}{Parser}\PYG{+w}{ }\PYG{n}{u}\PYG{+w}{ }\PYG{o}{\PYGZlt{}|\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Parser}\PYG{+w}{ }\PYG{n}{v}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kt}{Parser}\PYG{+w}{ }\PYG{n}{f}\PYG{+w}{ }\PYG{k+kr}{where}
+\PYG{+w}{        }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} пытаемся применить парсер u}
+\PYG{+w}{        }\PYG{n}{f}\PYG{+w}{ }\PYG{n}{origText}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kr}{case}\PYG{+w}{ }\PYG{n}{u}\PYG{+w}{ }\PYG{n}{origText}\PYG{+w}{ }\PYG{k+kr}{of}
+\PYG{+w}{            }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} если он вернул Nothing, то применям парсер v}
+\PYG{+w}{            }\PYG{k+kt}{Nothing}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{n}{v}\PYG{+w}{ }\PYG{n}{origText}
+\PYG{+w}{            }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} если вернул какой то результат, то оставляем результат}
+\PYG{+w}{            }\PYG{n}{res}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{n}{res}
+
+\PYG{n+nf}{isBinaryChar}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Char}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Bool}
+\PYG{n+nf}{isBinaryChar}\PYG{+w}{ }\PYG{n}{c}\PYG{+w}{ }\PYG{o+ow}{=}
+\PYG{+w}{    }\PYG{n}{c}\PYG{+w}{ }\PYG{o}{==}\PYG{+w}{ }\PYG{l+s+sc}{\PYGZsq{}0\PYGZsq{}}\PYG{+w}{ }\PYG{o}{||}\PYG{+w}{ }\PYG{n}{c}\PYG{+w}{ }\PYG{o}{==}\PYG{+w}{ }\PYG{l+s+sc}{\PYGZsq{}1\PYGZsq{}}
+
+\PYG{n+nf}{isOperation}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Char}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Bool}
+\PYG{n+nf}{isOperation}\PYG{+w}{ }\PYG{n}{c}\PYG{+w}{ }\PYG{o+ow}{=}
+\PYG{+w}{    }\PYG{n}{c}\PYG{+w}{ }\PYG{o}{==}\PYG{+w}{ }\PYG{l+s+sc}{\PYGZsq{}\PYGZam{}\PYGZsq{}}\PYG{+w}{ }\PYG{o}{||}\PYG{+w}{ }\PYG{n}{c}\PYG{+w}{ }\PYG{o}{==}\PYG{+w}{ }\PYG{l+s+sc}{\PYGZsq{}|\PYGZsq{}}\PYG{+w}{ }\PYG{o}{||}\PYG{+w}{ }\PYG{n}{c}\PYG{+w}{ }\PYG{o}{==}\PYG{+w}{ }\PYG{l+s+sc}{\PYGZsq{}?\PYGZsq{}}
+
+\PYG{n+nf}{isSpace}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Char}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Bool}
+\PYG{n+nf}{isSpace}\PYG{+w}{ }\PYG{n}{c}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{c}\PYG{+w}{ }\PYG{o}{==}\PYG{+w}{ }\PYG{l+s+sc}{\PYGZsq{} \PYGZsq{}}
+
+\PYG{n+nf}{satisfy}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{Char}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Bool}\PYG{p}{)}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Parser}\PYG{+w}{ }\PYG{k+kt}{Char}
+\PYG{n+nf}{satisfy}\PYG{+w}{ }\PYG{n}{pr}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kt}{Parser}\PYG{+w}{ }\PYG{n}{f}\PYG{+w}{ }\PYG{k+kr}{where}
+\PYG{+w}{    }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} берем первый символ}
+\PYG{+w}{    }\PYG{n}{f}\PYG{+w}{ }\PYG{n}{cs}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kr}{case}\PYG{+w}{ }\PYG{k+kt}{T}\PYG{o}{.}\PYG{n}{uncons}\PYG{+w}{ }\PYG{n}{cs}\PYG{+w}{ }\PYG{k+kr}{of}
+\PYG{+w}{        }\PYG{k+kt}{Nothing}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Nothing}
+\PYG{+w}{        }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} если первый элемент соответствует предикату pr}
+\PYG{+w}{        }\PYG{k+kt}{Just}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{fstChar}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{remainingText}\PYG{p}{)}
+\PYG{+w}{            }\PYG{o}{|}\PYG{+w}{ }\PYG{n}{pr}\PYG{+w}{ }\PYG{n}{fstChar}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Just}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{remainingText}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{fstChar}\PYG{p}{)}\PYG{+w}{ }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} то возвращаем (остаток, подоходящий первый элемент)}
+\PYG{+w}{            }\PYG{o}{|}\PYG{+w}{ }\PYG{n}{otherwise}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Nothing}
+\PYG{+w}{    }\PYG{n}{f}\PYG{+w}{ }\PYG{k+kr}{\PYGZus{}}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kt}{Nothing}
+
+\PYG{n+nf}{binary}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Parser}\PYG{+w}{ }\PYG{k+kt}{Text}
+\PYG{n+nf}{binary}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kt}{Parser}\PYG{+w}{ }\PYG{o}{\PYGZdl{}}\PYG{+w}{ }\PYG{n+nf}{\PYGZbs{}}\PYG{n}{text}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}
+\PYG{+w}{    }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} если первый элемент}
+\PYG{+w}{    }\PYG{k+kr}{case}\PYG{+w}{ }\PYG{n}{runParser}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{satisfy}\PYG{+w}{ }\PYG{n}{isBinaryChar}\PYG{p}{)}\PYG{+w}{ }\PYG{n}{text}\PYG{+w}{ }\PYG{k+kr}{of}
+\PYG{+w}{        }\PYG{k+kt}{Nothing}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Nothing}\PYG{+w}{ }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} не подошел, то строка очевидно сразу не подходит}
+\PYG{+w}{        }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} (рекурсивно) если парсер на остатке}
+\PYG{+w}{        }\PYG{k+kt}{Just}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{remaining}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{c}\PYG{p}{)}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kr}{case}\PYG{+w}{ }\PYG{n}{runParser}\PYG{+w}{ }\PYG{n}{binary}\PYG{+w}{ }\PYG{n}{remaining}\PYG{+w}{ }\PYG{k+kr}{of}
+\PYG{+w}{            }\PYG{k+kt}{Nothing}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Just}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{remaining}\PYG{p}{,}\PYG{+w}{ }\PYG{k+kt}{T}\PYG{o}{.}\PYG{n}{singleton}\PYG{+w}{ }\PYG{n}{c}\PYG{p}{)}\PYG{+w}{ }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} первый элемент не подошел, то берем (старый остаток, единственный подошедший элемент)}
+\PYG{+w}{            }\PYG{k+kt}{Just}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{remaining\PYGZsq{}}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{rest}\PYG{p}{)}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Just}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{remaining\PYGZsq{}}\PYG{p}{,}\PYG{+w}{ }\PYG{k+kt}{T}\PYG{o}{.}\PYG{n}{cons}\PYG{+w}{ }\PYG{n}{c}\PYG{+w}{ }\PYG{n}{rest}\PYG{p}{)}\PYG{+w}{ }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} сработал штатно, то (новый остаток, добавляем подошедший элемент к остальным)}
+
+\PYG{n+nf}{binToInt}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Text}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Int}
+\PYG{n+nf}{binToInt}\PYG{+w}{ }\PYG{n}{text}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kt}{T}\PYG{o}{.}\PYG{n}{foldl\PYGZsq{}}\PYG{+w}{ }\PYG{p}{(}\PYG{n+nf}{\PYGZbs{}}\PYG{n}{acc}\PYG{+w}{ }\PYG{n}{c}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{n}{acc}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{l+m+mi}{2}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{n}{digitToInt}\PYG{+w}{ }\PYG{n}{c}\PYG{p}{)}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{+w}{ }\PYG{n}{text}
+
+\PYG{n+nf}{intToBin}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Int}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Text}
+\PYG{n+nf}{intToBin}\PYG{+w}{ }\PYG{n}{n}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kt}{T}\PYG{o}{.}\PYG{n}{pack}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{showIntAtBase}\PYG{+w}{ }\PYG{l+m+mi}{2}\PYG{+w}{ }\PYG{n}{intToDigit}\PYG{+w}{ }\PYG{n}{n}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}\PYGZdq{}}\PYG{p}{)}
+
+\PYG{n+nf}{binaryInt}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Parser}\PYG{+w}{ }\PYG{k+kt}{Int}
+\PYG{n+nf}{binaryInt}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{binToInt}\PYG{+w}{ }\PYG{o}{\PYGZlt{}\PYGZdl{}\PYGZgt{}}\PYG{+w}{ }\PYG{n}{binary}
+
+\PYG{n+nf}{operation}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Parser}\PYG{+w}{ }\PYG{k+kt}{Char}
+\PYG{n+nf}{operation}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{satisfy}\PYG{+w}{ }\PYG{n}{isOperation}
+
+\PYG{n+nf}{oneSpace}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Parser}\PYG{+w}{ }\PYG{k+kt}{Char}
+\PYG{n+nf}{oneSpace}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{satisfy}\PYG{+w}{ }\PYG{n}{isSpace}
+
+\PYG{n+nf}{spaces}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Parser}\PYG{+w}{ }\PYG{k+kt}{Text}
+\PYG{n+nf}{spaces}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{T}\PYG{o}{.}\PYG{n}{cons}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{\PYGZlt{}\PYGZdl{}\PYGZgt{}}\PYG{+w}{ }\PYG{n}{oneSpace}\PYG{+w}{ }\PYG{o}{\PYGZlt{}*\PYGZgt{}}\PYG{+w}{ }\PYG{n}{spaces}\PYG{+w}{ }\PYG{o}{\PYGZlt{}|\PYGZgt{}}\PYG{+w}{ }\PYG{n}{pure}\PYG{+w}{ }\PYG{k+kt}{T}\PYG{o}{.}\PYG{n}{empty}
+
+\PYG{n+nf}{applyOperation}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Char}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Int}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Int}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Int}
+\PYG{n+nf}{applyOperation}\PYG{+w}{ }\PYG{n}{op}
+\PYG{+w}{    }\PYG{o}{|}\PYG{+w}{ }\PYG{n}{op}\PYG{+w}{ }\PYG{o}{==}\PYG{+w}{ }\PYG{l+s+sc}{\PYGZsq{}\PYGZam{}\PYGZsq{}}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{p}{(}\PYG{o}{.\PYGZam{}.}\PYG{p}{)}
+\PYG{+w}{    }\PYG{o}{|}\PYG{+w}{ }\PYG{n}{op}\PYG{+w}{ }\PYG{o}{==}\PYG{+w}{ }\PYG{l+s+sc}{\PYGZsq{}|\PYGZsq{}}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{p}{(}\PYG{o}{.|.}\PYG{p}{)}
+\PYG{+w}{    }\PYG{o}{|}\PYG{+w}{ }\PYG{n}{op}\PYG{+w}{ }\PYG{o}{==}\PYG{+w}{ }\PYG{l+s+sc}{\PYGZsq{}?\PYGZsq{}}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{xor}
+
+\PYG{n+nf}{binaryExpression}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Parser}\PYG{+w}{ }\PYG{k+kt}{Int}
+\PYG{n+nf}{binaryExpression}\PYG{+w}{ }\PYG{o+ow}{=}
+\PYG{+w}{    }\PYG{p}{(}\PYG{n+nf}{\PYGZbs{}}\PYG{k+kr}{\PYGZus{}}\PYG{+w}{ }\PYG{n}{b1}\PYG{+w}{ }\PYG{k+kr}{\PYGZus{}}\PYG{+w}{ }\PYG{n}{op}\PYG{+w}{ }\PYG{k+kr}{\PYGZus{}}\PYG{+w}{ }\PYG{n}{b2}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{n}{applyOperation}\PYG{+w}{ }\PYG{n}{op}\PYG{+w}{ }\PYG{n}{b1}\PYG{+w}{ }\PYG{n}{b2}\PYG{p}{)}
+\PYG{+w}{    }\PYG{o}{\PYGZlt{}\PYGZdl{}\PYGZgt{}}\PYG{+w}{ }\PYG{n}{spaces}
+\PYG{+w}{    }\PYG{o}{\PYGZlt{}*\PYGZgt{}}\PYG{+w}{ }\PYG{n}{binaryInt}
+\PYG{+w}{    }\PYG{o}{\PYGZlt{}*\PYGZgt{}}\PYG{+w}{ }\PYG{n}{spaces}
+\PYG{+w}{    }\PYG{o}{\PYGZlt{}*\PYGZgt{}}\PYG{+w}{ }\PYG{n}{operation}
+\PYG{+w}{    }\PYG{o}{\PYGZlt{}*\PYGZgt{}}\PYG{+w}{ }\PYG{n}{spaces}
+\PYG{+w}{    }\PYG{o}{\PYGZlt{}*\PYGZgt{}}\PYG{+w}{ }\PYG{n}{binaryInt}
+
+\PYG{n+nf}{binaryExpressionFormatted}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Parser}\PYG{+w}{ }\PYG{k+kt}{Text}
+\PYG{n+nf}{binaryExpressionFormatted}\PYG{+w}{ }\PYG{o+ow}{=}
+\PYG{+w}{    }\PYG{p}{(}\PYG{n+nf}{\PYGZbs{}}\PYG{k+kr}{\PYGZus{}}\PYG{+w}{ }\PYG{n}{b1}\PYG{+w}{ }\PYG{k+kr}{\PYGZus{}}\PYG{+w}{ }\PYG{n}{op}\PYG{+w}{ }\PYG{k+kr}{\PYGZus{}}\PYG{+w}{ }\PYG{n}{b2}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{n}{formatExpression}\PYG{+w}{ }\PYG{n}{b1}\PYG{+w}{ }\PYG{n}{op}\PYG{+w}{ }\PYG{n}{b2}\PYG{p}{)}
+\PYG{+w}{    }\PYG{o}{\PYGZlt{}\PYGZdl{}\PYGZgt{}}\PYG{+w}{ }\PYG{n}{spaces}
+\PYG{+w}{    }\PYG{o}{\PYGZlt{}*\PYGZgt{}}\PYG{+w}{ }\PYG{n}{binary}
+\PYG{+w}{    }\PYG{o}{\PYGZlt{}*\PYGZgt{}}\PYG{+w}{ }\PYG{n}{spaces}
+\PYG{+w}{    }\PYG{o}{\PYGZlt{}*\PYGZgt{}}\PYG{+w}{ }\PYG{n}{operation}
+\PYG{+w}{    }\PYG{o}{\PYGZlt{}*\PYGZgt{}}\PYG{+w}{ }\PYG{n}{spaces}
+\PYG{+w}{    }\PYG{o}{\PYGZlt{}*\PYGZgt{}}\PYG{+w}{ }\PYG{n}{binary}
+
+\PYG{n+nf}{formatExpression}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Text}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Char}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Text}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Text}
+\PYG{n+nf}{formatExpression}\PYG{+w}{ }\PYG{n}{b1}\PYG{+w}{ }\PYG{n}{op}\PYG{+w}{ }\PYG{n}{b2}\PYG{+w}{ }\PYG{o+ow}{=}
+\PYG{+w}{    }\PYG{k+kr}{let}\PYG{+w}{ }\PYG{n}{int1}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{binToInt}\PYG{+w}{ }\PYG{n}{b1}
+\PYG{+w}{        }\PYG{n}{int2}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{binToInt}\PYG{+w}{ }\PYG{n}{b2}
+\PYG{+w}{        }\PYG{n}{result}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{applyOperation}\PYG{+w}{ }\PYG{n}{op}\PYG{+w}{ }\PYG{n}{int1}\PYG{+w}{ }\PYG{n}{int2}
+\PYG{+w}{    }\PYG{k+kr}{in}\PYG{+w}{ }\PYG{n}{b1}\PYG{+w}{ }\PYG{o}{\PYGZlt{}\PYGZgt{}}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{T}\PYG{o}{.}\PYG{n}{pack}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{} \PYGZdq{}}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{\PYGZlt{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{T}\PYG{o}{.}\PYG{n}{singleton}\PYG{+w}{ }\PYG{n}{op}\PYG{+w}{ }\PYG{o}{\PYGZlt{}\PYGZgt{}}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{T}\PYG{o}{.}\PYG{n}{pack}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{} \PYGZdq{}}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{\PYGZlt{}\PYGZgt{}}\PYG{+w}{ }\PYG{n}{b2}\PYG{+w}{ }\PYG{o}{\PYGZlt{}\PYGZgt{}}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{T}\PYG{o}{.}\PYG{n}{pack}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{} = \PYGZdq{}}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{\PYGZlt{}\PYGZgt{}}\PYG{+w}{ }\PYG{n}{intToBin}\PYG{+w}{ }\PYG{n}{result}
+
+\PYG{n+nf}{readFileLines}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{FilePath}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{IO}\PYG{+w}{ }\PYG{p}{[}\PYG{k+kt}{T}\PYG{o}{.}\PYG{k+kt}{Text}\PYG{p}{]}
+\PYG{n+nf}{readFileLines}\PYG{+w}{ }\PYG{n}{filePath}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{fmap}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{T}\PYG{o}{.}\PYG{n}{lines}\PYG{+w}{ }\PYG{o}{.}\PYG{+w}{ }\PYG{k+kt}{TE}\PYG{o}{.}\PYG{n}{decodeUtf8}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{B}\PYG{o}{.}\PYG{n}{readFile}\PYG{+w}{ }\PYG{n}{filePath}\PYG{p}{)}
+
+\PYG{n+nf}{parseAndPrint}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{T}\PYG{o}{.}\PYG{k+kt}{Text}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{IO}\PYG{+w}{ }\PYG{n+nb}{()}
+\PYG{n+nf}{parseAndPrint}\PYG{+w}{ }\PYG{n}{input}\PYG{+w}{ }\PYG{o+ow}{=}
+\PYG{+w}{    }\PYG{k+kr}{case}\PYG{+w}{ }\PYG{n}{runParser}\PYG{+w}{ }\PYG{n}{binaryExpressionFormatted}\PYG{+w}{ }\PYG{n}{input}\PYG{+w}{ }\PYG{k+kr}{of}
+\PYG{+w}{        }\PYG{k+kt}{Just}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kr}{\PYGZus{}}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{result}\PYG{p}{)}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{TIO}\PYG{o}{.}\PYG{n}{putStrLn}\PYG{+w}{ }\PYG{n}{result}
+\PYG{+w}{        }\PYG{k+kt}{Nothing}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{n}{putStrLn}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}Wrong string\PYGZdq{}}
+\end{Verbatim}

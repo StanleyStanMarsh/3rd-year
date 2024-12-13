@@ -1,0 +1,54 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kr}{import}\PYG{+w}{ }\PYG{n+nn}{System.IO}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Функция для генерации строки команд после n итераций}
+\PYG{n+nf}{derive}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Int}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{p}{[}\PYG{k+kt}{Char}\PYG{p}{]}
+\PYG{n+nf}{derive}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}L\PYGZdq{}}
+\PYG{n+nf}{derive}\PYG{+w}{ }\PYG{n}{n}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{applyRules}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{derive}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{n}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{))}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Применение правил к каждому символу в строке}
+\PYG{n+nf}{applyRules}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{p}{[}\PYG{k+kt}{Char}\PYG{p}{]}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{p}{[}\PYG{k+kt}{Char}\PYG{p}{]}
+\PYG{n+nf}{applyRules}\PYG{+w}{ }\PYG{n}{s}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{concatMap}\PYG{+w}{ }\PYG{n}{applyRule}\PYG{+w}{ }\PYG{n}{s}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Правила L\PYGZhy{}системы для кривой Пеано}
+\PYG{n+nf}{applyRule}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Char}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{p}{[}\PYG{k+kt}{Char}\PYG{p}{]}
+\PYG{n+nf}{applyRule}\PYG{+w}{ }\PYG{l+s+sc}{\PYGZsq{}L\PYGZsq{}}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}LFRFL+F+RFLFR\PYGZhy{}F\PYGZhy{}LFRFL\PYGZdq{}}
+\PYG{n+nf}{applyRule}\PYG{+w}{ }\PYG{l+s+sc}{\PYGZsq{}R\PYGZsq{}}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}RFLFR\PYGZhy{}F\PYGZhy{}LFRFL+F+RFLFR\PYGZdq{}}
+\PYG{n+nf}{applyRule}\PYG{+w}{ }\PYG{n}{c}\PYG{+w}{   }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{p}{[}\PYG{n}{c}\PYG{p}{]}\PYG{+w}{  }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Оставляем другие символы без изменений}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Интерпретация строки команд в список координат (x, y)}
+\PYG{n+nf}{interpret}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Int}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{p}{[}\PYG{k+kt}{Char}\PYG{p}{]}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{p}{[(}\PYG{k+kt}{Double}\PYG{p}{,}\PYG{+w}{ }\PYG{k+kt}{Double}\PYG{p}{)]}
+\PYG{n+nf}{interpret}\PYG{+w}{ }\PYG{n}{n}\PYG{+w}{ }\PYG{n}{commands}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{initialPos}\PYG{+w}{ }\PYG{k+kt}{:}\PYG{+w}{ }\PYG{n}{eval}\PYG{+w}{ }\PYG{n}{commands}\PYG{+w}{ }\PYG{n}{initialPos}\PYG{+w}{ }\PYG{n}{initialAngle}
+\PYG{+w}{  }\PYG{k+kr}{where}
+\PYG{+w}{    }\PYG{n}{initialPos}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{p}{(}\PYG{l+m+mf}{0.5}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{n}{step}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mf}{0.5}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{n}{step}\PYG{p}{)}\PYG{+w}{   }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Начальная позиция}
+\PYG{+w}{    }\PYG{n}{initialAngle}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{+w}{    }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Начальный угол (в градусах)}
+\PYG{+w}{    }\PYG{n}{step}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{+w}{ }\PYG{o}{/}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{fromIntegral}\PYG{+w}{ }\PYG{p}{(}\PYG{l+m+mi}{3}\PYG{o}{\PYGZca{}}\PYG{n}{n}\PYG{p}{))}\PYG{+w}{   }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Шаг, зависящий от глубины рекурсии}
+\PYG{+w}{    }\PYG{n}{eval}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{p}{[}\PYG{k+kt}{Char}\PYG{p}{]}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{Double}\PYG{p}{,}\PYG{+w}{ }\PYG{k+kt}{Double}\PYG{p}{)}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Double}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{p}{[(}\PYG{k+kt}{Double}\PYG{p}{,}\PYG{+w}{ }\PYG{k+kt}{Double}\PYG{p}{)]}
+\PYG{+w}{    }\PYG{n}{eval}\PYG{+w}{ }\PYG{k+kt}{[]}\PYG{+w}{ }\PYG{k+kr}{\PYGZus{}}\PYG{+w}{ }\PYG{k+kr}{\PYGZus{}}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kt}{[]}
+\PYG{+w}{    }\PYG{n}{eval}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{c}\PYG{k+kt}{:}\PYG{n}{cs}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{x}\PYG{p}{,}\PYG{n}{y}\PYG{p}{)}\PYG{+w}{ }\PYG{n}{angle}
+\PYG{+w}{      }\PYG{o}{|}\PYG{+w}{ }\PYG{n}{c}\PYG{+w}{ }\PYG{o}{==}\PYG{+w}{ }\PYG{l+s+sc}{\PYGZsq{}F\PYGZsq{}}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kr}{let}\PYG{+w}{ }\PYG{n}{dx}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{step}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{n}{cos}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{angle}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{n}{pi}\PYG{+w}{ }\PYG{o}{/}\PYG{+w}{ }\PYG{l+m+mi}{180}\PYG{p}{)}
+\PYG{+w}{                       }\PYG{n}{dy}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{step}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{n}{sin}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{angle}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{n}{pi}\PYG{+w}{ }\PYG{o}{/}\PYG{+w}{ }\PYG{l+m+mi}{180}\PYG{p}{)}
+\PYG{+w}{                       }\PYG{n}{x\PYGZsq{}}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{x}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{n}{dx}
+\PYG{+w}{                       }\PYG{n}{y\PYGZsq{}}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{y}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{n}{dy}
+\PYG{+w}{                   }\PYG{k+kr}{in}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{x\PYGZsq{}}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{y\PYGZsq{}}\PYG{p}{)}\PYG{+w}{ }\PYG{k+kt}{:}\PYG{+w}{ }\PYG{n}{eval}\PYG{+w}{ }\PYG{n}{cs}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{x\PYGZsq{}}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{y\PYGZsq{}}\PYG{p}{)}\PYG{+w}{ }\PYG{n}{angle}
+\PYG{+w}{      }\PYG{o}{|}\PYG{+w}{ }\PYG{n}{c}\PYG{+w}{ }\PYG{o}{==}\PYG{+w}{ }\PYG{l+s+sc}{\PYGZsq{}+\PYGZsq{}}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{eval}\PYG{+w}{ }\PYG{n}{cs}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{x}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{y}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{angle}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{l+m+mi}{90}\PYG{p}{)}\PYG{+w}{  }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Поворот влево на 90 градусов}
+\PYG{+w}{      }\PYG{o}{|}\PYG{+w}{ }\PYG{n}{c}\PYG{+w}{ }\PYG{o}{==}\PYG{+w}{ }\PYG{l+s+sc}{\PYGZsq{}\PYGZhy{}\PYGZsq{}}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{eval}\PYG{+w}{ }\PYG{n}{cs}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{x}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{y}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{angle}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{l+m+mi}{90}\PYG{p}{)}\PYG{+w}{  }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Поворот вправо на 90 градусов}
+\PYG{+w}{      }\PYG{o}{|}\PYG{+w}{ }\PYG{n}{otherwise}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{eval}\PYG{+w}{ }\PYG{n}{cs}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{x}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{y}\PYG{p}{)}\PYG{+w}{ }\PYG{n}{angle}\PYG{+w}{    }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Игнорируем другие символы}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Главная функция, вычисляющая координаты кривой Пеано}
+\PYG{n+nf}{peanoCurve}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Int}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{p}{[(}\PYG{k+kt}{Double}\PYG{p}{,}\PYG{+w}{ }\PYG{k+kt}{Double}\PYG{p}{)]}
+\PYG{n+nf}{peanoCurve}\PYG{+w}{ }\PYG{n}{n}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{interpret}\PYG{+w}{ }\PYG{n}{n}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{derive}\PYG{+w}{ }\PYG{n}{n}\PYG{p}{)}
+
+\PYG{n+nf}{main}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{IO}\PYG{+w}{ }\PYG{n+nb}{()}
+\PYG{n+nf}{main}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kr}{do}
+\PYG{+w}{  }\PYG{k+kr}{let}\PYG{+w}{ }\PYG{n}{n}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{l+m+mi}{4}\PYG{+w}{  }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Максимальная глубина рекурсии}
+\PYG{+w}{  }\PYG{k+kr}{let}\PYG{+w}{ }\PYG{n}{initialPos}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{p}{[(}\PYG{l+m+mf}{0.5}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mf}{0.5}\PYG{p}{)]}\PYG{+w}{  }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Список с начальной позицией}
+\PYG{+w}{  }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Генерируем список списков координат для каждой глубины от 1 до n}
+\PYG{+w}{  }\PYG{k+kr}{let}\PYG{+w}{ }\PYG{n}{pointsList}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{initialPos}\PYG{+w}{ }\PYG{k+kt}{:}\PYG{+w}{ }\PYG{p}{[}\PYG{+w}{ }\PYG{n}{peanoCurve}\PYG{+w}{ }\PYG{n}{k}\PYG{+w}{ }\PYG{o}{|}\PYG{+w}{ }\PYG{n}{k}\PYG{+w}{ }\PYG{o+ow}{\PYGZlt{}\PYGZhy{}}\PYG{+w}{ }\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{o}{..}\PYG{n}{n}\PYG{p}{]}\PYG{+w}{ }\PYG{p}{]}
+
+\PYG{+w}{  }\PYG{n}{putStrLn}\PYG{+w}{ }\PYG{o}{\PYGZdl{}}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}n=\PYGZdq{}}\PYG{+w}{ }\PYG{o}{++}\PYG{+w}{ }\PYG{n}{show}\PYG{+w}{ }\PYG{n}{n}
+\PYG{+w}{  }\PYG{n}{out}\PYG{+w}{ }\PYG{o+ow}{\PYGZlt{}\PYGZhy{}}\PYG{+w}{ }\PYG{n}{openFile}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}C:/Users/iasta/peano\PYGZus{}fractal.txt\PYGZdq{}}\PYG{+w}{ }\PYG{k+kt}{WriteMode}
+\PYG{+w}{  }\PYG{n}{hPrint}\PYG{+w}{ }\PYG{n}{out}\PYG{+w}{ }\PYG{n}{pointsList}
+\PYG{+w}{  }\PYG{n}{hClose}\PYG{+w}{ }\PYG{n}{out}
+\PYG{+w}{  }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} print pointsList}
+\end{Verbatim}

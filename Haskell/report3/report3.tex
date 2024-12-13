@@ -1,0 +1,546 @@
+\documentclass[a4paper, final]{article}
+%\usepackage{literat} % Нормальные шрифты
+\usepackage[14pt]{extsizes} % для того чтобы задать нестандартный 14-ый размер шрифта
+\usepackage{cmap}
+\usepackage[T2A]{fontenc}
+\usepackage[cp1251]{inputenc}
+\usepackage[russian]{babel}
+\usepackage{amsmath}
+\usepackage[left=25mm, top=20mm, right=20mm, bottom=20mm, footskip=10mm]{geometry}
+\usepackage{ragged2e} %для растягивания по ширине
+\usepackage{setspace} %для межстрочного интервала
+\usepackage{moreverb} %для работы с листингами
+\usepackage{indentfirst} % для абзацного отступа
+\usepackage{moreverb} %для печати в листинге исходного кода программ
+\renewcommand\verbatimtabsize{4\relax}
+\renewcommand\listingoffset{0.2em} %отступ от номеров строк в листинге
+\renewcommand{\arraystretch}{1.4} % изменяю высоту строки в таблице
+\usepackage[font=small, singlelinecheck=false, justification=raggedleft, format=plain, labelsep=period]{caption} %для настройки заголовка таблицы
+\usepackage{amssymb}
+\usepackage{listings} %листинги
+\usepackage{xcolor} % цвета
+\usepackage{hyperref}% для гиперссылок
+\usepackage{enumitem} %для перечислений
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{multirow}
+
+%\makeatletter 
+%\@namedef{ver@float.sty}{3000/12/31}
+%\makeatother
+
+\usepackage{minted}
+%\usemintedstyle{vs}
+\definecolor{LightGray}{gray}{0.9}
+
+\setlist[enumerate,itemize]{leftmargin=1.2cm} %отступ в перечислениях
+
+\hypersetup{colorlinks,
+	allcolors=[RGB]{010 090 200}} %красивые гиперссылки (не красные)
+
+\begin{document}
+
+		% НАЧАЛО ТИТУЛЬНОГО ЛИСТА
+	\begin{center}
+		\hfill \break
+		\hfill \break
+		\normalsize{МИНИСТЕРСТВО НАУКИ И ВЫСШЕГО ОБРАЗОВАНИЯ РОССИЙСКОЙ ФЕДЕРАЦИИ\\
+			федеральное государственное автономное образовательное учреждение высшего образования «Санкт-Петербургский политехнический университет Петра Великого»\\[10pt]}
+		\normalsize{Институт компьютерных наук и кибербезопасности}\\[10pt] 
+		\normalsize{Высшая школа технологий искусственного интеллекта}\\[10pt] 
+		\normalsize{Направление: 02.03.01 <<Математика и компьютерные науки>>}\\
+		
+		\hfill \break
+		\hfill \break
+		\hfill \break
+		\hfill \break
+		\large{Обработка файлов в Haskell}\\
+		\large{\textit{Практическое задание 3}}\\
+		\hfill \break
+		\hfill \break
+		\hfill \break
+		
+		\hfill \break
+		\hfill \break
+	\end{center}
+	
+	\small{ 
+		\begin{tabular}{lrrl}
+			\!\!\!Студент, & \hspace{2cm} & & \\
+			\!\!\!группы 5130201/20101 & \hspace{2cm} & \underline{\hspace{3cm}} &Астафьев И. Е. \\\\
+			\!\!\!Преподаватель & \hspace{2cm} &  \underline{\hspace{3cm}} &  Моторин Д. Е.\\\\
+			&&\hspace{5cm}
+		\end{tabular}
+		\begin{flushright}
+			<<\underline{\hspace{1cm}}>>\underline{\hspace{2.5cm}} 2024г.
+		\end{flushright}
+	}
+	
+	\hfill \break
+	\begin{center} \small{Санкт-Петербург, 2024} \end{center}
+	\thispagestyle{empty} % выключаем отображение номера для этой страницы
+	
+	% КОНЕЦ ТИТУЛЬНОГО ЛИСТА
+	\newpage
+	
+	\tableofcontents
+	
+	\newpage
+
+\section*{Введение}
+	\addcontentsline{toc}{section}{Введение}
+		
+	В данном отчете описаны результаты выполнения практического задания по кодированию текстового файла в изображение с использованием шифра Цезаря c использованием функционального языка программирования Haskell и инструмента сборки Stack.
+
+Постановка задач:
+\begin{enumerate}
+	\item Найти портрет указанного человека: \textbf{Циолковский, Константин Эдуардович}. Перевести изображение в формат .bmp (24-разрядный), при необходимости изменить ширину и высоту изображения без искажений. Сохранить в файл формата .txt фрагмент биографии (не менее 1000 символов без пробелов, текст не должен обрываться на середине слова или предложения). Закодировать текст в изображение методом \textbf{шифр Цезаря} (смещение задается пользователем). Ключ к шифру записывается в имя файла. Написать функцию расшифровывающую текст из изображения используя ключ из имени файла и сохраняющую результат в отдельный текстовый файл. Создать функции, шифрующие текст в последний бит каждого байта, последние два бита каждого байта, \dots, все биты в байте. В отчете привести примеры искажений изображения.
+	
+	\item Создать проект в stack. Все чистые функции записать в библиотеку Lib.hs и ограничить доступ к вспомогательным функциям. Использовать do-нотацию для работы с внешними файлами. 
+\end{enumerate}
+ 
+\newpage
+\section{Подготовка файла}
+
+	Для начала требуется найти портрет Константина Эдуардовича Циолковского. Было найдено изображение формата jpg, далее оно было переведено в 24-разрядный формат bmp через конвертер в Интернете Рис. \ref{ciol_orig}.
+	
+	\captionsetup{justification=centering}
+\begin{center}
+\centering
+	\includegraphics[scale=1]{ciol2.png}
+	\captionof{figure}{Портрет Циолковского К. А.}
+	\label{ciol_orig}
+\end{center}
+
+	Изображение помещено в файл <<ciol.bmp>>, который занимает на диске 157 Кб. 
+	
+	Далее английский текст с фрагментом биографии ученого был помещен в файл <<bio.txt>>. Текст с подсчетом количества символов без пробелов представлен на Рис. \ref{words}. Как можно увидеть текст содержит 7773 символов.
+	
+	\captionsetup{justification=centering}
+\begin{center}
+\centering
+	\includegraphics[scale=0.4]{words.png}
+	\captionof{figure}{Количество символов в тексте}
+	\label{words}
+\end{center}
+
+	Текстовый файл занимает на диске 8 Кб.
+	
+	\section{Теоретические сведения}
+	\subsection{Шифр Цезаря}
+	
+	Шифр Цезаря — это один из самых простых и известных методов шифрования текста. Он относится к классическим шифрам подстановки, где каждая буква заменяется на другую, расположенную на фиксированное число позиций вперед или назад в алфавите.
+	
+	Название шифра связано с римским полководцем и политиком Гаем Юлием Цезарем, который, как считается, использовал этот метод для секретной переписки. Например, при сдвиге на три позиции буква <<A>> заменяется на <<D>>, <<B>> на <<E>> и так далее. Когда алфавит заканчивается, сдвиг продолжается с начала (циклический переход).
+	
+	Формула шифрования:
+	
+	\[
+C = (P + K) \mod N
+\]
+
+	Формула дешифрования:
+
+	\[
+P = (C - K + N) \mod N
+\]
+
+где:  
+\( P \) — индекс символа в алфавите,  
+\( K \) — величина сдвига,  
+\( N \) — количество символов в алфавите,  
+\( C \) — индекс зашифрованного символа.
+
+\subsection{Стеганография}
+
+Стеганография — это метод скрытия информации, при котором сама передача скрытых данных остается незаметной. В отличие от криптографии, которая маскирует содержимое сообщения, стеганография скрывает само его существование. Термин происходит от греческих слов <<steganos>> (скрытый) и <<graphy>> (письмо).
+
+Идея стеганографии заключается в встраивании секретных данных в несекретные носители, такие как изображения, аудиофайлы, видео или текст. Основной задачей является изменение носителя таким образом, чтобы изменения были незаметны для человеческого восприятия или анализа.
+
+В изобржениях используется изменение младших значащих битов (LSB, Least Significant Bit) пикселей. Например, если каждый цветовой компонент (красный, зеленый, синий) представлен байтом, замена последнего бита каждого из них позволяет встраивать данные с минимальным визуальным воздействием.
+
+В данной работе заменяются n последних битов в каждом байте изображения на биты текста.
+
+\section{Реализация программы}
+
+Полный исходный код представлен в \hyperref[sec:createCode]{Приложение A. Код программы}.
+
+\subsection{Шифрование текста}
+
+Функция \texttt{caesarCipher} выполняет шифрование текста с использованием шифра Цезаря, сдвигая каждую букву на заданное количество позиций, указанное ключом. Она принимает на вход текст типа T.Text и целое число key, определяющее сдвиг. Для каждого символа проверяется, является ли он буквой в диапазоне от a до z или от A до Z. Если символ является буквой, его позиция в алфавите изменяется по формуле \texttt{(текущая позиция - позиция начала алфавита + ключ) \% 26 + позиция начала алфавита}. Если символ не является буквой, он остается неизменным. 
+
+Функция \texttt{caesarDecipher} выполняет расшифровку текста, зашифрованного шифром Цезаря, сдвигая буквы в обратном направлении. Она принимает тот же набор параметров и вызывает функцию caesarCipher с отрицательным значением ключа -key. Эти функции подходят для выполнения базового шифрования и дешифрования текста с использованием простого метода шифра Цезаря.
+
+\subsection{Кодировка текста в изображение}
+
+Функция \texttt{byteToBits} преобразует байт в список из восьми битов, где каждый бит представлен как 1 или 0. Биты вычисляются с помощью функции testBit, которая проверяет установлен ли бит в заданной позиции. Функция \texttt{replaceIBit} заменяет бит в указанной позиции байта на новый бит (0 или 1). Если бит не равен 0 или 1, генерируется ошибка. Функция \texttt{chunksOf} разбивает список на части заданной длины, возвращая список списков.
+
+Функция \texttt{replaceBitsInByteString} заменяет определенное количество младших битов каждого байта в исходной строке байтов original на биты из строки replacing. Проверяется, достаточно ли бит в исходной строке для замены. Биты из строки replacing разбиваются на группы по заданной длине и последовательно заменяются в байтах исходной строки с помощью вспомогательной функции \texttt{replaceNthBits}.
+
+Функция \texttt{encodeTextToImage} кодирует текст из текстового файла в изображение, используя шифр Цезаря для предварительной обработки текста. Сначала она считывает изображение и текстовый файл, затем шифрует текст с помощью функции \texttt{caesarCipher}. Затем текст преобразуется в байтовый формат и записывается в изображение, заменяя младшие биты каждого пикселя. Файл изображения сохраняется с разными вариантами замены битов (от 1 до 8), а результат записывается в новые файлы с измененным содержимым изображения. Таким образом, после исполнения данной функции создается 8 новых файлов .bmp, названия которых сделаны по следующему шаблону:
+
+\texttt{<сдвиг шифра цезаря>\_<количество заменяемых битов>\_<длина текста>\_<имя исходного изображения>.bmp}
+
+\subsection{Декодировка текста из файла}
+
+Функция \texttt{extractBitsFromByte} извлекает младшие биты из байта, начиная с самого младшего и до заданного числа n. Биты возвращаются в виде списка чисел 1 или 0. Функция \texttt{bitsToBytes} преобразует список битов в строку байтов. Она группирует биты по восемь, собирает их в байты с помощью побитовых операций, а затем рекурсивно обрабатывает оставшиеся биты.
+
+Функция \texttt{decodeTextFromImage} выполняет извлечение закодированного текста из изображения. Из имени файла изображения она считывает параметры кодировки: смещение шифра Цезаря, количество битов, используемых для кодировки, и длину текста. Затем она извлекает содержимое изображения в формате RGBA, извлекает нужное количество битов с использованием функции \texttt{extractBitsFromByte} и преобразует их в байты с помощью \texttt{bitsToBytes}. После этого байты расшифровываются с использованием шифра Цезаря. Результирующий текст сохраняется в новый файл с именем, основанным на исходном имени изображения.
+
+Функция \texttt{decodeTextsFromImages} выполняет декодирование текста из списка изображений. Она вызывает \texttt{decodeTextFromImage} для каждого файла в списке, извлекая и расшифровывая закодированный текст по указанным параметрам.
+
+\subsection{Вызов функций}
+
+Функция \texttt{main} является основной точкой входа программы и реализует процесс кодирования текста в изображение с последующим декодированием.
+
+Сначала программа запрашивает у пользователя величину сдвига для шифра Цезаря и считывает её с клавиатуры. Эта величина преобразуется в целое число, которое используется для шифрования текста. Затем задаются имена исходного изображения (imageFileName) и файла с текстом (textFileName), которые участвуют в процессе.
+
+С помощью функции \texttt{encodeTextToImage} текст из файла кодируется в изображение. Эта функция принимает сдвиг для шифра Цезаря, шифрует текст и встраивает его в изображение, используя разные значения числа битов для кодирования.
+
+После кодирования программа читает исходный текст из файла и формирует список имён изображений, созданных на этапе кодирования. Затем вызывается функция \texttt{decodeTextsFromImages}, которая последовательно извлекает закодированный текст из каждого изображения, декодирует его и сохраняет в новые файлы.
+
+Таким образом, \texttt{main} связывает все основные функции программы, обеспечивая как процесс кодирования текста в изображение, так и его последующее декодирование.
+
+\section{Результаты}
+
+Исходный текст, а также зашифрованный шифром Цезаря текст, который закодирован в изображение, представлены в \hyperref[sec:text]{Приложение Б. Тексты}.
+
+При запуске программы пользователю необходимо ввести сдвиг шифра Цезаря (Рис. \ref{inp}).
+
+	\captionsetup{justification=centering}
+\begin{center}
+\centering
+	\includegraphics[scale=1]{inp.png}
+	\captionof{figure}{Ввод сдвига для шифра Цезаря}
+	\label{inp}
+\end{center}
+
+Затем создается 17 новых файлов (Рис. \ref{files}): текстовый файл с закодированным текстом, 8 изображений с зашифрованным в них текстом, а также 8 расшифрованных текстов. Как можно увидеть, в названиях файлов содержится метаинформация для декодирования. Также пользователю выводится соответствующее сообщение (Рис. \ref{out}).
+
+	\captionsetup{justification=centering}
+\begin{center}
+\centering
+	\includegraphics[scale=0.8]{files.png}
+	\captionof{figure}{Созданные файлы}
+	\label{files}
+\end{center}
+
+	\captionsetup{justification=centering}
+\begin{center}
+\centering
+	\includegraphics[scale=1]{out.png}
+	\captionof{figure}{Вывод сообщения для пользователя}
+	\label{out}
+\end{center}
+
+Как уже было указано ранее на Рис. \ref{ciol_orig} - оригинальное изображение с портретом Циолковского.
+
+На Рис. \ref{pic1} - \ref{pic8} представлены изображения с закодированным в них текстом для \(n=1..8.\)
+
+\begin{figure}[H]
+\begin{center}
+\begin{minipage}[h]{0.4\linewidth}
+\includegraphics[width=1\linewidth]{1.png}
+\caption{Изображение для n = 1} %% подпись к рисунку
+\label{pic1} %% метка рисунка для ссылки на него
+\end{minipage}
+\hfill
+\begin{minipage}[h]{0.4\linewidth}
+\includegraphics[width=1\linewidth]{2.png}
+\caption{Изображение для n = 2}
+\label{pic2}
+\end{minipage}
+\end{center}
+\end{figure}
+
+\begin{figure}[H]
+\begin{center}
+\begin{minipage}[h]{0.4\linewidth}
+\includegraphics[width=1\linewidth]{3.png}
+\caption{Изображение для n = 3} %% подпись к рисунку
+\label{pic3} %% метка рисунка для ссылки на него
+\end{minipage}
+\hfill
+\begin{minipage}[h]{0.4\linewidth}
+\includegraphics[width=1\linewidth]{4.png}
+\caption{Изображение для n = 4}
+\label{pic4}
+\end{minipage}
+\end{center}
+\end{figure}
+
+\begin{figure}[H]
+\begin{center}
+\begin{minipage}[h]{0.4\linewidth}
+\includegraphics[width=1\linewidth]{5.png}
+\caption{Изображение для n = 5} %% подпись к рисунку
+\label{pic5} %% метка рисунка для ссылки на него
+\end{minipage}
+\hfill
+\begin{minipage}[h]{0.4\linewidth}
+\includegraphics[width=1\linewidth]{6.png}
+\caption{Изображение для n = 6}
+\label{pic6}
+\end{minipage}
+\end{center}
+\end{figure}
+
+\begin{figure}[H]
+\begin{center}
+\begin{minipage}[h]{0.4\linewidth}
+\includegraphics[width=1\linewidth]{7.png}
+\caption{Изображение для n = 7} %% подпись к рисунку
+\label{pic7} %% метка рисунка для ссылки на него
+\end{minipage}
+\hfill
+\begin{minipage}[h]{0.4\linewidth}
+\includegraphics[width=1\linewidth]{8.png}
+\caption{Изображение для n = 8}
+\label{pic8}
+\end{minipage}
+\end{center}
+\end{figure}
+
+Как можно заметить, для n = 1, 2 (Рис. \ref{pic1}, \ref{pic2}) никаких изменений на первый взляд не видно, для n = 3, 4 (Рис. \ref{pic3}, \ref{pic4}) заметны легкие искажения в верхней части изображений, для n = 5, 6 (Рис. \ref{pic5}, \ref{pic6}) отчетливо видны искажения цвета, для n = 7, 8 (Рис. \ref{pic7}, \ref{pic8}) часть изображения настолько искажена, что в этих участках исходное изображение совершенно неразличимо (не видны очертания).
+
+\section{Заключение}
+
+	В результате выполнения практического задания №3, был создан проект в stack, в котором реализована логика шифрования текста в изображение с предварительной кодировкой шифром Цезаря, и расшифровка по ключу из названия закодированного файла. 
+	Готовая программа: 
+	\begin{itemize}
+	\item Шифрует полученный текстовый файл в изображение. 
+	\item Сохраняет несколько новых измененных изображений. 
+	\item Декодирует зашифрованные тексты из изображений. 
+	\item Сохраняет файлы с расшифрованным текстом.
+	\end{itemize}
+
+\newpage
+
+\section*{Приложение A. Код программы}
+\addcontentsline{toc}{section}{Приложение A. Код программы}
+\label{sec:createCode}
+
+\textbf{Lib.hs}
+
+\begin{minted}[
+	frame=lines,
+	framesep=2mm,
+	baselinestretch=1.2,
+	bgcolor=LightGray,
+	fontsize=\footnotesize,
+	linenos,
+	breaklines
+	]{haskell}
+module Lib
+    ( encodeTextToImage
+    , decodeTextsFromImages
+    ) where
+
+import qualified Data.Text as T
+import Data.Char (ord, chr)
+import qualified Data.ByteString as B
+import qualified Data.Text.Encoding as TE
+import Data.Bits (testBit, setBit, clearBit)
+import Data.Word (Word8)
+import Codec.BMP
+
+caesarCipher :: T.Text -> Int -> T.Text
+caesarCipher str key = T.map shiftChar str
+  where
+    shiftChar c
+      | c >= 'a' && c <= 'z' = chr $ (ord c - ord 'a' + key) `mod` 26 + ord 'a'
+      | c >= 'A' && c <= 'Z' = chr $ (ord c - ord 'A' + key) `mod` 26 + ord 'A'
+      | otherwise = c
+
+caesarDecipher :: T.Text -> Int -> T.Text
+caesarDecipher str key = caesarCipher str (-key)
+
+-- переводит байт в список битов
+byteToBits :: Word8 -> [Int]
+byteToBits byte = [if testBit byte i then 1 else 0 | i <- [7,6..0]]
+
+-- Заменяет i-й бит в байте на заданный бит (0 или 1)
+replaceIBit :: Word8 -> Int -> Int -> Word8
+replaceIBit byte n bit
+    | bit == 1  = setBit byte n
+    | bit == 0  = clearBit byte n
+    | otherwise = error "Bit must be 0 or 1"
+
+-- Разбивает список на части длиной k
+chunksOf :: Int -> [a] -> [[a]]
+chunksOf _ [] = []
+chunksOf k xs = take k xs : chunksOf k (drop k xs)
+
+replaceBitsInByteString :: B.ByteString -> B.ByteString -> Int -> B.ByteString
+replaceBitsInByteString original replacing n
+    | n < 1 || n > 8 = error "Number of bits to replace must be between 1 and 8"
+    | B.length replacing * 8 > B.length original * n = error "Not enough bits in original"
+    | otherwise = B.pack $ go (B.unpack original) (chunksOf n replacingBits)
+  where
+    -- Преобразуем байты из replacing в список битов
+    replacingBits = concatMap byteToBits (B.unpack replacing)
+
+    -- Рекурсивная функция для замены битов и сохранения неизмененных байтов
+    go [] [] = []  -- Все байты обработаны
+    go (o:os) [] = o : go os []  -- Добавляем оставшиеся байты из original, если нет замены
+    go (o:os) (r:rs) = 
+        let modifiedByte = replaceNthBits o r  -- Заменяем последние n бит
+        in modifiedByte : go os rs  -- Добавляем измененный байт и рекурсивно обрабатываем остаток
+    
+    
+    -- Заменяет последние n бит байта на новые биты из replacing
+    replaceNthBits :: Word8 -> [Int] -> Word8
+    replaceNthBits byte newBits =
+        foldl (\acc (bit, idx) -> replaceIBit acc idx bit) byte (zip newBits (reverse [0..n-1]))
+
+encodeTextToImage :: FilePath -> FilePath -> Int -> IO ()
+encodeTextToImage imageFileName textFileName caesarK = do
+    Right bmp <- readBMP imageFileName
+    let rgba = unpackBMPToRGBA32 bmp
+    let (width, height) = bmpDimensions bmp
+    textFile <- B.readFile textFileName
+    
+    -- Функция для генерации имени файла
+    let glitchedFileName n = (show caesarK) ++ "_" ++ (show n) ++ "_" ++ (show $ B.length textFile) ++ "_" ++ imageFileName
+
+    let codedTextFile = TE.encodeUtf8 $ caesarCipher (TE.decodeUtf8 textFile) caesarK
+
+    B.writeFile ("coded_" ++ textFileName) codedTextFile
+    
+    -- Итерация по значениям от 1 до 8
+    mapM_ (\n -> do
+        let modifiedRGBA = B.reverse $ replaceBitsInByteString (B.reverse rgba) (codedTextFile) n
+        let glitchedBMP = packRGBA32ToBMP width height modifiedRGBA
+        -- print $ B.take 10 $ B.reverse modifiedRGBA
+        writeBMP (glitchedFileName n) glitchedBMP) [1..8]
+    -- B.writeFile glitchedFileName $ replaceBitsInByteString imageFile textFile 8
+    putStrLn "converted"
+
+-- Извлечение последних n бит из каждого байта
+extractBitsFromByte :: Word8 -> Int -> [Int]
+extractBitsFromByte byte n = reverse [if testBit byte i then 1 else 0 | i <- [0..n-1]]
+
+bitsToBytes :: [Int] -> B.ByteString
+bitsToBytes [] = B.empty
+bitsToBytes bits = 
+    B.cons (fromIntegral (foldl (\acc (b, i) -> if b == 1 then setBit acc i else acc) (0 :: Word8) (zip (take 8 bits) [7,6..0])))
+           (bitsToBytes (drop 8 bits))
+
+-- Восстановление текста из изображения
+decodeTextFromImage :: FilePath -> IO ()
+decodeTextFromImage imageFileName = do
+    -- Извлекаем параметры из имени файла
+    let [caesarKStr, nStr, textLenStr, _] = T.splitOn (T.pack "_") (T.pack imageFileName)
+    let caesarK = read (T.unpack caesarKStr) :: Int
+    let n = read (T.unpack nStr) :: Int
+    let textLen = read (T.unpack textLenStr) :: Int
+    
+    -- Читаем изображение
+    Right bmp <- readBMP imageFileName
+    let rgba = B.reverse $ unpackBMPToRGBA32 bmp
+
+    -- Извлекаем последние n бит из каждого байта
+    let extractedBits = concatMap (`extractBitsFromByte` n) (B.unpack rgba)
+    
+    -- Берем нужное количество бит и преобразуем в байты
+    let textBytes = bitsToBytes $ take (textLen * 8) extractedBits
+    
+    -- Декодируем байты в текст
+    let decodedText = caesarDecipher (TE.decodeUtf8 textBytes) caesarK
+    
+    -- Записываем восстановленный текст в файл
+    let outputFileName = imageFileName ++ "_decoded.txt"
+    B.writeFile outputFileName $ TE.encodeUtf8 decodedText
+    putStrLn $ "Decoded text written to " ++ outputFileName
+
+-- Декодирование текста из всех изображений
+decodeTextsFromImages :: [FilePath] -> IO ()
+decodeTextsFromImages imageFileNames = mapM_ decodeTextFromImage imageFileNames
+\end{minted}
+%$
+
+\textbf{Main.hs}
+\begin{minted}[
+	frame=lines,
+	framesep=2mm,
+	baselinestretch=1.2,
+	bgcolor=LightGray,
+	fontsize=\footnotesize,
+	linenos,
+	breaklines
+	]{haskell}
+module Main (main) where
+
+import Lib (encodeTextToImage, decodeTextsFromImages)
+import qualified Data.ByteString as B
+
+main :: IO ()
+main = do
+    putStrLn "enter Caesar shift: "
+    caesarShiftInput <- getLine
+
+    let caesarShift = (read caesarShiftInput :: Int)
+    let imageFileName = "ciol2.bmp"
+    let textFileName = "bio.txt"
+
+    encodeTextToImage imageFileName textFileName caesarShift
+
+    textFile <- B.readFile textFileName
+    decodeTextsFromImages [(show caesarShift) ++ "_" ++ (show x) ++ "_" ++ (show $ B.length textFile) ++ "_" ++ imageFileName | x <- [1..8]]
+\end{minted}
+%$
+
+\newpage
+
+\section*{Приложение Б. Тексты}
+\addcontentsline{toc}{section}{Приложение Б. Тексты}
+\label{sec:text}
+
+\textbf{bio.txt}
+\begin{minted}[
+	frame=lines,
+	framesep=2mm,
+	baselinestretch=1.2,
+	bgcolor=LightGray,
+	fontsize=\footnotesize,
+	linenos,
+	breaklines
+	]{text}
+Tsiolkovsky was born in Izhevskoye (now in Spassky District, Ryazan Oblast), in the Russian Empire, to a middle-class family. His father was a Polish forester of Roman Catholic faith who relocated to Russia; his Russian Orthodox mother Maria Ivanovna Yumasheva was of mixed Volga Tatar and Russian origin. His father was successively a forester, teacher, and minor government official. At the age of 9, Konstantin caught scarlet fever and lost his hearing. When he was 13, his mother died. He was not admitted to elementary schools because of his hearing problem, so he was self-taught. As a reclusive home-schooled child, he passed much of his time by reading books and became interested in mathematics and physics. As a teenager, he began to contemplate the possibility of space travel. Tsiolkovsky spent three years attending a Moscow library, where Russian cosmism proponent Nikolai Fyodorov worked. He later came to believe that colonizing space would lead to the perfection of the human species, with immortality and a carefree existence. Additionally, inspired by the fiction of Jules Verne, Tsiolkovsky theorized many aspects of space travel and rocket propulsion. He is considered the father of spaceflight and the first person to conceive the space elevator, becoming inspired in 1895 by the newly constructed Eiffel Tower in Paris.
+Despite the youth's growing knowledge of physics, his father was concerned that he would not be able to provide for himself financially as an adult and brought him back home at the age of 19 after learning that he was overworking himself and going hungry. Afterwards, Tsiolkovsky passed the teacher's exam and went to work at a school in Borovsk near Moscow. He also met and married his wife Varvara Sokolova during this time. Despite being stuck in Kaluga, a small town far from major learning centers, Tsiolkovsky managed to make scientific discoveries on his own.
+The first two decades of the 20th century were marred by personal tragedy. Tsiolkovsky's son Ignaty committed suicide in 1902, and in 1908 many of his accumulated papers were lost in a flood. In 1911, his daughter Lyubov was arrested for engaging in revolutionary activities.
+Tsiolkovsky stated that he developed the theory of rocketry only as a supplement to philosophical research on the subject. He wrote more than 400 works including approximately 90 published pieces on space travel and related subjects. Among his works are designs for rockets with steering thrusters, multistage boosters, space stations, airlocks for exiting a spaceship into the vacuum of space, and closed-cycle biological systems to provide food and oxygen for space colonies.
+Tsiolkovsky's first scientific study dates back to 1880–1881. He wrote a paper called "Theory of Gases," in which he outlined the basis of the kinetic theory of gases, but after submitting it to the Russian Physico-Chemical Society, he was informed that his discoveries had already been made 25 years earlier. Undaunted, he pressed ahead with his second work, "The Mechanics of the Animal Organism". It received favorable feedback, and Tsiolkovsky was made a member of the Society. Tsiolkovsky's main works after 1884 dealt with four major areas: the scientific rationale for the all-metal balloon, streamlined airplanes and trains, hovercraft, and rockets for interplanetary travel.
+In 1892, he was transferred to a new teaching post in Kaluga where he continued to experiment. During this period, Tsiolkovsky began working on a problem that would occupy much of his time during the coming years: an attempt to build an all-metal dirigible that could be expanded or shrunk in size.
+Tsiolkovsky developed the first aerodynamics laboratory in Russia in his apartment. In 1897, he built the first Russian wind tunnel with an open test section and developed a method of experimentation using it. In 1900, with a grant from the Academy of Sciences, he made a survey using models of the simplest shapes and determined the drag coefficients of the sphere, flat plates, cylinders, cones, and other bodies. Tsiolkovsky's work in the field of aerodynamics was a source of ideas for Russian scientist Nikolay Zhukovsky, the father of modern aerodynamics and hydrodynamics. Tsiolkovsky described the airflow around bodies of different geometric shapes, but because the Society did not provide any financial support for this project, he was forced to pay for it largely out of his own pocket.
+Tsiolkovsky studied the mechanics of lighter-than-air powered flying machines. He first proposed the idea of an all-metal dirigible and built a model of it. The first printed work on the airship was "A Controllable Metallic Balloon" in which he gave the scientific and technical rationale for the design of an airship with a metal sheath. Tsiolkovsky was not supported on the airship project, and the author was refused a grant to build the model. An appeal to the General Aviation Staff of the Russian army also had no success. In 1892, he turned to the new and unexplored field of heavier-than-air aircraft. Tsiolkovsky's idea was to build an airplane with a metal frame. In the article "An Airplane or a Birdlike Flying Machine" are descriptions and drawings of a monoplane, which in its appearance and aerodynamics anticipated the design of aircraft that would be constructed 15 to 18 years later. In an Aviation Airplane, the wings have a thick profile with a rounded front edge and the fuselage is faired. But work on the airplane, as well as on the airship, did not receive recognition from the official representatives of Russian science, and Tsiolkovsky's further research had neither monetary nor moral support. In 1914, he displayed his models of all-metal dirigibles at the Aeronautics Congress in St. Petersburg but met with a lukewarm response.
+Disappointed at this, Tsiolkovsky gave up on space and aeronautical problems with the onset of World War I and instead turned his attention to the problem of alleviating poverty. This occupied his time during the war years until the Russian Revolution in 1917.
+Starting in 1896, Tsiolkovsky systematically studied the theory of motion of rocket apparatus. Thoughts on the use of the rocket principle in the cosmos were expressed by him as early as 1883, and a rigorous theory of rocket propulsion was developed in 1896. Tsiolkovsky derived the formula, which he called the "formula of aviation", now known as Tsiolkovsky rocket equation, establishing the relationship between change in the rocket's speed exhaust velocity of the engine initial and final mass of the rocket. After writing out this equation, Tsiolkovsky recorded the date: 10 May 1897. In the same year, the formula for the motion of a body of variable mass was published in the thesis of the Russian mathematician I V Meshchersky.
+His most important work, published in May 1903, was Exploration of Outer Space by Means of Rocket Devices. Tsiolkovsky calculated, using the Tsiolkovsky equation, that the horizontal speed required for a minimal orbit around the Earth is 8000 meters per second and that this could be achieved by means of a multistage rocket fueled by liquid oxygen and liquid hydrogen. In the article Exploration of Outer Space by Means of Rocket Devices it was suggested for the first time that a rocket could perform space flight. In this article and its sequels he developed some ideas of missiles and considered the use of liquid rocket engines.
+The outward appearance of Tsiolkovsky's spacecraft design, published in 1903, was a basis for modern spaceship design. The design had a hull divided into three main sections. The pilot and copilot would occupy the first section, while the second and third sections held the liquid oxygen and liquid hydrogen needed to fuel the spacecraft.
+\end{minted}
+
+\textbf{coded\_bio.txt}
+\begin{minted}[
+	frame=lines,
+	framesep=2mm,
+	baselinestretch=1.2,
+	bgcolor=LightGray,
+	fontsize=\footnotesize,
+	linenos,
+	breaklines
+	]{text}
+Yxntqptaxpd bfx gtws ns Nemjaxptdj (stb ns Xufxxpd Inxywnhy, Wdfefs Tgqfxy), ns ymj Wzxxnfs Jrunwj, yt f rniiqj-hqfxx kfrnqd. Mnx kfymjw bfx f Utqnxm ktwjxyjw tk Wtrfs Hfymtqnh kfnym bmt wjqthfyji yt Wzxxnf; mnx Wzxxnfs Twymtitc rtymjw Rfwnf Nafstasf Dzrfxmjaf bfx tk rncji Atqlf Yfyfw fsi Wzxxnfs twnlns. Mnx kfymjw bfx xzhhjxxnajqd f ktwjxyjw, yjfhmjw, fsi rnstw ltajwsrjsy tkknhnfq. Fy ymj flj tk 9, Ptsxyfsyns hfzlmy xhfwqjy kjajw fsi qtxy mnx mjfwnsl. Bmjs mj bfx 13, mnx rtymjw inji. Mj bfx sty firnyyji yt jqjrjsyfwd xhmttqx gjhfzxj tk mnx mjfwnsl uwtgqjr, xt mj bfx xjqk-yfzlmy. Fx f wjhqzxnaj mtrj-xhmttqji hmnqi, mj ufxxji rzhm tk mnx ynrj gd wjfinsl gttpx fsi gjhfrj nsyjwjxyji ns rfymjrfynhx fsi umdxnhx. Fx f yjjsfljw, mj gjlfs yt htsyjruqfyj ymj utxxngnqnyd tk xufhj ywfajq. Yxntqptaxpd xujsy ymwjj djfwx fyyjsinsl f Rtxhtb qngwfwd, bmjwj Wzxxnfs htxrnxr uwtutsjsy Snptqfn Kdtitwta btwpji. Mj qfyjw hfrj yt gjqnjaj ymfy htqtsnensl xufhj btzqi qjfi yt ymj ujwkjhynts tk ymj mzrfs xujhnjx, bnym nrrtwyfqnyd fsi f hfwjkwjj jcnxyjshj. Fiinyntsfqqd, nsxunwji gd ymj knhynts tk Ozqjx Ajwsj, Yxntqptaxpd ymjtwneji rfsd fxujhyx tk xufhj ywfajq fsi wthpjy uwtuzqxnts. Mj nx htsxnijwji ymj kfymjw tk xufhjkqnlmy fsi ymj knwxy ujwxts yt htshjnaj ymj xufhj jqjafytw, gjhtrnsl nsxunwji ns 1895 gd ymj sjbqd htsxywzhyji Jnkkjq Ytbjw ns Ufwnx.
+Ijxunyj ymj dtzym'x lwtbnsl pstbqjilj tk umdxnhx, mnx kfymjw bfx htshjwsji ymfy mj btzqi sty gj fgqj yt uwtanij ktw mnrxjqk knsfshnfqqd fx fs fizqy fsi gwtzlmy mnr gfhp mtrj fy ymj flj tk 19 fkyjw qjfwsnsl ymfy mj bfx tajwbtwpnsl mnrxjqk fsi ltnsl mzslwd. Fkyjwbfwix, Yxntqptaxpd ufxxji ymj yjfhmjw'x jcfr fsi bjsy yt btwp fy f xhmttq ns Gtwtaxp sjfw Rtxhtb. Mj fqxt rjy fsi rfwwnji mnx bnkj Afwafwf Xtptqtaf izwnsl ymnx ynrj. Ijxunyj gjnsl xyzhp ns Pfqzlf, f xrfqq ytbs kfw kwtr rfotw qjfwsnsl hjsyjwx, Yxntqptaxpd rfsflji yt rfpj xhnjsynknh inxhtajwnjx ts mnx tbs.
+Ymj knwxy ybt ijhfijx tk ymj 20ym hjsyzwd bjwj rfwwji gd ujwxtsfq ywfljid. Yxntqptaxpd'x xts Nlsfyd htrrnyyji xznhnij ns 1902, fsi ns 1908 rfsd tk mnx fhhzrzqfyji ufujwx bjwj qtxy ns f kqtti. Ns 1911, mnx ifzlmyjw Qdzgta bfx fwwjxyji ktw jslflnsl ns wjatqzyntsfwd fhynanynjx.
+Yxntqptaxpd xyfyji ymfy mj ijajqtuji ymj ymjtwd tk wthpjywd tsqd fx f xzuuqjrjsy yt umnqtxtumnhfq wjxjfwhm ts ymj xzgojhy. Mj bwtyj rtwj ymfs 400 btwpx nshqzinsl fuuwtcnrfyjqd 90 uzgqnxmji unjhjx ts xufhj ywfajq fsi wjqfyji xzgojhyx. Frtsl mnx btwpx fwj ijxnlsx ktw wthpjyx bnym xyjjwnsl ymwzxyjwx, rzqynxyflj gttxyjwx, xufhj xyfyntsx, fnwqthpx ktw jcnynsl f xufhjxmnu nsyt ymj afhzzr tk xufhj, fsi hqtxji-hdhqj gntqtlnhfq xdxyjrx yt uwtanij ktti fsi tcdljs ktw xufhj htqtsnjx.
+Yxntqptaxpd'x knwxy xhnjsynknh xyzid ifyjx gfhp yt 1880–1881. Mj bwtyj f ufujw hfqqji "Ymjtwd tk Lfxjx," ns bmnhm mj tzyqnsji ymj gfxnx tk ymj pnsjynh ymjtwd tk lfxjx, gzy fkyjw xzgrnyynsl ny yt ymj Wzxxnfs Umdxnht-Hmjrnhfq Xthnjyd, mj bfx nsktwrji ymfy mnx inxhtajwnjx mfi fqwjfid gjjs rfij 25 djfwx jfwqnjw. Zsifzsyji, mj uwjxxji fmjfi bnym mnx xjhtsi btwp, "Ymj Rjhmfsnhx tk ymj Fsnrfq Twlfsnxr". Ny wjhjnaji kfatwfgqj kjjigfhp, fsi Yxntqptaxpd bfx rfij f rjrgjw tk ymj Xthnjyd. Yxntqptaxpd'x rfns btwpx fkyjw 1884 ijfqy bnym ktzw rfotw fwjfx: ymj xhnjsynknh wfyntsfqj ktw ymj fqq-rjyfq gfqqtts, xywjfrqnsji fnwuqfsjx fsi ywfnsx, mtajwhwfky, fsi wthpjyx ktw nsyjwuqfsjyfwd ywfajq.
+Ns 1892, mj bfx ywfsxkjwwji yt f sjb yjfhmnsl utxy ns Pfqzlf bmjwj mj htsynszji yt jcujwnrjsy. Izwnsl ymnx ujwnti, Yxntqptaxpd gjlfs btwpnsl ts f uwtgqjr ymfy btzqi thhzud rzhm tk mnx ynrj izwnsl ymj htrnsl djfwx: fs fyyjruy yt gznqi fs fqq-rjyfq inwnlngqj ymfy htzqi gj jcufsiji tw xmwzsp ns xnej.
+Yxntqptaxpd ijajqtuji ymj knwxy fjwtidsfrnhx qfgtwfytwd ns Wzxxnf ns mnx fufwyrjsy. Ns 1897, mj gznqy ymj knwxy Wzxxnfs bnsi yzssjq bnym fs tujs yjxy xjhynts fsi ijajqtuji f rjymti tk jcujwnrjsyfynts zxnsl ny. Ns 1900, bnym f lwfsy kwtr ymj Fhfijrd tk Xhnjshjx, mj rfij f xzwajd zxnsl rtijqx tk ymj xnruqjxy xmfujx fsi ijyjwrnsji ymj iwfl htjkknhnjsyx tk ymj xumjwj, kqfy uqfyjx, hdqnsijwx, htsjx, fsi tymjw gtinjx. Yxntqptaxpd'x btwp ns ymj knjqi tk fjwtidsfrnhx bfx f xtzwhj tk nijfx ktw Wzxxnfs xhnjsynxy Snptqfd Emzptaxpd, ymj kfymjw tk rtijws fjwtidsfrnhx fsi mdiwtidsfrnhx. Yxntqptaxpd ijxhwngji ymj fnwkqtb fwtzsi gtinjx tk inkkjwjsy ljtrjywnh xmfujx, gzy gjhfzxj ymj Xthnjyd ini sty uwtanij fsd knsfshnfq xzuutwy ktw ymnx uwtojhy, mj bfx ktwhji yt ufd ktw ny qfwljqd tzy tk mnx tbs uthpjy.
+Yxntqptaxpd xyzinji ymj rjhmfsnhx tk qnlmyjw-ymfs-fnw utbjwji kqdnsl rfhmnsjx. Mj knwxy uwtutxji ymj nijf tk fs fqq-rjyfq inwnlngqj fsi gznqy f rtijq tk ny. Ymj knwxy uwnsyji btwp ts ymj fnwxmnu bfx "F Htsywtqqfgqj Rjyfqqnh Gfqqtts" ns bmnhm mj lfaj ymj xhnjsynknh fsi yjhmsnhfq wfyntsfqj ktw ymj ijxnls tk fs fnwxmnu bnym f rjyfq xmjfym. Yxntqptaxpd bfx sty xzuutwyji ts ymj fnwxmnu uwtojhy, fsi ymj fzymtw bfx wjkzxji f lwfsy yt gznqi ymj rtijq. Fs fuujfq yt ymj Ljsjwfq Fanfynts Xyfkk tk ymj Wzxxnfs fwrd fqxt mfi st xzhhjxx. Ns 1892, mj yzwsji yt ymj sjb fsi zsjcuqtwji knjqi tk mjfanjw-ymfs-fnw fnwhwfky. Yxntqptaxpd'x nijf bfx yt gznqi fs fnwuqfsj bnym f rjyfq kwfrj. Ns ymj fwynhqj "Fs Fnwuqfsj tw f Gnwiqnpj Kqdnsl Rfhmnsj" fwj ijxhwnuyntsx fsi iwfbnslx tk f rtstuqfsj, bmnhm ns nyx fuujfwfshj fsi fjwtidsfrnhx fsynhnufyji ymj ijxnls tk fnwhwfky ymfy btzqi gj htsxywzhyji 15 yt 18 djfwx qfyjw. Ns fs Fanfynts Fnwuqfsj, ymj bnslx mfaj f ymnhp uwtknqj bnym f wtzsiji kwtsy jilj fsi ymj kzxjqflj nx kfnwji. Gzy btwp ts ymj fnwuqfsj, fx bjqq fx ts ymj fnwxmnu, ini sty wjhjnaj wjhtlsnynts kwtr ymj tkknhnfq wjuwjxjsyfynajx tk Wzxxnfs xhnjshj, fsi Yxntqptaxpd'x kzwymjw wjxjfwhm mfi sjnymjw rtsjyfwd stw rtwfq xzuutwy. Ns 1914, mj inxuqfdji mnx rtijqx tk fqq-rjyfq inwnlngqjx fy ymj Fjwtsfzynhx Htslwjxx ns Xy. Ujyjwxgzwl gzy rjy bnym f qzpjbfwr wjxutsxj.
+Inxfuutnsyji fy ymnx, Yxntqptaxpd lfaj zu ts xufhj fsi fjwtsfzynhfq uwtgqjrx bnym ymj tsxjy tk Btwqi Bfw N fsi nsxyjfi yzwsji mnx fyyjsynts yt ymj uwtgqjr tk fqqjanfynsl utajwyd. Ymnx thhzunji mnx ynrj izwnsl ymj bfw djfwx zsynq ymj Wzxxnfs Wjatqzynts ns 1917.
+Xyfwynsl ns 1896, Yxntqptaxpd xdxyjrfynhfqqd xyzinji ymj ymjtwd tk rtynts tk wthpjy fuufwfyzx. Ymtzlmyx ts ymj zxj tk ymj wthpjy uwnshnuqj ns ymj htxrtx bjwj jcuwjxxji gd mnr fx jfwqd fx 1883, fsi f wnltwtzx ymjtwd tk wthpjy uwtuzqxnts bfx ijajqtuji ns 1896. Yxntqptaxpd ijwnaji ymj ktwrzqf, bmnhm mj hfqqji ymj "ktwrzqf tk fanfynts", stb pstbs fx Yxntqptaxpd wthpjy jvzfynts, jxyfgqnxmnsl ymj wjqfyntsxmnu gjybjjs hmfslj ns ymj wthpjy'x xujji jcmfzxy ajqthnyd tk ymj jslnsj nsnynfq fsi knsfq rfxx tk ymj wthpjy. Fkyjw bwnynsl tzy ymnx jvzfynts, Yxntqptaxpd wjhtwiji ymj ifyj: 10 Rfd 1897. Ns ymj xfrj djfw, ymj ktwrzqf ktw ymj rtynts tk f gtid tk afwnfgqj rfxx bfx uzgqnxmji ns ymj ymjxnx tk ymj Wzxxnfs rfymjrfynhnfs N A Rjxmhmjwxpd.
+Mnx rtxy nrutwyfsy btwp, uzgqnxmji ns Rfd 1903, bfx Jcuqtwfynts tk Tzyjw Xufhj gd Rjfsx tk Wthpjy Ijanhjx. Yxntqptaxpd hfqhzqfyji, zxnsl ymj Yxntqptaxpd jvzfynts, ymfy ymj mtwnetsyfq xujji wjvznwji ktw f rnsnrfq twgny fwtzsi ymj Jfwym nx 8000 rjyjwx ujw xjhtsi fsi ymfy ymnx htzqi gj fhmnjaji gd rjfsx tk f rzqynxyflj wthpjy kzjqji gd qnvzni tcdljs fsi qnvzni mdiwtljs. Ns ymj fwynhqj Jcuqtwfynts tk Tzyjw Xufhj gd Rjfsx tk Wthpjy Ijanhjx ny bfx xzlljxyji ktw ymj knwxy ynrj ymfy f wthpjy htzqi ujwktwr xufhj kqnlmy. Ns ymnx fwynhqj fsi nyx xjvzjqx mj ijajqtuji xtrj nijfx tk rnxxnqjx fsi htsxnijwji ymj zxj tk qnvzni wthpjy jslnsjx.
+Ymj tzybfwi fuujfwfshj tk Yxntqptaxpd'x xufhjhwfky ijxnls, uzgqnxmji ns 1903, bfx f gfxnx ktw rtijws xufhjxmnu ijxnls. Ymj ijxnls mfi f mzqq inaniji nsyt ymwjj rfns xjhyntsx. Ymj unqty fsi htunqty btzqi thhzud ymj knwxy xjhynts, bmnqj ymj xjhtsi fsi ymnwi xjhyntsx mjqi ymj qnvzni tcdljs fsi qnvzni mdiwtljs sjjiji yt kzjq ymj xufhjhwfky.
+\end{minted}
+\end{document}

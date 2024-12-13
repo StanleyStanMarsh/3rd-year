@@ -1,0 +1,16 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kr}{module}\PYG{+w}{ }\PYG{n+nn}{Lib}
+\PYG{+w}{    }\PYG{p}{(}\PYG{+w}{ }\PYG{n+nf}{addMod}
+\PYG{+w}{    }\PYG{p}{,}\PYG{+w}{ }\PYG{n+nf}{swapTuple}
+\PYG{+w}{    }\PYG{p}{)}\PYG{+w}{ }\PYG{k+kr}{where}
+
+\PYG{n+nf}{addMod}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Int}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Int}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Int}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Int}
+\PYG{n+nf}{addMod}\PYG{+w}{ }\PYG{n}{firstSummand}\PYG{+w}{ }\PYG{n}{secondSummand}\PYG{+w}{ }\PYG{n}{modulo}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{sum}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{n}{modulo}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{n}{floor}\PYG{p}{(}\PYG{n}{fromIntegral}\PYG{+w}{ }\PYG{n}{sum}\PYG{+w}{ }\PYG{o}{/}\PYG{+w}{ }\PYG{n}{fromIntegral}\PYG{+w}{ }\PYG{n}{modulo}\PYG{p}{)}
+\PYG{+w}{    }\PYG{k+kr}{where}\PYG{+w}{ }\PYG{n}{sum}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{firstSummand}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{n}{secondSummand}
+
+\PYG{n+nf}{swap}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{a}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{b}\PYG{p}{)}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{b}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{a}\PYG{p}{)}
+\PYG{n+nf}{swap}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{a}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{b}\PYG{p}{)}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{b}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{a}\PYG{p}{)}
+
+\PYG{n+nf}{swapTuple}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{p}{[(}\PYG{n}{a}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{b}\PYG{p}{)]}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{p}{[(}\PYG{n}{b}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{a}\PYG{p}{)]}
+\PYG{n+nf}{swapTuple}\PYG{+w}{ }\PYG{n}{tupleList}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{map}\PYG{+w}{ }\PYG{n}{swap}\PYG{+w}{ }\PYG{n}{tupleList}
+\end{Verbatim}

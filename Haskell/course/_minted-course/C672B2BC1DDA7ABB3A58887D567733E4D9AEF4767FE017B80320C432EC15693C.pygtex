@@ -1,0 +1,272 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kr}{module}\PYG{+w}{ }\PYG{n+nn}{Lib}
+\PYG{+w}{    }\PYG{p}{(}\PYG{+w}{ }\PYG{n+nf}{allSentences}
+\PYG{+w}{    }\PYG{p}{,}\PYG{+w}{ }\PYG{n+nf}{runParser}
+\PYG{+w}{    }\PYG{p}{,}\PYG{+w}{ }\PYG{n+nf}{generatePhrase}
+\PYG{+w}{    }\PYG{p}{,}\PYG{+w}{ }\PYG{n+nf}{processText}
+\PYG{+w}{    }\PYG{p}{,}\PYG{+w}{ }\PYG{k+kt}{NGramMap}
+\PYG{+w}{    }\PYG{p}{,}\PYG{+w}{ }\PYG{n+nf}{generateDialogue}
+\PYG{+w}{    }\PYG{p}{)}\PYG{+w}{ }\PYG{k+kr}{where}
+
+\PYG{k+kr}{import}\PYG{+w}{ }\PYG{n+nn}{Control.Applicative}
+\PYG{k+kr}{import}\PYG{+w}{ }\PYG{n+nn}{Data.Text}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{Text}\PYG{p}{)}
+\PYG{k+kr}{import}\PYG{+w}{ }\PYG{k}{qualified}\PYG{+w}{ }\PYG{n+nn}{Data.Text}\PYG{+w}{ }\PYG{k}{as}\PYG{+w}{ }\PYG{n}{T}
+\PYG{k+kr}{import}\PYG{+w}{ }\PYG{n+nn}{Data.Char}\PYG{+w}{ }\PYG{p}{(}\PYG{n+nf}{isLetter}\PYG{p}{,}\PYG{+w}{ }\PYG{n+nf}{isSpace}\PYG{p}{)}
+\PYG{k+kr}{import}\PYG{+w}{ }\PYG{n+nn}{Data.List}\PYG{+w}{ }\PYG{p}{(}\PYG{n+nf}{sortBy}\PYG{p}{,}\PYG{+w}{ }\PYG{n+nf}{groupBy}\PYG{p}{,}\PYG{+w}{ }\PYG{n+nf}{nub}\PYG{p}{)}
+\PYG{k+kr}{import}\PYG{+w}{ }\PYG{n+nn}{System.Random}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{RandomGen}\PYG{p}{,}\PYG{+w}{ }\PYG{n+nf}{randomR}\PYG{p}{,}\PYG{+w}{ }\PYG{n+nf}{next}\PYG{p}{,}\PYG{+w}{ }\PYG{n+nf}{split}\PYG{p}{)}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Parser}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} instances}
+
+\PYG{k+kr}{newtype}\PYG{+w}{ }\PYG{k+kt}{Parser}\PYG{+w}{ }\PYG{n}{a}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kt}{Parser}\PYG{+w}{ }\PYG{p}{\PYGZob{}}\PYG{+w}{ }\PYG{n}{runParser}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Text}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Maybe}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{Text}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{a}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZcb{}}
+
+\PYG{k+kr}{instance}\PYG{+w}{ }\PYG{k+kt}{Functor}\PYG{+w}{ }\PYG{k+kt}{Parser}\PYG{+w}{ }\PYG{k+kr}{where}
+\PYG{+w}{    }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} хотим применить func над результатом парсера p}
+\PYG{+w}{    }\PYG{n}{fmap}\PYG{+w}{ }\PYG{n}{func}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{Parser}\PYG{+w}{ }\PYG{n}{p}\PYG{p}{)}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kt}{Parser}\PYG{+w}{ }\PYG{n}{f}\PYG{+w}{ }\PYG{k+kr}{where}
+\PYG{+w}{        }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} парсер f возвращает:}
+\PYG{+w}{        }\PYG{n}{f}\PYG{+w}{ }\PYG{n}{origText}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kr}{case}\PYG{+w}{ }\PYG{n}{p}\PYG{+w}{ }\PYG{n}{origText}\PYG{+w}{ }\PYG{k+kr}{of}
+\PYG{+w}{            }\PYG{k+kt}{Nothing}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Nothing}\PYG{+w}{ }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Nothing, если парсер p возвращает Nothing}
+\PYG{+w}{            }\PYG{k+kt}{Just}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{remainingP}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{resP}\PYG{p}{)}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Just}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{remainingP}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{func}\PYG{+w}{ }\PYG{n}{resP}\PYG{p}{)}\PYG{+w}{ }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} (остаток, resP обработанный функцией func), если p возвращает (остаток, resP)}
+
+\PYG{k+kr}{instance}\PYG{+w}{ }\PYG{k+kt}{Applicative}\PYG{+w}{ }\PYG{k+kt}{Parser}\PYG{+w}{ }\PYG{k+kr}{where}
+\PYG{+w}{    }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} возвращаем всегда (изначальная строка, передаваемое значение)}
+\PYG{+w}{    }\PYG{n}{pure}\PYG{+w}{ }\PYG{n}{text}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kt}{Parser}\PYG{+w}{ }\PYG{p}{(}\PYG{n+nf}{\PYGZbs{}}\PYG{n}{orig}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Just}\PYG{p}{(}\PYG{n}{orig}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{text}\PYG{p}{))}
+
+\PYG{+w}{    }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} хотим чтобы был парсер, который применяет к остатку 1 парсера 2 парсер,}
+\PYG{+w}{    }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} а затем применяет 1 парсер ко 2}
+\PYG{+w}{    }\PYG{p}{(}\PYG{k+kt}{Parser}\PYG{+w}{ }\PYG{n}{u}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{\PYGZlt{}*\PYGZgt{}}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{Parser}\PYG{+w}{ }\PYG{n}{v}\PYG{p}{)}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kt}{Parser}\PYG{+w}{ }\PYG{n}{f}\PYG{+w}{ }\PYG{k+kr}{where}
+\PYG{+w}{        }\PYG{n}{f}\PYG{+w}{ }\PYG{n}{origText}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kr}{case}\PYG{+w}{ }\PYG{n}{u}\PYG{+w}{ }\PYG{n}{origText}\PYG{+w}{ }\PYG{k+kr}{of}
+\PYG{+w}{            }\PYG{k+kt}{Nothing}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Nothing}
+\PYG{+w}{            }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} remainingU \PYGZhy{} остаток 1 парсера}
+\PYG{+w}{            }\PYG{k+kt}{Just}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{remainingU}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{resU}\PYG{p}{)}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kr}{case}\PYG{+w}{ }\PYG{n}{v}\PYG{+w}{ }\PYG{n}{remainingU}\PYG{+w}{ }\PYG{k+kr}{of}
+\PYG{+w}{                }\PYG{k+kt}{Nothing}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Nothing}
+\PYG{+w}{                }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} remainingV \PYGZhy{} итоговый остаток, resU применяем над resV}
+\PYG{+w}{                }\PYG{k+kt}{Just}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{remainingV}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{resV}\PYG{p}{)}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Just}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{remainingV}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{resU}\PYG{+w}{ }\PYG{n}{resV}\PYG{p}{)}
+
+\PYG{k+kr}{instance}\PYG{+w}{ }\PYG{k+kt}{Alternative}\PYG{+w}{ }\PYG{k+kt}{Parser}\PYG{+w}{ }\PYG{k+kr}{where}
+\PYG{+w}{    }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} парсер всегда возвращающий Nothing}
+\PYG{+w}{    }\PYG{n}{empty}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kt}{Parser}\PYG{+w}{ }\PYG{o}{\PYGZdl{}}\PYG{+w}{ }\PYG{n+nf}{\PYGZbs{}}\PYG{k+kr}{\PYGZus{}}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Nothing}
+
+\PYG{+w}{    }\PYG{k+kt}{Parser}\PYG{+w}{ }\PYG{n}{u}\PYG{+w}{ }\PYG{o}{\PYGZlt{}|\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Parser}\PYG{+w}{ }\PYG{n}{v}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kt}{Parser}\PYG{+w}{ }\PYG{n}{f}\PYG{+w}{ }\PYG{k+kr}{where}
+\PYG{+w}{        }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} пытаемся применить парсер u}
+\PYG{+w}{        }\PYG{n}{f}\PYG{+w}{ }\PYG{n}{origText}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kr}{case}\PYG{+w}{ }\PYG{n}{u}\PYG{+w}{ }\PYG{n}{origText}\PYG{+w}{ }\PYG{k+kr}{of}
+\PYG{+w}{            }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} если он вернул Nothing, то применям парсер v}
+\PYG{+w}{            }\PYG{k+kt}{Nothing}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{n}{v}\PYG{+w}{ }\PYG{n}{origText}
+\PYG{+w}{            }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} если вернул какой то результат, то оставляем результат}
+\PYG{+w}{            }\PYG{n}{res}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{n}{res}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} functions}
+
+\PYG{n+nf}{isPunctuation}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Char}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Bool}
+\PYG{n+nf}{isPunctuation}\PYG{+w}{ }\PYG{n}{c}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{c}\PYG{+w}{ }\PYG{p}{`}\PYG{n}{elem}\PYG{p}{`}\PYG{+w}{ }\PYG{p}{[}\PYG{l+s+sc}{\PYGZsq{}.\PYGZsq{}}\PYG{p}{,}\PYG{+w}{ }\PYG{l+s+sc}{\PYGZsq{}!\PYGZsq{}}\PYG{p}{,}\PYG{+w}{ }\PYG{l+s+sc}{\PYGZsq{}?\PYGZsq{}}\PYG{p}{,}\PYG{+w}{ }\PYG{l+s+sc}{\PYGZsq{};\PYGZsq{}}\PYG{p}{,}\PYG{+w}{ }\PYG{l+s+sc}{\PYGZsq{}:\PYGZsq{}}\PYG{p}{,}\PYG{+w}{ }\PYG{l+s+sc}{\PYGZsq{}(\PYGZsq{}}\PYG{p}{,}\PYG{+w}{ }\PYG{l+s+sc}{\PYGZsq{})\PYGZsq{}}\PYG{p}{]}
+
+\PYG{n+nf}{joinWords}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{p}{[}\PYG{k+kt}{Text}\PYG{p}{]}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Text}
+\PYG{n+nf}{joinWords}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kt}{T}\PYG{o}{.}\PYG{n}{intercalate}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{T}\PYG{o}{.}\PYG{n}{pack}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{} \PYGZdq{}}\PYG{p}{)}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} parsers}
+
+\PYG{n+nf}{satisfy}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{Char}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Bool}\PYG{p}{)}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Parser}\PYG{+w}{ }\PYG{k+kt}{Char}
+\PYG{n+nf}{satisfy}\PYG{+w}{ }\PYG{n}{pr}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kt}{Parser}\PYG{+w}{ }\PYG{n}{f}\PYG{+w}{ }\PYG{k+kr}{where}
+\PYG{+w}{    }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} берем первый символ}
+\PYG{+w}{    }\PYG{n}{f}\PYG{+w}{ }\PYG{n}{cs}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kr}{case}\PYG{+w}{ }\PYG{k+kt}{T}\PYG{o}{.}\PYG{n}{uncons}\PYG{+w}{ }\PYG{n}{cs}\PYG{+w}{ }\PYG{k+kr}{of}
+\PYG{+w}{        }\PYG{k+kt}{Nothing}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Nothing}
+\PYG{+w}{        }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} если первый элемент соответствует предикату pr}
+\PYG{+w}{        }\PYG{k+kt}{Just}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{fstChar}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{remainingText}\PYG{p}{)}
+\PYG{+w}{            }\PYG{o}{|}\PYG{+w}{ }\PYG{n}{pr}\PYG{+w}{ }\PYG{n}{fstChar}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Just}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{remainingText}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{fstChar}\PYG{p}{)}\PYG{+w}{ }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} то возвращаем (остаток, подоходящий первый элемент)}
+\PYG{+w}{            }\PYG{o}{|}\PYG{+w}{ }\PYG{n}{otherwise}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Nothing}
+\PYG{+w}{    }\PYG{n}{f}\PYG{+w}{ }\PYG{k+kr}{\PYGZus{}}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kt}{Nothing}
+
+\PYG{n+nf}{isWordChar}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Char}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Bool}
+\PYG{n+nf}{isWordChar}\PYG{+w}{ }\PYG{n}{c}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{isLetter}\PYG{+w}{ }\PYG{n}{c}\PYG{+w}{ }\PYG{o}{||}\PYG{+w}{ }\PYG{n}{c}\PYG{+w}{ }\PYG{o}{==}\PYG{+w}{ }\PYG{k+kt}{\PYGZsq{}\PYGZbs{}}\PYG{l+s+sc}{\PYGZsq{}\PYGZsq{}}
+
+\PYG{n+nf}{word}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Parser}\PYG{+w}{ }\PYG{k+kt}{Text}
+\PYG{n+nf}{word}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kt}{Parser}\PYG{+w}{ }\PYG{n}{f}\PYG{+w}{ }\PYG{k+kr}{where}
+\PYG{+w}{    }\PYG{n}{f}\PYG{+w}{ }\PYG{n}{input}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kr}{case}\PYG{+w}{ }\PYG{n}{runParser}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{some}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{satisfy}\PYG{+w}{ }\PYG{n}{isWordChar}\PYG{p}{))}\PYG{+w}{ }\PYG{n}{input}\PYG{+w}{ }\PYG{k+kr}{of}
+\PYG{+w}{        }\PYG{k+kt}{Nothing}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Nothing}
+\PYG{+w}{        }\PYG{k+kt}{Just}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{remaining}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{chars}\PYG{p}{)}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}
+\PYG{+w}{            }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} проверяем что слово начинается или заканчивается апострофом}
+\PYG{+w}{            }\PYG{k+kr}{let}\PYG{+w}{ }\PYG{n}{word}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kt}{T}\PYG{o}{.}\PYG{n}{pack}\PYG{+w}{ }\PYG{n}{chars}
+\PYG{+w}{                }\PYG{n}{cleanWord}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kt}{T}\PYG{o}{.}\PYG{n}{dropAround}\PYG{+w}{ }\PYG{p}{(}\PYG{o}{==}\PYG{+w}{ }\PYG{k+kt}{\PYGZsq{}\PYGZbs{}}\PYG{l+s+sc}{\PYGZsq{}\PYGZsq{}}\PYG{p}{)}\PYG{+w}{ }\PYG{n}{word}
+\PYG{+w}{            }\PYG{k+kr}{in}\PYG{+w}{ }\PYG{k+kr}{if}\PYG{+w}{ }\PYG{k+kt}{T}\PYG{o}{.}\PYG{n}{null}\PYG{+w}{ }\PYG{n}{cleanWord}
+\PYG{+w}{                }\PYG{k+kr}{then}\PYG{+w}{ }\PYG{k+kt}{Nothing}\PYG{+w}{  }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} если слово состоит только из апострофов, то возвращаем Nothing}
+\PYG{+w}{                }\PYG{k+kr}{else}\PYG{+w}{ }\PYG{k+kt}{Just}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{remaining}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{word}\PYG{p}{)}
+
+\PYG{n+nf}{oneSpace}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Parser}\PYG{+w}{ }\PYG{k+kt}{Char}
+\PYG{n+nf}{oneSpace}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{satisfy}\PYG{+w}{ }\PYG{n}{isSpace}
+
+\PYG{n+nf}{spaces}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Parser}\PYG{+w}{ }\PYG{k+kt}{Text}
+\PYG{n+nf}{spaces}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{T}\PYG{o}{.}\PYG{n}{cons}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{\PYGZlt{}\PYGZdl{}\PYGZgt{}}\PYG{+w}{ }\PYG{n}{oneSpace}\PYG{+w}{ }\PYG{o}{\PYGZlt{}*\PYGZgt{}}\PYG{+w}{ }\PYG{n}{spaces}\PYG{+w}{ }\PYG{o}{\PYGZlt{}|\PYGZgt{}}\PYG{+w}{ }\PYG{n}{pure}\PYG{+w}{ }\PYG{k+kt}{T}\PYG{o}{.}\PYG{n}{empty}
+
+\PYG{n+nf}{punctuation}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Parser}\PYG{+w}{ }\PYG{k+kt}{Char}
+\PYG{n+nf}{punctuation}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{satisfy}\PYG{+w}{ }\PYG{n}{isPunctuation}
+
+\PYG{n+nf}{skipJunk}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Parser}\PYG{+w}{ }\PYG{n+nb}{()}
+\PYG{n+nf}{skipJunk}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kt}{Parser}\PYG{+w}{ }\PYG{n}{f}\PYG{+w}{ }\PYG{k+kr}{where}
+\PYG{+w}{    }\PYG{n}{f}\PYG{+w}{ }\PYG{n}{input}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kt}{Just}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{T}\PYG{o}{.}\PYG{n}{dropWhile}\PYG{+w}{ }\PYG{p}{(}\PYG{n+nf}{\PYGZbs{}}\PYG{n}{c}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{n}{not}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{isLetter}\PYG{+w}{ }\PYG{n}{c}\PYG{+w}{ }\PYG{o}{||}\PYG{+w}{ }\PYG{n}{isPunctuation}\PYG{+w}{ }\PYG{n}{c}\PYG{p}{))}\PYG{+w}{ }\PYG{n}{input}\PYG{p}{,}\PYG{+w}{ }\PYG{n+nb}{()}\PYG{p}{)}
+
+\PYG{n+nf}{sentence}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Parser}\PYG{+w}{ }\PYG{p}{[}\PYG{k+kt}{Text}\PYG{p}{]}
+\PYG{n+nf}{sentence}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{p}{(}\PYG{n+nf}{\PYGZbs{}}\PYG{n}{words}\PYG{+w}{ }\PYG{k+kr}{\PYGZus{}}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{n}{words}\PYG{p}{)}
+\PYG{+w}{    }\PYG{o}{\PYGZlt{}\PYGZdl{}\PYGZgt{}}\PYG{+w}{ }\PYG{n}{some}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{word}\PYG{+w}{ }\PYG{o}{\PYGZlt{}*}\PYG{+w}{ }\PYG{n}{skipJunk}\PYG{p}{)}
+\PYG{+w}{    }\PYG{o}{\PYGZlt{}*\PYGZgt{}}\PYG{+w}{ }\PYG{n}{some}\PYG{+w}{ }\PYG{n}{punctuation}
+\PYG{+w}{    }\PYG{o}{\PYGZlt{}*}\PYG{+w}{ }\PYG{n}{skipJunk}
+\PYG{+w}{    }\PYG{o}{\PYGZlt{}|\PYGZgt{}}\PYG{+w}{ }\PYG{n}{empty}
+
+\PYG{n+nf}{allSentences}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Parser}\PYG{+w}{ }\PYG{p}{[[}\PYG{k+kt}{Text}\PYG{p}{]]}
+\PYG{n+nf}{allSentences}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{some}\PYG{+w}{ }\PYG{n}{sentence}
+
+\PYG{n+nf}{sentenceAsText}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Parser}\PYG{+w}{ }\PYG{k+kt}{Text}
+\PYG{n+nf}{sentenceAsText}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{p}{(}\PYG{n+nf}{\PYGZbs{}}\PYG{n}{words}\PYG{+w}{ }\PYG{k+kr}{\PYGZus{}}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{n}{joinWords}\PYG{+w}{ }\PYG{n}{words}\PYG{p}{)}
+\PYG{+w}{    }\PYG{o}{\PYGZlt{}\PYGZdl{}\PYGZgt{}}\PYG{+w}{ }\PYG{n}{some}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{word}\PYG{+w}{ }\PYG{o}{\PYGZlt{}*}\PYG{+w}{ }\PYG{n}{skipJunk}\PYG{p}{)}
+\PYG{+w}{    }\PYG{o}{\PYGZlt{}*\PYGZgt{}}\PYG{+w}{ }\PYG{n}{some}\PYG{+w}{ }\PYG{n}{punctuation}
+\PYG{+w}{    }\PYG{o}{\PYGZlt{}*}\PYG{+w}{ }\PYG{n}{skipJunk}
+\PYG{+w}{    }\PYG{o}{\PYGZlt{}|\PYGZgt{}}\PYG{+w}{ }\PYG{n}{empty}
+
+\PYG{n+nf}{allSentencesAsText}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Parser}\PYG{+w}{ }\PYG{p}{[}\PYG{k+kt}{Text}\PYG{p}{]}
+\PYG{n+nf}{allSentencesAsText}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{some}\PYG{+w}{ }\PYG{n}{sentenceAsText}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} N\PYGZhy{}gram}
+
+\PYG{k+kr}{type}\PYG{+w}{ }\PYG{k+kt}{NGramMap}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{p}{[(}\PYG{k+kt}{Text}\PYG{p}{,}\PYG{+w}{ }\PYG{p}{[}\PYG{k+kt}{Text}\PYG{p}{])]}
+
+\PYG{n+nf}{toBiGrams}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{p}{[}\PYG{k+kt}{Text}\PYG{p}{]}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{p}{[(}\PYG{k+kt}{Text}\PYG{p}{,}\PYG{+w}{ }\PYG{k+kt}{Text}\PYG{p}{)]}
+\PYG{n+nf}{toBiGrams}\PYG{+w}{ }\PYG{n}{words}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{zip}\PYG{+w}{ }\PYG{n}{words}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{tail}\PYG{+w}{ }\PYG{n}{words}\PYG{p}{)}
+
+\PYG{n+nf}{toBiGramsJoined}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{p}{[}\PYG{k+kt}{Text}\PYG{p}{]}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{p}{[(}\PYG{k+kt}{Text}\PYG{p}{,}\PYG{+w}{ }\PYG{k+kt}{Text}\PYG{p}{)]}
+\PYG{n+nf}{toBiGramsJoined}\PYG{+w}{ }\PYG{n}{ws}\PYG{+w}{ }\PYG{o+ow}{=}
+\PYG{+w}{    }\PYG{p}{[(}\PYG{n}{w1}\PYG{p}{,}\PYG{+w}{ }\PYG{k+kt}{T}\PYG{o}{.}\PYG{n}{concat}\PYG{+w}{ }\PYG{p}{[}\PYG{n}{w2}\PYG{p}{,}\PYG{+w}{ }\PYG{k+kt}{T}\PYG{o}{.}\PYG{n}{pack}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{} \PYGZdq{}}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{w3}\PYG{p}{])}\PYG{+w}{ }\PYG{o}{|}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{w1}\PYG{p}{,}\PYG{n}{w2}\PYG{p}{,}\PYG{n}{w3}\PYG{p}{)}\PYG{+w}{ }\PYG{o+ow}{\PYGZlt{}\PYGZhy{}}\PYG{+w}{ }\PYG{n}{triple}\PYG{+w}{ }\PYG{n}{ws}\PYG{p}{]}
+
+\PYG{n+nf}{triple}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{p}{[}\PYG{n}{a}\PYG{p}{]}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{p}{[(}\PYG{n}{a}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{a}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{a}\PYG{p}{)]}
+\PYG{n+nf}{triple}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{x}\PYG{k+kt}{:}\PYG{n}{y}\PYG{k+kt}{:}\PYG{n}{z}\PYG{k+kt}{:}\PYG{n}{rest}\PYG{p}{)}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{x}\PYG{p}{,}\PYG{n}{y}\PYG{p}{,}\PYG{n}{z}\PYG{p}{)}\PYG{+w}{ }\PYG{k+kt}{:}\PYG{+w}{ }\PYG{n}{triple}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{y}\PYG{k+kt}{:}\PYG{n}{z}\PYG{k+kt}{:}\PYG{n}{rest}\PYG{p}{)}
+\PYG{n+nf}{triple}\PYG{+w}{ }\PYG{k+kr}{\PYGZus{}}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kt}{[]}
+
+\PYG{n+nf}{toTriGrams}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{p}{[}\PYG{k+kt}{Text}\PYG{p}{]}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{p}{[(}\PYG{k+kt}{Text}\PYG{p}{,}\PYG{+w}{ }\PYG{k+kt}{Text}\PYG{p}{)]}
+\PYG{n+nf}{toTriGrams}\PYG{+w}{ }\PYG{n}{ws}\PYG{+w}{ }\PYG{o+ow}{=}
+\PYG{+w}{    }\PYG{p}{[(}\PYG{k+kt}{T}\PYG{o}{.}\PYG{n}{concat}\PYG{+w}{ }\PYG{p}{[}\PYG{n}{w1}\PYG{p}{,}\PYG{+w}{ }\PYG{k+kt}{T}\PYG{o}{.}\PYG{n}{pack}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{} \PYGZdq{}}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{w2}\PYG{p}{],}\PYG{+w}{ }\PYG{n}{w3}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{|}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{w1}\PYG{p}{,}\PYG{n}{w2}\PYG{p}{,}\PYG{n}{w3}\PYG{p}{)}\PYG{+w}{ }\PYG{o+ow}{\PYGZlt{}\PYGZhy{}}\PYG{+w}{ }\PYG{n}{triple}\PYG{+w}{ }\PYG{n}{ws}\PYG{p}{]}
+
+
+\PYG{n+nf}{groupPairs}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{p}{[(}\PYG{k+kt}{Text}\PYG{p}{,}\PYG{+w}{ }\PYG{k+kt}{Text}\PYG{p}{)]}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{NGramMap}
+\PYG{n+nf}{groupPairs}\PYG{+w}{ }\PYG{n}{pairs}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{map}\PYG{+w}{ }\PYG{p}{(}\PYG{n+nf}{\PYGZbs{}}\PYG{n}{group}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{fst}\PYG{+w}{ }\PYG{o}{\PYGZdl{}}\PYG{+w}{ }\PYG{n}{head}\PYG{+w}{ }\PYG{n}{group}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{map}\PYG{+w}{ }\PYG{n}{snd}\PYG{+w}{ }\PYG{n}{group}\PYG{p}{))}
+\PYG{+w}{                  }\PYG{o}{\PYGZdl{}}\PYG{+w}{ }\PYG{n}{groupBy}\PYG{+w}{ }\PYG{p}{(}\PYG{n+nf}{\PYGZbs{}}\PYG{n}{x}\PYG{+w}{ }\PYG{n}{y}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{n}{fst}\PYG{+w}{ }\PYG{n}{x}\PYG{+w}{ }\PYG{o}{==}\PYG{+w}{ }\PYG{n}{fst}\PYG{+w}{ }\PYG{n}{y}\PYG{p}{)}
+\PYG{+w}{                  }\PYG{o}{\PYGZdl{}}\PYG{+w}{ }\PYG{n}{sortBy}\PYG{+w}{ }\PYG{p}{(}\PYG{n+nf}{\PYGZbs{}}\PYG{n}{x}\PYG{+w}{ }\PYG{n}{y}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{n}{compare}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{fst}\PYG{+w}{ }\PYG{n}{x}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{fst}\PYG{+w}{ }\PYG{n}{y}\PYG{p}{))}\PYG{+w}{ }\PYG{n}{pairs}
+
+\PYG{n+nf}{makeNGrams}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{p}{[}\PYG{k+kt}{Text}\PYG{p}{]}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{p}{[(}\PYG{k+kt}{Text}\PYG{p}{,}\PYG{+w}{ }\PYG{k+kt}{Text}\PYG{p}{)]}
+\PYG{n+nf}{makeNGrams}\PYG{+w}{ }\PYG{n}{words}\PYG{+w}{ }\PYG{o+ow}{=}
+\PYG{+w}{    }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} создаем биграммы вида (word \PYGZhy{}\PYGZgt{} next word)}
+\PYG{+w}{    }\PYG{n}{toBiGrams}\PYG{+w}{ }\PYG{n}{words}\PYG{+w}{ }\PYG{o}{++}
+\PYG{+w}{    }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} создаем биграммы вида (word \PYGZhy{}\PYGZgt{} two next words joined)}
+\PYG{+w}{    }\PYG{n}{toBiGramsJoined}\PYG{+w}{ }\PYG{n}{words}\PYG{+w}{ }\PYG{o}{++}
+\PYG{+w}{    }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} создаем триграммы вида (two words \PYGZhy{}\PYGZgt{} next word)}
+\PYG{+w}{    }\PYG{n}{toTriGrams}\PYG{+w}{ }\PYG{n}{words}
+
+\PYG{n+nf}{processText}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Text}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{NGramMap}
+\PYG{n+nf}{processText}\PYG{+w}{ }\PYG{n}{text}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kr}{case}\PYG{+w}{ }\PYG{n}{runParser}\PYG{+w}{ }\PYG{n}{allSentences}\PYG{+w}{ }\PYG{n}{text}\PYG{+w}{ }\PYG{k+kr}{of}
+\PYG{+w}{    }\PYG{k+kt}{Nothing}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{[]}
+\PYG{+w}{    }\PYG{k+kt}{Just}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kr}{\PYGZus{}}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{sentences}\PYG{p}{)}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kr}{let}
+\PYG{+w}{        }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} берем все слова из всех предложений}
+\PYG{+w}{        }\PYG{n}{allWords}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{nub}\PYG{+w}{ }\PYG{o}{\PYGZdl{}}\PYG{+w}{ }\PYG{n}{concat}\PYG{+w}{ }\PYG{n}{sentences}
+\PYG{+w}{        }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} создаем n\PYGZhy{}граммы из всех предложений и удаляем дубликаты}
+\PYG{+w}{        }\PYG{n}{allNGrams}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{groupPairs}
+\PYG{+w}{                   }\PYG{o}{\PYGZdl{}}\PYG{+w}{ }\PYG{n}{nub}\PYG{+w}{ }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} удаляем дубликаты}
+\PYG{+w}{                   }\PYG{o}{\PYGZdl{}}\PYG{+w}{ }\PYG{n}{concatMap}\PYG{+w}{ }\PYG{n}{makeNGrams}\PYG{+w}{ }\PYG{n}{sentences}
+\PYG{+w}{        }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} добавляем слова, которые не имеют следующих слов}
+\PYG{+w}{        }\PYG{n}{singleWords}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{map}\PYG{+w}{ }\PYG{p}{(}\PYG{n+nf}{\PYGZbs{}}\PYG{n}{w}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{w}\PYG{p}{,}\PYG{+w}{ }\PYG{k+kt}{[]}\PYG{p}{))}
+\PYG{+w}{                     }\PYG{o}{\PYGZdl{}}\PYG{+w}{ }\PYG{n}{filter}\PYG{+w}{ }\PYG{p}{(}\PYG{n+nf}{\PYGZbs{}}\PYG{n}{w}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{n}{not}\PYG{+w}{ }\PYG{o}{\PYGZdl{}}\PYG{+w}{ }\PYG{n}{any}\PYG{+w}{ }\PYG{p}{(}\PYG{n+nf}{\PYGZbs{}}\PYG{p}{(}\PYG{n}{prefix}\PYG{p}{,}\PYG{+w}{ }\PYG{k+kr}{\PYGZus{}}\PYG{p}{)}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{n}{prefix}\PYG{+w}{ }\PYG{o}{==}\PYG{+w}{ }\PYG{n}{w}\PYG{p}{)}\PYG{+w}{ }\PYG{n}{allNGrams}\PYG{p}{)}
+\PYG{+w}{                     }\PYG{o}{\PYGZdl{}}\PYG{+w}{ }\PYG{n}{allWords}
+\PYG{+w}{        }\PYG{k+kr}{in}\PYG{+w}{ }\PYG{n}{sortBy}\PYG{+w}{ }\PYG{p}{(}\PYG{n+nf}{\PYGZbs{}}\PYG{n}{x}\PYG{+w}{ }\PYG{n}{y}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{n}{compare}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{fst}\PYG{+w}{ }\PYG{n}{x}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{fst}\PYG{+w}{ }\PYG{n}{y}\PYG{p}{))}
+\PYG{+w}{           }\PYG{o}{\PYGZdl{}}\PYG{+w}{ }\PYG{n}{allNGrams}\PYG{+w}{ }\PYG{o}{++}\PYG{+w}{ }\PYG{n}{singleWords}
+
+\PYG{n+nf}{generatePhrase}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{RandomGen}\PYG{+w}{ }\PYG{n}{g}\PYG{+w}{ }\PYG{o+ow}{=\PYGZgt{}}\PYG{+w}{ }\PYG{n}{g}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Text}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{NGramMap}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Either}\PYG{+w}{ }\PYG{k+kt}{Text}\PYG{+w}{ }\PYG{p}{[}\PYG{k+kt}{Text}\PYG{p}{]}
+\PYG{n+nf}{generatePhrase}\PYG{+w}{ }\PYG{n}{gen}\PYG{+w}{ }\PYG{n}{firstWord}\PYG{+w}{ }\PYG{n}{nGrams}\PYG{+w}{ }\PYG{o+ow}{=}
+\PYG{+w}{    }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} если первого слова нет в словаре, то возвращаем ошибку (Left ошибка, Right [слова для фразы])}
+\PYG{+w}{    }\PYG{k+kr}{case}\PYG{+w}{ }\PYG{n}{lookup}\PYG{+w}{ }\PYG{n}{firstWord}\PYG{+w}{ }\PYG{n}{nGrams}\PYG{+w}{ }\PYG{k+kr}{of}
+\PYG{+w}{        }\PYG{k+kt}{Nothing}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Left}\PYG{+w}{ }\PYG{o}{\PYGZdl{}}\PYG{+w}{ }\PYG{k+kt}{T}\PYG{o}{.}\PYG{n}{concat}\PYG{+w}{ }\PYG{p}{[}\PYG{k+kt}{T}\PYG{o}{.}\PYG{n}{pack}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}Word \PYGZsq{}\PYGZdq{}}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{firstWord}\PYG{p}{,}\PYG{+w}{ }\PYG{k+kt}{T}\PYG{o}{.}\PYG{n}{pack}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}\PYGZsq{} not found in the dictionary\PYGZdq{}}\PYG{p}{]}
+\PYG{+w}{        }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} если первое слово есть в словаре, то начинаем генерировать фразу}
+\PYG{+w}{        }\PYG{k+kt}{Just}\PYG{+w}{ }\PYG{n}{nextWords}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}
+\PYG{+w}{            }\PYG{k+kr}{let}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{targetLength}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{newGen}\PYG{p}{)}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{randomR}\PYG{+w}{ }\PYG{p}{(}\PYG{l+m+mi}{2}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{15}\PYG{p}{)}\PYG{+w}{ }\PYG{n}{gen}
+\PYG{+w}{            }\PYG{k+kr}{in}\PYG{+w}{ }\PYG{k+kt}{Right}\PYG{+w}{ }\PYG{o}{\PYGZdl{}}\PYG{+w}{ }\PYG{n}{generatePhraseHelper}\PYG{+w}{ }\PYG{n}{newGen}\PYG{+w}{ }\PYG{p}{[}\PYG{n}{firstWord}\PYG{p}{]}\PYG{+w}{ }\PYG{n}{firstWord}\PYG{+w}{ }\PYG{n}{nGrams}\PYG{+w}{ }\PYG{n}{targetLength}
+
+\PYG{n+nf}{generatePhraseHelper}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{RandomGen}\PYG{+w}{ }\PYG{n}{g}\PYG{+w}{ }\PYG{o+ow}{=\PYGZgt{}}\PYG{+w}{ }\PYG{n}{g}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{p}{[}\PYG{k+kt}{Text}\PYG{p}{]}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Text}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{NGramMap}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Int}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{p}{[}\PYG{k+kt}{Text}\PYG{p}{]}
+\PYG{n+nf}{generatePhraseHelper}\PYG{+w}{ }\PYG{n}{gen}\PYG{+w}{ }\PYG{n}{acc}\PYG{+w}{ }\PYG{n}{lastKey}\PYG{+w}{ }\PYG{n}{nGrams}\PYG{+w}{ }\PYG{n}{targetLength}
+\PYG{+w}{    }\PYG{o}{|}\PYG{+w}{ }\PYG{n}{length}\PYG{+w}{ }\PYG{n}{acc}\PYG{+w}{ }\PYG{o}{\PYGZgt{}=}\PYG{+w}{ }\PYG{n}{targetLength}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{take}\PYG{+w}{ }\PYG{n}{targetLength}\PYG{+w}{ }\PYG{n}{acc}\PYG{+w}{  }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} достигли максимальной длины}
+\PYG{+w}{    }\PYG{o}{|}\PYG{+w}{ }\PYG{n}{null}\PYG{+w}{ }\PYG{n}{possibleNextWords}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{acc}\PYG{+w}{  }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} нет больше слов}
+\PYG{+w}{    }\PYG{o}{|}\PYG{+w}{ }\PYG{n}{otherwise}\PYG{+w}{ }\PYG{o+ow}{=}
+\PYG{+w}{        }\PYG{k+kr}{let}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{idx}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{newGen}\PYG{p}{)}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{randomR}\PYG{+w}{ }\PYG{p}{(}\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{length}\PYG{+w}{ }\PYG{n}{possibleNextWords}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{)}\PYG{+w}{ }\PYG{n}{gen}
+\PYG{+w}{            }\PYG{n}{nextWord}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{possibleNextWords}\PYG{+w}{ }\PYG{o}{!!}\PYG{+w}{ }\PYG{n}{idx}
+\PYG{+w}{            }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} если два слова, то разбиваем на два}
+\PYG{+w}{            }\PYG{n}{nextWords}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kt}{T}\PYG{o}{.}\PYG{n}{words}\PYG{+w}{ }\PYG{n}{nextWord}
+\PYG{+w}{            }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} и добавляем в список слов фразы}
+\PYG{+w}{            }\PYG{n}{newAcc}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{acc}\PYG{+w}{ }\PYG{o}{++}\PYG{+w}{ }\PYG{n}{nextWords}
+\PYG{+w}{            }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} используем следующее слово (или два слова) как ключ для следующего шага}
+\PYG{+w}{            }\PYG{n}{newKey}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{nextWord}
+\PYG{+w}{        }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} рекурсивно вызываем функцию для следующего шага}
+\PYG{+w}{        }\PYG{k+kr}{in}\PYG{+w}{ }\PYG{n}{generatePhraseHelper}\PYG{+w}{ }\PYG{n}{newGen}\PYG{+w}{ }\PYG{n}{newAcc}\PYG{+w}{ }\PYG{n}{newKey}\PYG{+w}{ }\PYG{n}{nGrams}\PYG{+w}{ }\PYG{n}{targetLength}
+\PYG{+w}{  }\PYG{k+kr}{where}
+\PYG{+w}{    }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} находим список слов по данному ключу (Just [Text]), если такого ключа в словаре нет, то Nothing}
+\PYG{+w}{    }\PYG{n}{possibleNextWords}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{maybe}\PYG{+w}{ }\PYG{k+kt}{[]}\PYG{+w}{ }\PYG{n}{id}\PYG{+w}{ }\PYG{o}{\PYGZdl{}}\PYG{+w}{ }\PYG{n}{lookup}\PYG{+w}{ }\PYG{n}{lastKey}\PYG{+w}{ }\PYG{n}{nGrams}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Найти первое подходящее слово от конца фразы, которое есть в словаре}
+\PYG{n+nf}{findLastValidWord}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{p}{[}\PYG{k+kt}{Text}\PYG{p}{]}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{NGramMap}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Maybe}\PYG{+w}{ }\PYG{k+kt}{Text}
+\PYG{n+nf}{findLastValidWord}\PYG{+w}{ }\PYG{k+kt}{[]}\PYG{+w}{ }\PYG{k+kr}{\PYGZus{}}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kt}{Nothing}
+\PYG{n+nf}{findLastValidWord}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{word}\PYG{k+kt}{:}\PYG{n}{rest}\PYG{p}{)}\PYG{+w}{ }\PYG{n}{nGrams}\PYG{+w}{ }\PYG{o+ow}{=}
+\PYG{+w}{    }\PYG{k+kr}{case}\PYG{+w}{ }\PYG{n}{lookup}\PYG{+w}{ }\PYG{n}{word}\PYG{+w}{ }\PYG{n}{nGrams}\PYG{+w}{ }\PYG{k+kr}{of}
+\PYG{+w}{        }\PYG{k+kt}{Just}\PYG{+w}{ }\PYG{k+kr}{\PYGZus{}}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Just}\PYG{+w}{ }\PYG{n}{word}
+\PYG{+w}{        }\PYG{k+kt}{Nothing}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{n}{findLastValidWord}\PYG{+w}{ }\PYG{n}{rest}\PYG{+w}{ }\PYG{n}{nGrams}
+
+\PYG{k+kr}{type}\PYG{+w}{ }\PYG{k+kt}{DialogueResponse}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kt}{Either}\PYG{+w}{ }\PYG{k+kt}{Text}\PYG{+w}{ }\PYG{p}{[}\PYG{k+kt}{Text}\PYG{p}{]}\PYG{+w}{  }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Left \PYGZhy{} ошибка, Right \PYGZhy{} фраза}
+\PYG{k+kr}{type}\PYG{+w}{ }\PYG{k+kt}{DialogueTurn}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{Int}\PYG{p}{,}\PYG{+w}{ }\PYG{k+kt}{DialogueResponse}\PYG{p}{)}\PYG{+w}{  }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} (номер модели, ответ)}
+
+\PYG{n+nf}{generateDialogue}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{RandomGen}\PYG{+w}{ }\PYG{n}{g}\PYG{+w}{ }\PYG{o+ow}{=\PYGZgt{}}
+\PYG{+w}{                   }\PYG{n}{g}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}
+\PYG{+w}{                   }\PYG{k+kt}{Text}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}
+\PYG{+w}{                   }\PYG{k+kt}{NGramMap}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}
+\PYG{+w}{                   }\PYG{k+kt}{NGramMap}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}
+\PYG{+w}{                   }\PYG{k+kt}{Int}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}
+\PYG{+w}{                   }\PYG{p}{[}\PYG{k+kt}{DialogueTurn}\PYG{p}{]}\PYG{+w}{  }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} возвращает список (номер модели, ответ)}
+\PYG{n+nf}{generateDialogue}\PYG{+w}{ }\PYG{n}{gen}\PYG{+w}{ }\PYG{n}{firstWord}\PYG{+w}{ }\PYG{n}{dict1}\PYG{+w}{ }\PYG{n}{dict2}\PYG{+w}{ }\PYG{n}{depth}\PYG{+w}{ }\PYG{o+ow}{=}
+\PYG{+w}{    }\PYG{k+kr}{let}\PYG{+w}{ }\PYG{n}{firstResponse}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{generatePhrase}\PYG{+w}{ }\PYG{n}{gen}\PYG{+w}{ }\PYG{n}{firstWord}\PYG{+w}{ }\PYG{n}{dict1}
+\PYG{+w}{        }\PYG{p}{(}\PYG{k+kr}{\PYGZus{}}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{newGen}\PYG{p}{)}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{next}\PYG{+w}{ }\PYG{n}{gen}
+\PYG{+w}{    }\PYG{k+kr}{in}\PYG{+w}{ }\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{firstResponse}\PYG{p}{)}\PYG{+w}{ }\PYG{k+kt}{:}\PYG{+w}{ }\PYG{n}{generateDialogueHelper}\PYG{+w}{ }\PYG{n}{newGen}\PYG{+w}{ }\PYG{n}{firstResponse}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{+w}{ }\PYG{n}{dict1}\PYG{+w}{ }\PYG{n}{dict2}\PYG{+w}{ }\PYG{n}{depth}\PYG{+w}{ }\PYG{k+kt}{[]}
+
+\PYG{n+nf}{generateDialogueHelper}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{RandomGen}\PYG{+w}{ }\PYG{n}{g}\PYG{+w}{ }\PYG{o+ow}{=\PYGZgt{}}
+\PYG{+w}{                         }\PYG{n}{g}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}
+\PYG{+w}{                         }\PYG{k+kt}{DialogueResponse}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} последний ответ}
+\PYG{+w}{                         }\PYG{k+kt}{Int}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{              }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} номер модели}
+\PYG{+w}{                         }\PYG{k+kt}{NGramMap}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{         }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} первый словарь}
+\PYG{+w}{                         }\PYG{k+kt}{NGramMap}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{         }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} второй словарь}
+\PYG{+w}{                         }\PYG{k+kt}{Int}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{              }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} остаток глубины}
+\PYG{+w}{                         }\PYG{p}{[}\PYG{k+kt}{DialogueTurn}\PYG{p}{]}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{   }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} накопленный диалог}
+\PYG{+w}{                         }\PYG{p}{[}\PYG{k+kt}{DialogueTurn}\PYG{p}{]}\PYG{+w}{      }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} финальный диалог}
+\PYG{n+nf}{generateDialogueHelper}\PYG{+w}{ }\PYG{k+kr}{\PYGZus{}}\PYG{+w}{ }\PYG{k+kr}{\PYGZus{}}\PYG{+w}{ }\PYG{k+kr}{\PYGZus{}}\PYG{+w}{ }\PYG{k+kr}{\PYGZus{}}\PYG{+w}{ }\PYG{k+kr}{\PYGZus{}}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{+w}{ }\PYG{n}{acc}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{reverse}\PYG{+w}{ }\PYG{n}{acc}
+\PYG{n+nf}{generateDialogueHelper}\PYG{+w}{ }\PYG{n}{gen}\PYG{+w}{ }\PYG{n}{lastResponse}\PYG{+w}{ }\PYG{n}{speaker}\PYG{+w}{ }\PYG{n}{dict1}\PYG{+w}{ }\PYG{n}{dict2}\PYG{+w}{ }\PYG{n}{depth}\PYG{+w}{ }\PYG{n}{acc}\PYG{+w}{ }\PYG{o+ow}{=}
+\PYG{+w}{    }\PYG{k+kr}{let}
+\PYG{+w}{        }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} следующая модель}
+\PYG{+w}{        }\PYG{n}{nextSpeaker}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kr}{if}\PYG{+w}{ }\PYG{n}{speaker}\PYG{+w}{ }\PYG{o}{==}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{+w}{ }\PYG{k+kr}{then}\PYG{+w}{ }\PYG{l+m+mi}{2}\PYG{+w}{ }\PYG{k+kr}{else}\PYG{+w}{ }\PYG{l+m+mi}{1}
+
+\PYG{+w}{        }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} словарь для следующей модели}
+\PYG{+w}{        }\PYG{n}{currentDict}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kr}{if}\PYG{+w}{ }\PYG{n}{nextSpeaker}\PYG{+w}{ }\PYG{o}{==}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{+w}{ }\PYG{k+kr}{then}\PYG{+w}{ }\PYG{n}{dict1}\PYG{+w}{ }\PYG{k+kr}{else}\PYG{+w}{ }\PYG{n}{dict2}
+
+\PYG{+w}{        }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} последнее подходящее слово из предыдущего ответа}
+\PYG{+w}{        }\PYG{n}{lastWords}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kr}{case}\PYG{+w}{ }\PYG{n}{lastResponse}\PYG{+w}{ }\PYG{k+kr}{of}
+\PYG{+w}{            }\PYG{k+kt}{Right}\PYG{+w}{ }\PYG{n}{phrase}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{n}{reverse}\PYG{+w}{ }\PYG{n}{phrase}\PYG{+w}{  }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} если слово есть}
+\PYG{+w}{            }\PYG{k+kt}{Left}\PYG{+w}{ }\PYG{k+kr}{\PYGZus{}}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{[]}\PYG{+w}{                   }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} если нет, то пустой список}
+
+\PYG{+w}{        }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} последнее подходящее слово из предыдущего ответа}
+\PYG{+w}{        }\PYG{n}{nextWord}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{findLastValidWord}\PYG{+w}{ }\PYG{n}{lastWords}\PYG{+w}{ }\PYG{n}{currentDict}
+
+\PYG{+w}{        }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} следующий ответ (даже если не нашли подходящего слова)}
+\PYG{+w}{        }\PYG{n}{nextResponse}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kr}{case}\PYG{+w}{ }\PYG{n}{nextWord}\PYG{+w}{ }\PYG{k+kr}{of}
+\PYG{+w}{            }\PYG{k+kt}{Nothing}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Left}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{T}\PYG{o}{.}\PYG{n}{pack}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}No valid word found to continue dialogue\PYGZdq{}}\PYG{p}{)}
+\PYG{+w}{            }\PYG{k+kt}{Just}\PYG{+w}{ }\PYG{n}{word}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}
+\PYG{+w}{                }\PYG{k+kr}{let}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{newGen1}\PYG{p}{,}\PYG{+w}{ }\PYG{k+kr}{\PYGZus{}}\PYG{p}{)}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{split}\PYG{+w}{ }\PYG{n}{gen}
+\PYG{+w}{                }\PYG{k+kr}{in}\PYG{+w}{ }\PYG{n}{generatePhrase}\PYG{+w}{ }\PYG{n}{newGen1}\PYG{+w}{ }\PYG{n}{word}\PYG{+w}{ }\PYG{n}{currentDict}
+
+\PYG{+w}{        }\PYG{p}{(}\PYG{k+kr}{\PYGZus{}}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{newGen2}\PYG{p}{)}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{split}\PYG{+w}{ }\PYG{n}{gen}
+\PYG{+w}{    }\PYG{k+kr}{in}\PYG{+w}{ }\PYG{n}{generateDialogueHelper}
+\PYG{+w}{        }\PYG{n}{newGen2}
+\PYG{+w}{        }\PYG{n}{nextResponse}
+\PYG{+w}{        }\PYG{n}{nextSpeaker}
+\PYG{+w}{        }\PYG{n}{dict1}
+\PYG{+w}{        }\PYG{n}{dict2}
+\PYG{+w}{        }\PYG{p}{(}\PYG{n}{depth}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{)}
+\PYG{+w}{        }\PYG{p}{((}\PYG{n}{nextSpeaker}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{nextResponse}\PYG{p}{)}\PYG{+w}{ }\PYG{k+kt}{:}\PYG{+w}{ }\PYG{n}{acc}\PYG{p}{)}
+\end{Verbatim}

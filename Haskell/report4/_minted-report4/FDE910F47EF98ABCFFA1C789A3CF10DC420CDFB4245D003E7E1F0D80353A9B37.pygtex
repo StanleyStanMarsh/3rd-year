@@ -1,0 +1,46 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kr}{import}\PYG{+w}{ }\PYG{n+nn}{Lib}
+\PYG{k+kr}{import}\PYG{+w}{ }\PYG{n+nn}{Test.QuickCheck}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} без Positive \PYGZhy{} исключение деление на 0 (даже на `mod`)}
+\PYG{n+nf}{prop\PYGZus{}withBuiltinAddMod}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Int}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Int}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Positive}\PYG{+w}{ }\PYG{k+kt}{Int}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Bool}
+\PYG{n+nf}{prop\PYGZus{}withBuiltinAddMod}\PYG{+w}{ }\PYG{n}{x}\PYG{+w}{ }\PYG{n}{y}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{Positive}\PYG{+w}{ }\PYG{n}{m}\PYG{p}{)}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{addMod}\PYG{+w}{ }\PYG{n}{x}\PYG{+w}{ }\PYG{n}{y}\PYG{+w}{ }\PYG{n}{m}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{`}\PYG{n}{mod}\PYG{p}{`}\PYG{+w}{ }\PYG{n}{m}\PYG{+w}{ }\PYG{o}{==}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{x}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{n}{y}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{`}\PYG{n}{mod}\PYG{p}{`}\PYG{+w}{ }\PYG{n}{m}
+
+\PYG{n+nf}{prop\PYGZus{}neutralElement}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Int}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Positive}\PYG{+w}{ }\PYG{k+kt}{Int}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Bool}
+\PYG{n+nf}{prop\PYGZus{}neutralElement}\PYG{+w}{ }\PYG{n}{x}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{Positive}\PYG{+w}{ }\PYG{n}{m}\PYG{p}{)}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{addMod}\PYG{+w}{ }\PYG{n}{x}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{+w}{ }\PYG{n}{m}\PYG{+w}{ }\PYG{o}{==}\PYG{+w}{ }\PYG{n}{x}\PYG{+w}{ }\PYG{p}{`}\PYG{n}{mod}\PYG{p}{`}\PYG{+w}{ }\PYG{n}{m}
+
+\PYG{n+nf}{prop\PYGZus{}commutativity}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Int}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Int}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Positive}\PYG{+w}{ }\PYG{k+kt}{Int}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Bool}
+\PYG{n+nf}{prop\PYGZus{}commutativity}\PYG{+w}{ }\PYG{n}{x}\PYG{+w}{ }\PYG{n}{y}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{Positive}\PYG{+w}{ }\PYG{n}{m}\PYG{p}{)}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{addMod}\PYG{+w}{ }\PYG{n}{x}\PYG{+w}{ }\PYG{n}{y}\PYG{+w}{ }\PYG{n}{m}\PYG{+w}{ }\PYG{o}{==}\PYG{+w}{ }\PYG{n}{addMod}\PYG{+w}{ }\PYG{n}{y}\PYG{+w}{ }\PYG{n}{x}\PYG{+w}{ }\PYG{n}{m}
+
+\PYG{n+nf}{prop\PYGZus{}doubleApply}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{Eq}\PYG{+w}{ }\PYG{n}{a}\PYG{p}{,}\PYG{+w}{ }\PYG{k+kt}{Eq}\PYG{+w}{ }\PYG{n}{b}\PYG{p}{,}\PYG{+w}{ }\PYG{k+kt}{Arbitrary}\PYG{+w}{ }\PYG{n}{a}\PYG{p}{,}\PYG{+w}{ }\PYG{k+kt}{Arbitrary}\PYG{+w}{ }\PYG{n}{b}\PYG{p}{)}\PYG{+w}{ }\PYG{o+ow}{=\PYGZgt{}}\PYG{+w}{ }\PYG{p}{[(}\PYG{n}{a}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{b}\PYG{p}{)]}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Bool}
+\PYG{n+nf}{prop\PYGZus{}doubleApply}\PYG{+w}{ }\PYG{n}{xs}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{swapTuple}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{swapTuple}\PYG{+w}{ }\PYG{n}{xs}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{==}\PYG{+w}{ }\PYG{n}{xs}
+
+\PYG{n+nf}{prop\PYGZus{}sameElements}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{Eq}\PYG{+w}{ }\PYG{n}{a}\PYG{p}{,}\PYG{+w}{ }\PYG{k+kt}{Arbitrary}\PYG{+w}{ }\PYG{n}{a}\PYG{p}{)}\PYG{+w}{ }\PYG{o+ow}{=\PYGZgt{}}\PYG{+w}{ }\PYG{p}{[}\PYG{n}{a}\PYG{p}{]}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Bool}
+\PYG{n+nf}{prop\PYGZus{}sameElements}\PYG{+w}{ }\PYG{n}{xs}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{swapTuple}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{zip}\PYG{+w}{ }\PYG{n}{xs}\PYG{+w}{ }\PYG{n}{xs}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{==}\PYG{+w}{ }\PYG{n}{zip}\PYG{+w}{ }\PYG{n}{xs}\PYG{+w}{ }\PYG{n}{xs}
+
+\PYG{n+nf}{prop\PYGZus{}swapEqualityElements}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{Eq}\PYG{+w}{ }\PYG{n}{a}\PYG{p}{,}\PYG{+w}{ }\PYG{k+kt}{Eq}\PYG{+w}{ }\PYG{n}{b}\PYG{p}{,}\PYG{+w}{ }\PYG{k+kt}{Arbitrary}\PYG{+w}{ }\PYG{n}{a}\PYG{p}{,}\PYG{+w}{ }\PYG{k+kt}{Arbitrary}\PYG{+w}{ }\PYG{n}{b}\PYG{p}{)}\PYG{+w}{ }\PYG{o+ow}{=\PYGZgt{}}\PYG{+w}{ }\PYG{p}{[(}\PYG{n}{a}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{b}\PYG{p}{)]}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Bool}
+\PYG{n+nf}{prop\PYGZus{}swapEqualityElements}\PYG{+w}{ }\PYG{n}{xs}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{all}\PYG{+w}{ }\PYG{n}{checkSwap}\PYG{+w}{ }\PYG{n}{xs}
+\PYG{+w}{  }\PYG{k+kr}{where}
+\PYG{+w}{    }\PYG{n}{checkSwap}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{x}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{y}\PYG{p}{)}\PYG{+w}{ }\PYG{o+ow}{=}
+\PYG{+w}{      }\PYG{k+kr}{let}\PYG{+w}{ }\PYG{n}{swapped}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{swapTuple}\PYG{+w}{ }\PYG{p}{[(}\PYG{n}{x}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{y}\PYG{p}{)]}
+\PYG{+w}{      }\PYG{k+kr}{in}\PYG{+w}{ }\PYG{n}{fst}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{head}\PYG{+w}{ }\PYG{n}{swapped}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{==}\PYG{+w}{ }\PYG{n}{y}\PYG{+w}{ }\PYG{o}{\PYGZam{}\PYGZam{}}\PYG{+w}{ }\PYG{n}{snd}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{head}\PYG{+w}{ }\PYG{n}{swapped}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{==}\PYG{+w}{ }\PYG{n}{x}
+
+\PYG{n+nf}{main}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{IO}\PYG{+w}{ }\PYG{n+nb}{()}
+\PYG{n+nf}{main}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kr}{do}
+\PYG{+w}{    }\PYG{n}{putStrLn}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}FOR addMod:\PYGZdq{}}
+\PYG{+w}{    }\PYG{n}{quickCheck}\PYG{+w}{ }\PYG{n}{prop\PYGZus{}withBuiltinAddMod}
+
+\PYG{+w}{    }\PYG{n}{quickCheck}\PYG{+w}{ }\PYG{n}{prop\PYGZus{}neutralElement}
+
+\PYG{+w}{    }\PYG{n}{quickCheck}\PYG{+w}{ }\PYG{n}{prop\PYGZus{}commutativity}
+
+\PYG{+w}{    }\PYG{n}{putStrLn}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}FOR swapTuple:\PYGZdq{}}
+
+\PYG{+w}{    }\PYG{n}{quickCheck}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{prop\PYGZus{}doubleApply}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{p}{[(}\PYG{k+kt}{Int}\PYG{p}{,}\PYG{+w}{ }\PYG{k+kt}{Char}\PYG{p}{)]}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Bool}\PYG{p}{)}
+
+\PYG{+w}{    }\PYG{n}{quickCheck}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{prop\PYGZus{}sameElements}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{p}{[}\PYG{k+kt}{Char}\PYG{p}{]}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Bool}\PYG{p}{)}
+
+\PYG{+w}{    }\PYG{n}{quickCheck}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{prop\PYGZus{}swapEqualityElements}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{p}{[(}\PYG{k+kt}{Int}\PYG{p}{,}\PYG{+w}{ }\PYG{k+kt}{Char}\PYG{p}{)]}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Bool}\PYG{p}{)}
+
+\PYG{+w}{    }\PYG{n}{putStrLn}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}ALL TESTS ARE PASSED\PYGZdq{}}
+\end{Verbatim}

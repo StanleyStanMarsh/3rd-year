@@ -1,0 +1,127 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kr}{module}\PYG{+w}{ }\PYG{n+nn}{Lib}
+\PYG{+w}{    }\PYG{p}{(}\PYG{+w}{ }\PYG{n+nf}{encodeTextToImage}
+\PYG{+w}{    }\PYG{p}{,}\PYG{+w}{ }\PYG{n+nf}{decodeTextsFromImages}
+\PYG{+w}{    }\PYG{p}{)}\PYG{+w}{ }\PYG{k+kr}{where}
+
+\PYG{k+kr}{import}\PYG{+w}{ }\PYG{k}{qualified}\PYG{+w}{ }\PYG{n+nn}{Data.Text}\PYG{+w}{ }\PYG{k}{as}\PYG{+w}{ }\PYG{n}{T}
+\PYG{k+kr}{import}\PYG{+w}{ }\PYG{n+nn}{Data.Char}\PYG{+w}{ }\PYG{p}{(}\PYG{n+nf}{ord}\PYG{p}{,}\PYG{+w}{ }\PYG{n+nf}{chr}\PYG{p}{)}
+\PYG{k+kr}{import}\PYG{+w}{ }\PYG{k}{qualified}\PYG{+w}{ }\PYG{n+nn}{Data.ByteString}\PYG{+w}{ }\PYG{k}{as}\PYG{+w}{ }\PYG{n}{B}
+\PYG{k+kr}{import}\PYG{+w}{ }\PYG{k}{qualified}\PYG{+w}{ }\PYG{n+nn}{Data.Text.Encoding}\PYG{+w}{ }\PYG{k}{as}\PYG{+w}{ }\PYG{n}{TE}
+\PYG{k+kr}{import}\PYG{+w}{ }\PYG{n+nn}{Data.Bits}\PYG{+w}{ }\PYG{p}{(}\PYG{n+nf}{testBit}\PYG{p}{,}\PYG{+w}{ }\PYG{n+nf}{setBit}\PYG{p}{,}\PYG{+w}{ }\PYG{n+nf}{clearBit}\PYG{p}{)}
+\PYG{k+kr}{import}\PYG{+w}{ }\PYG{n+nn}{Data.Word}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{Word8}\PYG{p}{)}
+\PYG{k+kr}{import}\PYG{+w}{ }\PYG{n+nn}{Codec.BMP}
+
+\PYG{n+nf}{caesarCipher}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{T}\PYG{o}{.}\PYG{k+kt}{Text}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Int}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{T}\PYG{o}{.}\PYG{k+kt}{Text}
+\PYG{n+nf}{caesarCipher}\PYG{+w}{ }\PYG{n}{str}\PYG{+w}{ }\PYG{n}{key}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kt}{T}\PYG{o}{.}\PYG{n}{map}\PYG{+w}{ }\PYG{n}{shiftChar}\PYG{+w}{ }\PYG{n}{str}
+\PYG{+w}{  }\PYG{k+kr}{where}
+\PYG{+w}{    }\PYG{n}{shiftChar}\PYG{+w}{ }\PYG{n}{c}
+\PYG{+w}{      }\PYG{o}{|}\PYG{+w}{ }\PYG{n}{c}\PYG{+w}{ }\PYG{o}{\PYGZgt{}=}\PYG{+w}{ }\PYG{l+s+sc}{\PYGZsq{}a\PYGZsq{}}\PYG{+w}{ }\PYG{o}{\PYGZam{}\PYGZam{}}\PYG{+w}{ }\PYG{n}{c}\PYG{+w}{ }\PYG{o}{\PYGZlt{}=}\PYG{+w}{ }\PYG{l+s+sc}{\PYGZsq{}z\PYGZsq{}}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{chr}\PYG{+w}{ }\PYG{o}{\PYGZdl{}}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{ord}\PYG{+w}{ }\PYG{n}{c}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{n}{ord}\PYG{+w}{ }\PYG{l+s+sc}{\PYGZsq{}a\PYGZsq{}}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{n}{key}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{`}\PYG{n}{mod}\PYG{p}{`}\PYG{+w}{ }\PYG{l+m+mi}{26}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{n}{ord}\PYG{+w}{ }\PYG{l+s+sc}{\PYGZsq{}a\PYGZsq{}}
+\PYG{+w}{      }\PYG{o}{|}\PYG{+w}{ }\PYG{n}{c}\PYG{+w}{ }\PYG{o}{\PYGZgt{}=}\PYG{+w}{ }\PYG{l+s+sc}{\PYGZsq{}A\PYGZsq{}}\PYG{+w}{ }\PYG{o}{\PYGZam{}\PYGZam{}}\PYG{+w}{ }\PYG{n}{c}\PYG{+w}{ }\PYG{o}{\PYGZlt{}=}\PYG{+w}{ }\PYG{l+s+sc}{\PYGZsq{}Z\PYGZsq{}}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{chr}\PYG{+w}{ }\PYG{o}{\PYGZdl{}}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{ord}\PYG{+w}{ }\PYG{n}{c}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{n}{ord}\PYG{+w}{ }\PYG{l+s+sc}{\PYGZsq{}A\PYGZsq{}}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{n}{key}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{`}\PYG{n}{mod}\PYG{p}{`}\PYG{+w}{ }\PYG{l+m+mi}{26}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{n}{ord}\PYG{+w}{ }\PYG{l+s+sc}{\PYGZsq{}A\PYGZsq{}}
+\PYG{+w}{      }\PYG{o}{|}\PYG{+w}{ }\PYG{n}{otherwise}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{c}
+
+\PYG{n+nf}{caesarDecipher}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{T}\PYG{o}{.}\PYG{k+kt}{Text}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Int}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{T}\PYG{o}{.}\PYG{k+kt}{Text}
+\PYG{n+nf}{caesarDecipher}\PYG{+w}{ }\PYG{n}{str}\PYG{+w}{ }\PYG{n}{key}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{caesarCipher}\PYG{+w}{ }\PYG{n}{str}\PYG{+w}{ }\PYG{p}{(}\PYG{o}{\PYGZhy{}}\PYG{n}{key}\PYG{p}{)}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} переводит байт в список битов}
+\PYG{n+nf}{byteToBits}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Word8}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{p}{[}\PYG{k+kt}{Int}\PYG{p}{]}
+\PYG{n+nf}{byteToBits}\PYG{+w}{ }\PYG{n}{byte}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{p}{[}\PYG{k+kr}{if}\PYG{+w}{ }\PYG{n}{testBit}\PYG{+w}{ }\PYG{n}{byte}\PYG{+w}{ }\PYG{n}{i}\PYG{+w}{ }\PYG{k+kr}{then}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{+w}{ }\PYG{k+kr}{else}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{+w}{ }\PYG{o}{|}\PYG{+w}{ }\PYG{n}{i}\PYG{+w}{ }\PYG{o+ow}{\PYGZlt{}\PYGZhy{}}\PYG{+w}{ }\PYG{p}{[}\PYG{l+m+mi}{7}\PYG{p}{,}\PYG{l+m+mi}{6}\PYG{o}{..}\PYG{l+m+mi}{0}\PYG{p}{]]}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Заменяет i\PYGZhy{}й бит в байте на заданный бит (0 или 1)}
+\PYG{n+nf}{replaceIBit}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Word8}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Int}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Int}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Word8}
+\PYG{n+nf}{replaceIBit}\PYG{+w}{ }\PYG{n}{byte}\PYG{+w}{ }\PYG{n}{n}\PYG{+w}{ }\PYG{n}{bit}
+\PYG{+w}{    }\PYG{o}{|}\PYG{+w}{ }\PYG{n}{bit}\PYG{+w}{ }\PYG{o}{==}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{+w}{  }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{setBit}\PYG{+w}{ }\PYG{n}{byte}\PYG{+w}{ }\PYG{n}{n}
+\PYG{+w}{    }\PYG{o}{|}\PYG{+w}{ }\PYG{n}{bit}\PYG{+w}{ }\PYG{o}{==}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{+w}{  }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{clearBit}\PYG{+w}{ }\PYG{n}{byte}\PYG{+w}{ }\PYG{n}{n}
+\PYG{+w}{    }\PYG{o}{|}\PYG{+w}{ }\PYG{n}{otherwise}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n+ne}{error}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}Bit must be 0 or 1\PYGZdq{}}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Разбивает список на части длиной k}
+\PYG{n+nf}{chunksOf}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Int}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{p}{[}\PYG{n}{a}\PYG{p}{]}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{p}{[[}\PYG{n}{a}\PYG{p}{]]}
+\PYG{n+nf}{chunksOf}\PYG{+w}{ }\PYG{k+kr}{\PYGZus{}}\PYG{+w}{ }\PYG{k+kt}{[]}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kt}{[]}
+\PYG{n+nf}{chunksOf}\PYG{+w}{ }\PYG{n}{k}\PYG{+w}{ }\PYG{n}{xs}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{take}\PYG{+w}{ }\PYG{n}{k}\PYG{+w}{ }\PYG{n}{xs}\PYG{+w}{ }\PYG{k+kt}{:}\PYG{+w}{ }\PYG{n}{chunksOf}\PYG{+w}{ }\PYG{n}{k}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{drop}\PYG{+w}{ }\PYG{n}{k}\PYG{+w}{ }\PYG{n}{xs}\PYG{p}{)}
+
+\PYG{n+nf}{replaceBitsInByteString}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{B}\PYG{o}{.}\PYG{k+kt}{ByteString}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{B}\PYG{o}{.}\PYG{k+kt}{ByteString}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Int}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{B}\PYG{o}{.}\PYG{k+kt}{ByteString}
+\PYG{n+nf}{replaceBitsInByteString}\PYG{+w}{ }\PYG{n}{original}\PYG{+w}{ }\PYG{n}{replacing}\PYG{+w}{ }\PYG{n}{n}
+\PYG{+w}{    }\PYG{o}{|}\PYG{+w}{ }\PYG{n}{n}\PYG{+w}{ }\PYG{o}{\PYGZlt{}}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{+w}{ }\PYG{o}{||}\PYG{+w}{ }\PYG{n}{n}\PYG{+w}{ }\PYG{o}{\PYGZgt{}}\PYG{+w}{ }\PYG{l+m+mi}{8}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n+ne}{error}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}Number of bits to replace must be between 1 and 8\PYGZdq{}}
+\PYG{+w}{    }\PYG{o}{|}\PYG{+w}{ }\PYG{k+kt}{B}\PYG{o}{.}\PYG{n}{length}\PYG{+w}{ }\PYG{n}{replacing}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{l+m+mi}{8}\PYG{+w}{ }\PYG{o}{\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{B}\PYG{o}{.}\PYG{n}{length}\PYG{+w}{ }\PYG{n}{original}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{n}{n}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n+ne}{error}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}Not enough bits in original\PYGZdq{}}
+\PYG{+w}{    }\PYG{o}{|}\PYG{+w}{ }\PYG{n}{otherwise}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kt}{B}\PYG{o}{.}\PYG{n}{pack}\PYG{+w}{ }\PYG{o}{\PYGZdl{}}\PYG{+w}{ }\PYG{n}{go}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{B}\PYG{o}{.}\PYG{n}{unpack}\PYG{+w}{ }\PYG{n}{original}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{chunksOf}\PYG{+w}{ }\PYG{n}{n}\PYG{+w}{ }\PYG{n}{replacingBits}\PYG{p}{)}
+\PYG{+w}{  }\PYG{k+kr}{where}
+\PYG{+w}{    }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Преобразуем байты из replacing в список битов}
+\PYG{+w}{    }\PYG{n}{replacingBits}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{concatMap}\PYG{+w}{ }\PYG{n}{byteToBits}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{B}\PYG{o}{.}\PYG{n}{unpack}\PYG{+w}{ }\PYG{n}{replacing}\PYG{p}{)}
+
+\PYG{+w}{    }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Рекурсивная функция для замены битов и сохранения неизмененных байтов}
+\PYG{+w}{    }\PYG{n}{go}\PYG{+w}{ }\PYG{k+kt}{[]}\PYG{+w}{ }\PYG{k+kt}{[]}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kt}{[]}\PYG{+w}{  }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Все байты обработаны}
+\PYG{+w}{    }\PYG{n}{go}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{o}\PYG{k+kt}{:}\PYG{n}{os}\PYG{p}{)}\PYG{+w}{ }\PYG{k+kt}{[]}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{o}\PYG{+w}{ }\PYG{k+kt}{:}\PYG{+w}{ }\PYG{n}{go}\PYG{+w}{ }\PYG{n}{os}\PYG{+w}{ }\PYG{k+kt}{[]}\PYG{+w}{  }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Добавляем оставшиеся байты из original, если нет замены}
+\PYG{+w}{    }\PYG{n}{go}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{o}\PYG{k+kt}{:}\PYG{n}{os}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{r}\PYG{k+kt}{:}\PYG{n}{rs}\PYG{p}{)}\PYG{+w}{ }\PYG{o+ow}{=}
+\PYG{+w}{        }\PYG{k+kr}{let}\PYG{+w}{ }\PYG{n}{modifiedByte}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{replaceNthBits}\PYG{+w}{ }\PYG{n}{o}\PYG{+w}{ }\PYG{n}{r}\PYG{+w}{  }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Заменяем последние n бит}
+\PYG{+w}{        }\PYG{k+kr}{in}\PYG{+w}{ }\PYG{n}{modifiedByte}\PYG{+w}{ }\PYG{k+kt}{:}\PYG{+w}{ }\PYG{n}{go}\PYG{+w}{ }\PYG{n}{os}\PYG{+w}{ }\PYG{n}{rs}\PYG{+w}{  }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Добавляем измененный байт и рекурсивно обрабатываем остаток}
+
+
+\PYG{+w}{    }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Заменяет последние n бит байта на новые биты из replacing}
+\PYG{+w}{    }\PYG{n}{replaceNthBits}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Word8}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{p}{[}\PYG{k+kt}{Int}\PYG{p}{]}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Word8}
+\PYG{+w}{    }\PYG{n}{replaceNthBits}\PYG{+w}{ }\PYG{n}{byte}\PYG{+w}{ }\PYG{n}{newBits}\PYG{+w}{ }\PYG{o+ow}{=}
+\PYG{+w}{        }\PYG{n}{foldl}\PYG{+w}{ }\PYG{p}{(}\PYG{n+nf}{\PYGZbs{}}\PYG{n}{acc}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{bit}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{idx}\PYG{p}{)}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{n}{replaceIBit}\PYG{+w}{ }\PYG{n}{acc}\PYG{+w}{ }\PYG{n}{idx}\PYG{+w}{ }\PYG{n}{bit}\PYG{p}{)}\PYG{+w}{ }\PYG{n}{byte}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{zip}\PYG{+w}{ }\PYG{n}{newBits}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{reverse}\PYG{+w}{ }\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{o}{..}\PYG{n}{n}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{]))}
+
+\PYG{n+nf}{encodeTextToImage}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{FilePath}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{FilePath}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Int}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{IO}\PYG{+w}{ }\PYG{n+nb}{()}
+\PYG{n+nf}{encodeTextToImage}\PYG{+w}{ }\PYG{n}{imageFileName}\PYG{+w}{ }\PYG{n}{textFileName}\PYG{+w}{ }\PYG{n}{caesarK}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kr}{do}
+\PYG{+w}{    }\PYG{k+kt}{Right}\PYG{+w}{ }\PYG{n}{bmp}\PYG{+w}{ }\PYG{o+ow}{\PYGZlt{}\PYGZhy{}}\PYG{+w}{ }\PYG{n}{readBMP}\PYG{+w}{ }\PYG{n}{imageFileName}
+\PYG{+w}{    }\PYG{k+kr}{let}\PYG{+w}{ }\PYG{n}{rgba}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{unpackBMPToRGBA32}\PYG{+w}{ }\PYG{n}{bmp}
+\PYG{+w}{    }\PYG{k+kr}{let}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{width}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{height}\PYG{p}{)}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{bmpDimensions}\PYG{+w}{ }\PYG{n}{bmp}
+\PYG{+w}{    }\PYG{n}{textFile}\PYG{+w}{ }\PYG{o+ow}{\PYGZlt{}\PYGZhy{}}\PYG{+w}{ }\PYG{k+kt}{B}\PYG{o}{.}\PYG{n}{readFile}\PYG{+w}{ }\PYG{n}{textFileName}
+
+\PYG{+w}{    }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Функция для генерации имени файла}
+\PYG{+w}{    }\PYG{k+kr}{let}\PYG{+w}{ }\PYG{n}{glitchedFileName}\PYG{+w}{ }\PYG{n}{n}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{show}\PYG{+w}{ }\PYG{n}{caesarK}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{++}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}\PYGZus{}\PYGZdq{}}\PYG{+w}{ }\PYG{o}{++}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{show}\PYG{+w}{ }\PYG{n}{n}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{++}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}\PYGZus{}\PYGZdq{}}\PYG{+w}{ }\PYG{o}{++}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{show}\PYG{+w}{ }\PYG{o}{\PYGZdl{}}\PYG{+w}{ }\PYG{k+kt}{B}\PYG{o}{.}\PYG{n}{length}\PYG{+w}{ }\PYG{n}{textFile}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{++}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}\PYGZus{}\PYGZdq{}}\PYG{+w}{ }\PYG{o}{++}\PYG{+w}{ }\PYG{n}{imageFileName}
+
+\PYG{+w}{    }\PYG{k+kr}{let}\PYG{+w}{ }\PYG{n}{codedTextFile}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kt}{TE}\PYG{o}{.}\PYG{n}{encodeUtf8}\PYG{+w}{ }\PYG{o}{\PYGZdl{}}\PYG{+w}{ }\PYG{n}{caesarCipher}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{TE}\PYG{o}{.}\PYG{n}{decodeUtf8}\PYG{+w}{ }\PYG{n}{textFile}\PYG{p}{)}\PYG{+w}{ }\PYG{n}{caesarK}
+
+\PYG{+w}{    }\PYG{k+kt}{B}\PYG{o}{.}\PYG{n}{writeFile}\PYG{+w}{ }\PYG{p}{(}\PYG{l+s}{\PYGZdq{}coded\PYGZus{}\PYGZdq{}}\PYG{+w}{ }\PYG{o}{++}\PYG{+w}{ }\PYG{n}{textFileName}\PYG{p}{)}\PYG{+w}{ }\PYG{n}{codedTextFile}
+
+\PYG{+w}{    }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Итерация по значениям от 1 до 8}
+\PYG{+w}{    }\PYG{n}{mapM\PYGZus{}}\PYG{+w}{ }\PYG{p}{(}\PYG{n+nf}{\PYGZbs{}}\PYG{n}{n}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kr}{do}
+\PYG{+w}{        }\PYG{k+kr}{let}\PYG{+w}{ }\PYG{n}{modifiedRGBA}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kt}{B}\PYG{o}{.}\PYG{n}{reverse}\PYG{+w}{ }\PYG{o}{\PYGZdl{}}\PYG{+w}{ }\PYG{n}{replaceBitsInByteString}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{B}\PYG{o}{.}\PYG{n}{reverse}\PYG{+w}{ }\PYG{n}{rgba}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{codedTextFile}\PYG{p}{)}\PYG{+w}{ }\PYG{n}{n}
+\PYG{+w}{        }\PYG{k+kr}{let}\PYG{+w}{ }\PYG{n}{glitchedBMP}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{packRGBA32ToBMP}\PYG{+w}{ }\PYG{n}{width}\PYG{+w}{ }\PYG{n}{height}\PYG{+w}{ }\PYG{n}{modifiedRGBA}
+\PYG{+w}{        }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} print \PYGZdl{} B.take 10 \PYGZdl{} B.reverse modifiedRGBA}
+\PYG{+w}{        }\PYG{n}{writeBMP}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{glitchedFileName}\PYG{+w}{ }\PYG{n}{n}\PYG{p}{)}\PYG{+w}{ }\PYG{n}{glitchedBMP}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{o}{..}\PYG{l+m+mi}{8}\PYG{p}{]}
+\PYG{+w}{    }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} B.writeFile glitchedFileName \PYGZdl{} replaceBitsInByteString imageFile textFile 8}
+\PYG{+w}{    }\PYG{n}{putStrLn}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}converted\PYGZdq{}}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Извлечение последних n бит из каждого байта}
+\PYG{n+nf}{extractBitsFromByte}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Word8}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Int}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{p}{[}\PYG{k+kt}{Int}\PYG{p}{]}
+\PYG{n+nf}{extractBitsFromByte}\PYG{+w}{ }\PYG{n}{byte}\PYG{+w}{ }\PYG{n}{n}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{reverse}\PYG{+w}{ }\PYG{p}{[}\PYG{k+kr}{if}\PYG{+w}{ }\PYG{n}{testBit}\PYG{+w}{ }\PYG{n}{byte}\PYG{+w}{ }\PYG{n}{i}\PYG{+w}{ }\PYG{k+kr}{then}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{+w}{ }\PYG{k+kr}{else}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{+w}{ }\PYG{o}{|}\PYG{+w}{ }\PYG{n}{i}\PYG{+w}{ }\PYG{o+ow}{\PYGZlt{}\PYGZhy{}}\PYG{+w}{ }\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{o}{..}\PYG{n}{n}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{]]}
+
+\PYG{n+nf}{bitsToBytes}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{p}{[}\PYG{k+kt}{Int}\PYG{p}{]}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{B}\PYG{o}{.}\PYG{k+kt}{ByteString}
+\PYG{n+nf}{bitsToBytes}\PYG{+w}{ }\PYG{k+kt}{[]}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kt}{B}\PYG{o}{.}\PYG{n}{empty}
+\PYG{n+nf}{bitsToBytes}\PYG{+w}{ }\PYG{n}{bits}\PYG{+w}{ }\PYG{o+ow}{=}
+\PYG{+w}{    }\PYG{k+kt}{B}\PYG{o}{.}\PYG{n}{cons}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{fromIntegral}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{foldl}\PYG{+w}{ }\PYG{p}{(}\PYG{n+nf}{\PYGZbs{}}\PYG{n}{acc}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{b}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{i}\PYG{p}{)}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kr}{if}\PYG{+w}{ }\PYG{n}{b}\PYG{+w}{ }\PYG{o}{==}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{+w}{ }\PYG{k+kr}{then}\PYG{+w}{ }\PYG{n}{setBit}\PYG{+w}{ }\PYG{n}{acc}\PYG{+w}{ }\PYG{n}{i}\PYG{+w}{ }\PYG{k+kr}{else}\PYG{+w}{ }\PYG{n}{acc}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{(}\PYG{l+m+mi}{0}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Word8}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{zip}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{take}\PYG{+w}{ }\PYG{l+m+mi}{8}\PYG{+w}{ }\PYG{n}{bits}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{[}\PYG{l+m+mi}{7}\PYG{p}{,}\PYG{l+m+mi}{6}\PYG{o}{..}\PYG{l+m+mi}{0}\PYG{p}{])))}
+\PYG{+w}{           }\PYG{p}{(}\PYG{n}{bitsToBytes}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{drop}\PYG{+w}{ }\PYG{l+m+mi}{8}\PYG{+w}{ }\PYG{n}{bits}\PYG{p}{))}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Восстановление текста из изображения}
+\PYG{n+nf}{decodeTextFromImage}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{FilePath}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{IO}\PYG{+w}{ }\PYG{n+nb}{()}
+\PYG{n+nf}{decodeTextFromImage}\PYG{+w}{ }\PYG{n}{imageFileName}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kr}{do}
+\PYG{+w}{    }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Извлекаем параметры из имени файла}
+\PYG{+w}{    }\PYG{k+kr}{let}\PYG{+w}{ }\PYG{p}{[}\PYG{n}{caesarKStr}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{nStr}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{textLenStr}\PYG{p}{,}\PYG{+w}{ }\PYG{k+kr}{\PYGZus{}}\PYG{p}{]}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kt}{T}\PYG{o}{.}\PYG{n}{splitOn}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{T}\PYG{o}{.}\PYG{n}{pack}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}\PYGZus{}\PYGZdq{}}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{T}\PYG{o}{.}\PYG{n}{pack}\PYG{+w}{ }\PYG{n}{imageFileName}\PYG{p}{)}
+\PYG{+w}{    }\PYG{k+kr}{let}\PYG{+w}{ }\PYG{n}{caesarK}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{read}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{T}\PYG{o}{.}\PYG{n}{unpack}\PYG{+w}{ }\PYG{n}{caesarKStr}\PYG{p}{)}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Int}
+\PYG{+w}{    }\PYG{k+kr}{let}\PYG{+w}{ }\PYG{n}{n}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{read}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{T}\PYG{o}{.}\PYG{n}{unpack}\PYG{+w}{ }\PYG{n}{nStr}\PYG{p}{)}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Int}
+\PYG{+w}{    }\PYG{k+kr}{let}\PYG{+w}{ }\PYG{n}{textLen}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{read}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{T}\PYG{o}{.}\PYG{n}{unpack}\PYG{+w}{ }\PYG{n}{textLenStr}\PYG{p}{)}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Int}
+
+\PYG{+w}{    }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Читаем изображение}
+\PYG{+w}{    }\PYG{k+kt}{Right}\PYG{+w}{ }\PYG{n}{bmp}\PYG{+w}{ }\PYG{o+ow}{\PYGZlt{}\PYGZhy{}}\PYG{+w}{ }\PYG{n}{readBMP}\PYG{+w}{ }\PYG{n}{imageFileName}
+\PYG{+w}{    }\PYG{k+kr}{let}\PYG{+w}{ }\PYG{n}{rgba}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kt}{B}\PYG{o}{.}\PYG{n}{reverse}\PYG{+w}{ }\PYG{o}{\PYGZdl{}}\PYG{+w}{ }\PYG{n}{unpackBMPToRGBA32}\PYG{+w}{ }\PYG{n}{bmp}
+
+\PYG{+w}{    }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Извлекаем последние n бит из каждого байта}
+\PYG{+w}{    }\PYG{k+kr}{let}\PYG{+w}{ }\PYG{n}{extractedBits}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{concatMap}\PYG{+w}{ }\PYG{p}{(`}\PYG{n}{extractBitsFromByte}\PYG{p}{`}\PYG{+w}{ }\PYG{n}{n}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{B}\PYG{o}{.}\PYG{n}{unpack}\PYG{+w}{ }\PYG{n}{rgba}\PYG{p}{)}
+
+\PYG{+w}{    }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Берем нужное количество бит и преобразуем в байты}
+\PYG{+w}{    }\PYG{k+kr}{let}\PYG{+w}{ }\PYG{n}{textBytes}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{bitsToBytes}\PYG{+w}{ }\PYG{o}{\PYGZdl{}}\PYG{+w}{ }\PYG{n}{take}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{textLen}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{l+m+mi}{8}\PYG{p}{)}\PYG{+w}{ }\PYG{n}{extractedBits}
+
+\PYG{+w}{    }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Декодируем байты в текст}
+\PYG{+w}{    }\PYG{k+kr}{let}\PYG{+w}{ }\PYG{n}{decodedText}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{caesarDecipher}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{TE}\PYG{o}{.}\PYG{n}{decodeUtf8}\PYG{+w}{ }\PYG{n}{textBytes}\PYG{p}{)}\PYG{+w}{ }\PYG{n}{caesarK}
+
+\PYG{+w}{    }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Записываем восстановленный текст в файл}
+\PYG{+w}{    }\PYG{k+kr}{let}\PYG{+w}{ }\PYG{n}{outputFileName}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{imageFileName}\PYG{+w}{ }\PYG{o}{++}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}\PYGZus{}decoded.txt\PYGZdq{}}
+\PYG{+w}{    }\PYG{k+kt}{B}\PYG{o}{.}\PYG{n}{writeFile}\PYG{+w}{ }\PYG{n}{outputFileName}\PYG{+w}{ }\PYG{o}{\PYGZdl{}}\PYG{+w}{ }\PYG{k+kt}{TE}\PYG{o}{.}\PYG{n}{encodeUtf8}\PYG{+w}{ }\PYG{n}{decodedText}
+\PYG{+w}{    }\PYG{n}{putStrLn}\PYG{+w}{ }\PYG{o}{\PYGZdl{}}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}Decoded text written to \PYGZdq{}}\PYG{+w}{ }\PYG{o}{++}\PYG{+w}{ }\PYG{n}{outputFileName}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Декодирование текста из всех изображений}
+\PYG{n+nf}{decodeTextsFromImages}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{p}{[}\PYG{k+kt}{FilePath}\PYG{p}{]}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{IO}\PYG{+w}{ }\PYG{n+nb}{()}
+\PYG{n+nf}{decodeTextsFromImages}\PYG{+w}{ }\PYG{n}{imageFileNames}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{mapM\PYGZus{}}\PYG{+w}{ }\PYG{n}{decodeTextFromImage}\PYG{+w}{ }\PYG{n}{imageFileNames}
+\end{Verbatim}
