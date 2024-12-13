@@ -1,0 +1,52 @@
+\documentclass{article}
+%\usepackage[14pt]{extsizes}
+\usepackage{multirow}
+\usepackage[a3paper, landscape, margin=1cm]{geometry}
+\usepackage[cp1251]{inputenc}
+\usepackage[english]{babel}
+\usepackage{amsmath}
+\usepackage{float}
+\usepackage{graphicx}
+
+\begin{document}
+
+\thispagestyle{empty}
+
+
+{\textbf{\Large Appendix 1. Methods used in research papers}}
+
+\begin{table}[H]
+\centering
+\large
+%\resizebox{\textwidth}{!}{%
+\begin{tabular}{|p{8.2cm}|p{1cm}|p{1cm}|p{1cm}|p{2cm}|p{2cm}|p{1cm}|p{1cm}|p{1cm}|p{2cm}|p{4.9cm}|p{8cm}|}
+\hline
+\multirow{2}{6em}{\textbf{Research Paper}} & \multicolumn{9}{|c|}{\textbf{ML Model(s)}} & \multirow{2}{6em}{\textbf{Object}} & \multirow{2}{6em}{\textbf{Input Data}} \\
+
+ & SVM & RF & KNN & CatBoost & XGBoost & ANN & CNN & LSTM & Regression & & \\ \hline
+ 
+Machine learning and soft voting ensemble classification for earthquake induced damage to bridges [1] & + & + & + & + & + & + & - & - & - & Bridges and RCC bridges & Taxonomical Variables (Categorical); stiffness variables; excitation variables.\\ \hline
+
+Machine learning-based collapse prediction for post-earthquake damaged RC columns under subsequent earthquakes [2] & - & + & - & - & - & - & - & - & - & RC columns & Column structural performance factors. \\ \hline
+
+VHXLA: A post-earthquake damage prediction method for high-speed railway track-bridge system using VMD and hybrid neural network [3] & - & - & - & - & - & - & + & + & - & High-speed railway track-bridge systems & Seismic signals, structural parameters. \\ \hline
+
+Seismic damage state predictions of reinforced concrete structures using stacked long short-term memory neural networks [4] & - & - & - & - & - & - & - & + & - & RC frames and bridges & Ground motion records.  \\ \hline
+
+Seismic response prediction and fragility assessment of high-speed railway bridges using machine learning technology [5] & + & + & - & - & + & + & - & - & - & High-speed railway continuous (HRC) bridge & Structural parameters, ground motion parameters.\\ \hline
+
+Post-earthquake seismic capacity estimation of reinforced concrete bridge piers using Machine learning techniques [6] & + & + & + & - & - & + & - & - & + & RC bridge piers & Structural and seismic parameters. \\ \hline
+
+Deep autoencoder architecture for bridge damage assessment using responses from several vehicles [7] & - & - & - & - & - & - & + & + & - & Bridges & Vehicle acceleration responses and vehicle speed. \\ \hline
+
+Automated location of steel truss bridge damage using machine learning and raw strain sensor data [8] & - & - & + & - & - & - & + & - & - & Steel truss railway bridges  & Strain signals. \\ \hline
+
+Seismic damage identification of high arch dams based on an unsupervised deep learning approach [9] & - & - & + & - & - & - & - & - & - & High arch concrete dams & Acceleration response signals, damage scenarios, multi-frequency sinusoidal waves. \\ \hline
+
+Application of machine learning in seismic fragility assessment of bridges with SMA-restrained rocking columns [10] & - & + & - & - & - & + & - & - & + & RC bridges with shape memory alloy (SMA)-restrained rocking (SRR) columns & Ground motion characteristics, design parameters, material properties, ambient temperature. \\ \hline
+
+\end{tabular}%
+%}
+\end{table}
+
+\end{document}

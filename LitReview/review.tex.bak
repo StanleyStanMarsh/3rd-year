@@ -1,0 +1,285 @@
+\documentclass[a4paper, final]{article}
+%\usepackage{literat} % Нормальные шрифты
+\usepackage[14pt]{extsizes} % для того чтобы задать нестандартный 14-ый размер шрифта
+\usepackage{cmap}
+\usepackage[T2A]{fontenc}
+\usepackage[cp1251]{inputenc}
+\usepackage[english]{babel}
+\usepackage{amsmath}
+\usepackage[left=25mm, top=20mm, right=20mm, bottom=20mm, footskip=10mm]{geometry}
+\usepackage{ragged2e} %для растягивания по ширине
+\usepackage{setspace} %для межстрочного интервала
+\usepackage{moreverb} %для работы с листингами
+\usepackage{indentfirst} % для абзацного отступа
+\usepackage{moreverb} %для печати в листинге исходного кода программ
+\renewcommand\verbatimtabsize{4\relax}
+\renewcommand\listingoffset{0.2em} %отступ от номеров строк в листинге
+\renewcommand{\arraystretch}{1.4} % изменяю высоту строки в таблице
+\usepackage[font=small, singlelinecheck=false, justification=raggedleft, format=plain, labelsep=period]{caption} %для настройки заголовка таблицы
+\usepackage{amssymb}
+\usepackage{listings} %листинги
+\usepackage{xcolor} % цвета
+\usepackage{hyperref}% для гиперссылок
+\usepackage{enumitem} %для перечислений
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{multirow}
+
+%\makeatletter 
+%\@namedef{ver@float.sty}{3000/12/31}
+%\makeatother
+
+\usepackage{minted}
+\usepackage{pdfpages}
+%\usemintedstyle{vs}
+\definecolor{LightGray}{gray}{0.9}
+
+\setlist[enumerate,itemize]{leftmargin=1.2cm} %отступ в перечислениях
+
+\hypersetup{colorlinks,
+	allcolors=[RGB]{010 090 200}} %красивые гиперссылки (не красные)
+
+\begin{document}
+
+		% НАЧАЛО ТИТУЛЬНОГО ЛИСТА
+	\begin{center}
+		\hfill \break
+		\hfill \break
+		\normalsize{МИНИСТЕРСТВО НАУКИ И ВЫСШЕГО ОБРАЗОВАНИЯ РОССИЙСКОЙ ФЕДЕРАЦИИ\\
+			федеральное государственное автономное образовательное учреждение высшего образования «Санкт-Петербургский политехнический университет Петра Великого»\\[10pt]}
+		\normalsize{Институт компьютерных наук и кибербезопасности}\\[10pt] 
+		\normalsize{Высшая школа технологий искусственного интеллекта}\\[10pt] 
+		\normalsize{Направление: 02.03.01 <<Математика и компьютерные науки>>}\\
+		
+		\hfill \break
+		\hfill \break
+		\hfill \break
+		\hfill \break
+		\large{Literature review}\\
+		\large{по дисциплине <<Семинар по специальности>>}\\
+		\hfill \break
+		\hfill \break
+		\hfill \break
+		
+		\hfill \break
+		\hfill \break
+	\end{center}
+	
+	\small{ 
+		\begin{tabular}{lrrl}
+			\!\!\!Студент, & \hspace{2cm} & & \\
+			\!\!\!группы 5130201/20101 & \hspace{2cm} & \underline{\hspace{3cm}} &Астафьев И. Е. \\\\
+			\!\!\!Преподаватель & \hspace{2cm} &  \underline{\hspace{3cm}} &  Моторин Д. Е.\\\\
+			&&\hspace{5cm}
+		\end{tabular}
+		\begin{flushright}
+			<<\underline{\hspace{1cm}}>>\underline{\hspace{2.5cm}} 2024г.
+		\end{flushright}
+	}
+	
+	\hfill \break
+	\begin{center} \small{Санкт-Петербург, 2024} \end{center}
+	\thispagestyle{empty} % выключаем отображение номера для этой страницы
+	
+	% КОНЕЦ ТИТУЛЬНОГО ЛИСТА
+	\newpage
+	
+	\tableofcontents
+	
+	\newpage
+
+	\section{Key words}
+
+	Post-disaster damage classification; Seismic vulnerability; Machine learning; Structural health monitoring; Bridge damage detection; Ensemble models; Damage index; Fragility assessment; Resilience planning.
+	
+	\newpage
+	
+	\section{Introduction}
+	
+	Natural disasters such as earthquakes, floods, and hurricanes often result in significant damage to critical infrastructure, posing substantial challenges for recovery and rebuilding efforts. Accurate and rapid post-disaster damage classification is essential for prioritizing repairs, allocating resources efficiently, and ensuring the timely restoration of vital systems. In this context, bridges, reinforced concrete structures, and high-speed railway systems demand particular attention due to their role in transportation and their vulnerability to seismic forces.
+
+	The integration of machine learning (ML) techniques has revolutionized the field of post-disaster damage assessment. Traditional methods, while reliable, are often time-intensive and require extensive human expertise. In contrast, ML models offer increased accuracy, scalability, and the capability to process large, complex datasets. By leveraging tools such as Support Vector Machines (SVM), Random Forests (RF), Artificial Neural Networks (ANN), and Long Short-Term Memory (LSTM) networks, researchers have developed innovative approaches to classify and predict damage levels in various structural systems.
+
+	This literature review explores the advancements in ML-based damage classification, emphasizing their application to different structural systems such as bridges, railway track-bridge systems, and reinforced concrete columns. It discusses key methodologies, including ensemble models, hybrid frameworks integrating deep learning and signal processing, and interpretable ML techniques like SHAP (SHapley Additive exPlanations). The review also highlights the challenges and limitations faced in this domain, such as the need for comprehensive datasets and the adaptability of models to diverse infrastructure types.
+
+	By synthesizing recent research, this review aims to provide a comprehensive understanding of the current state of ML-driven damage assessment, laying the groundwork for further innovation in enhancing infrastructure resilience and disaster preparedness.
+
+	\newpage
+	
+	\section{Analysis}
+	
+	One of the key contributions in this area is the paper by Gautam et al. \cite{lit1}, which explores the use of various machine learning models to classify earthquake-induced damage to bridges. Bridges are crucial elements of transportation infrastructure, and their failure can severely disrupt emergency response and recovery efforts. The study categorizes bridges into three damage levels: minor, major, and critical, depending on their vulnerability to seismic forces. The machine learning models investigated in the paper include Support Vector Machine (SVM), Random Forest (RF), K-Nearest Neighbors (KNN), Categorical Boosting (CatBoost), Extreme Gradient Boosting (XGBoost), Artificial Neural Networks (ANN), and a Soft Voting Ensemble Classifier.
+
+To enhance the interpretability of the machine learning models, the authors utilize SHAP (SHapley Additive exPlanations), a tool that helps identify the most influential features contributing to the model's predictions \cite{lit1}. SHAP provides insights into how various input variables, such as bridge type, material properties, and stiffness, affect the predicted damage level. For example, certain types of bridges with lower stiffness are more prone to seismic damage, and understanding these factors can help engineers prioritize retrofitting efforts.
+
+The study \cite{lit1} found that among the models tested, the Artificial Neural Network (ANN) achieved the highest accuracy (0.79) when using a mixed database of different bridge types, in other papers ANN was not as effective \cite{lit5}, \cite{lit6}, \cite{lit10}. On the other hand, the Random Forest (RF) model excelled in classifying homogeneous Reinforced Cement Concrete (RCC) bridges, achieving an accuracy of 0.83 \cite{lit1}. These results, as presented in Table \ref{tab:1} and Table \ref{tab:2} of the paper, demonstrate the potential of ML models to improve the reliability of seismic risk assessments for bridges. However, the authors also emphasize the need for more comprehensive and balanced datasets to further improve the accuracy of the models and ensure that they can be applied to a wider range of bridge types and conditions.
+	
+\begin{table}[H]
+\centering
+\caption{Performance of various base learners for bridge damage state prediction.}
+\label{tab:1}
+\begin{tabular}{|l|c|c|c|c|}
+\hline
+\textbf{Algorithm} & \textbf{Accuracy}     & \textbf{Precision}   & \textbf{Recall}      & \textbf{F1 Score}    \\ \hline
+MLP                & $0.79 \pm 0.04$       & $0.32 \pm 0.15$      & $0.34 \pm 0.04$      & $0.32 \pm 0.07$      \\ \hline
+SVM                & $0.79 \pm 0.01$       & $0.27 \pm 0.01$      & $0.33 \pm 0.01$      & $0.30 \pm 0.03$      \\ \hline
+RF                 & $0.77 \pm 0.04$       & $0.36 \pm 0.07$      & $0.36 \pm 0.04$      & $0.35 \pm 0.05$      \\ \hline
+KNN                & $0.76 \pm 0.08$       & $0.39 \pm 0.23$      & $0.35 \pm 0.06$      & $0.34 \pm 0.07$      \\ \hline
+CatBoost           & $0.75 \pm 0.10$       & $0.37 \pm 0.11$      & $0.36 \pm 0.08$      & $0.36 \pm 0.09$      \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Performance of various base learners for RCC bridge damage state prediction.}
+\label{tab:2}
+\begin{tabular}{|l|c|c|c|c|}
+\hline
+\textbf{Algorithm} & \textbf{Accuracy}     & \textbf{Precision}   & \textbf{Recall}      & \textbf{F1 Score}    \\ \hline
+RF                 & $0.83 \pm 0.07$       & $0.47 \pm 0.21$      & $0.45 \pm 0.17$      & $0.46 \pm 0.18$      \\ \hline
+CatBoost           & $0.81 \pm 0.09$       & $0.45 \pm 0.19$      & $0.45 \pm 0.19$      & $0.45 \pm 0.17$      \\ \hline
+KNN                & $0.80 \pm 0.11$       & $0.41 \pm 0.26$      & $0.38 \pm 0.12$      & $0.38 \pm 0.15$      \\ \hline
+SVM                & $0.79 \pm 0.02$       & $0.27 \pm 0.00$      & $0.32 \pm 0.01$      & $0.30 \pm 0.00$      \\ \hline
+XGBoost            & $0.78 \pm 0.10$       & $0.44 \pm 0.19$      & $0.44 \pm 0.17$      & $0.44 \pm 0.40$      \\ \hline
+MLP                & $0.72 \pm 0.21$       & $0.42 \pm 0.17$      & $0.42 \pm 0.20$      & $0.41 \pm 0.17$      \\ \hline
+\end{tabular}
+\end{table}
+
+	In another significant study, Wang et al. \cite{lit2} introduce a methodology for rapid post-earthquake damage assessment specifically for Reinforced Concrete (RC) structures, which include both bridge columns and other structural elements. The study focuses on using the Random Forest (RF) model for damage classification, supported by numerical modeling to generate the training dataset. Time history analysis is used to simulate ground motion impacts on RC columns, providing a robust dataset for training the model.
+
+	Many papers demonstrates that RF is highly effective method for RC structures (RCC bridge or columns) classification \cite{lit1}, \cite{lit2}, \cite{lit5}, \cite{lit6}, \cite{lit10}. In \cite{lit2} paper the RF model proves to be highly effective, according to Figure \ref{fig:1} it achieved an AUC (Area Under the Curve) value of 0.87 and an F1 score of 0.76, which are measures of the model's predictive accuracy. The SHAP algorithm is again employed to identify the key features influencing the model's predictions, such as the axial compression ratio and the damage index. These features are critical for assessing the collapse potential of RC columns after an earthquake. The study also provides a user-friendly graphical interface that allows engineers and decision-makers to quickly assess the condition of RC columns based on the model's predictions. This tool can be invaluable during post-disaster inspections, where time is of the essence.
+	
+\captionsetup{justification=centering}
+\begin{center}
+\centering
+	\includegraphics[scale=0.8]{pic1.jpg}
+	\captionof{figure}{ROC curve}
+	\label{fig:1}
+\end{center}
+
+	Peng et al. \cite{lit3} present an innovative approach for predicting post-earthquake damage in high-speed railway track-bridge systems. The study combines machine learning with advanced signal processing techniques to create a highly accurate damage prediction model. The researchers develop a composite model known as the VHXLA Model, which integrates Variational Mode Decomposition (VMD), Hilbert Transform (HT), Xception Convolutional Neural Network (CNN), Long Short-Term Memory (LSTM) networks, and an Attention Mechanism.
+	
+	This model is specifically designed to handle the complexities of high-speed railway systems, where both the track and the supporting bridge structures need to be assessed simultaneously. The study demonstrates that the VHXLA model achieves near-perfect accuracy (near 1) in predicting damage to both the support and sliding layers of the track-bridge system. As shown in Table \ref{tab:3}, the model significantly outperforms traditional LSTM and CNN models, which typically achieve accuracies around 0.65. The addition of the attention mechanism enhances the model's ability to capture important features in the data, making it more adaptable to stochastic variations in the structure. However, the authors note that the model is currently limited to high-speed railway systems and may require further adaptation for other types of infrastructure.
+
+\begin{table}[H]
+\centering
+\caption{Comparison of prediction accuracy of different networks.}
+\label{tab:3}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|c|c|c|c|c|c|c|}
+\hline
+\textbf{Algorithm} & \textbf{Training Loss} & \textbf{Validation Loss} & \textbf{Training Accuracy (\%)} & \textbf{Validation Accuracy (\%)} & \textbf{P (\%)} & \textbf{R (\%)} & \textbf{F1 (\%)} \\ \hline
+LSTM               & 0.8721                 & 0.7965                   & 68.75                            & 65.87                             & 67.23           & 68.25           & 67.71           \\ \hline
+Xception           & 0.4208                 & 0.5530                   & 88.62                            & 80.35                             & 79.62           & 84.32           & 82.25           \\ \hline
+XL                 & 0.3353                 & 0.3953                   & 93.75                            & 86.50                             & 83.40           & 90.76           & 86.85           \\ \hline
+VHXL               & 0.0608                 & 0.0538                   & 100                              & 98.79                             & 73.89           & 88.55           & 80.25           \\ \hline
+XLA                & 0.0083                 & 0.0160                   & 100                              & 99.71                             & 91.40           & 92.04           & 91.70           \\ \hline
+VHXLA              & 0.0011                 & 0.0031                   & 100                              & 99.96                             & 92.46           & 96.66           & 94.50           \\ \hline
+\end{tabular}%
+}
+\end{table}
+
+	Ahmed et al. \cite{lit4} explore the use of LSTM networks to improve both the accuracy and speed of post-earthquake structural damage assessments. LSTM networks are a type of recurrent neural network (RNN) that excel at processing sequential data, making them well-suited for time-series analysis of structural behavior during earthquakes. The model developed by the researchers classifies structural damage into three categories: green (safe), yellow (moderate damage), and red (severe damage), providing a clear and actionable output for engineers and emergency responders.
+	
+	The study demonstrates that the LSTM model achieves higher accuracy than traditional CNN-based methods, such as AlexNet, particularly when applied to complex structural systems like multi-story RC frames \cite{lit4}. By optimizing the number of hidden units and layers within the LSTM network, the researchers were able to increase accuracy by up to 0.2 and reduce training times by up to 97\%. The maximum accuracy achieved for the test set was 0.96, with minimum accuracies of 0.86, 0.86, and 0.84 for four-, eight-, and twelve-story frames, respectively.
+
+	One of the key advantages of the LSTM model is its versatility. Unlike other models that are tailored to specific types of structures (such as high-speed railway track-bridge systems \cite{lit3}), the LSTM network can be applied to a wide range of infrastructure types, including bridges, non-ductile frames, and ductile frames, without requiring significant modifications to the network architecture \cite{lit4}. This makes it a promising tool for general post-earthquake damage assessment across different regions and building types.
+
+	Wei et al. \cite{lit5} also details the creation and evaluation of machine learning (ML) models aimed at predicting the seismic responses of high-speed railway bridges \cite{lit3}. It begins with a crucial preprocessing phase, where seismic responses, extracted from nonlinear time history analyses, undergo normalization through logarithmic transformation and min-max normalization techniques to improve the models' effectiveness. This preprocessing is essential as similar methodologies have been employed in other studies, such as in the work by Ahmed et al. \cite{lit4}, where effective data normalization significantly enhanced model performance in assessing structural damage.
+	
+	The researchers employ hyperparameter tuning using ten-fold cross-validation and grid search to optimize a variety of ML models, including Lasso regression, support vector regression (SVR), artificial neural networks (ANN), random forest (RF), extreme gradient boosting (XGBoost), and light gradient boosting machine (Light GBM). This approach aligns with findings from other studies, such as the research conducted on seismic damage state predictions using stacked LSTM networks, which also highlighted the effectiveness of hyperparameter optimization in achieving high accuracy levels \cite{lit4}. But it is impossible to compare methods from this paper with others, because the researchers used specific performance indexes: the coefficient of determination (R2), mean squared error (MSE), root mean squared error (RMSE) and mean absolute error (MAE) (Figure \ref{fig:2}).
+
+	
+	\captionsetup{justification=centering}
+\begin{center}
+\centering
+	\includegraphics[scale=0.8]{pic2.jpg}
+	\captionof{figure}{Performance of different ML algorithms}
+	\label{fig:2}
+\end{center}
+
+	The study showcases the superiority of ensemble models like RF and XGBoost over individual predictive models such as Lasso, ANN, and SVR, particularly in forecasting seismic demands critical for assessing bridge safety \cite{lit5}. Notably, previous research on soft voting ensemble classification for earthquake-induced damage to bridges reported random forest accuracy at 0.83, demonstrating the competitive performance of ensemble methods across different structural assessments \cite{lit1}.
+
+	Additionally, the research highlights the importance of input variables, revealing that parameters related to ground motion significantly affect bridge performance. This observation is consistent with findings from a study on collapse prediction for post-earthquake damaged RC columns, which emphasized the relevance of structural performance factors \cite{lit2}. The findings demonstrate that these machine learning models provide a robust framework for assessing the seismic resilience of high-speed railway bridges, offering a compelling alternative to traditional assessment methods that may be more resource-intensive.
+	
+	Todorov and Billah \cite{lit6} focus on a machine learning framework that predicts the post-earthquake lateral and axial capacities of bridge piers using a DecisionTreeRegressor model, achieving high accuracy and low prediction error. This framework is crucial for rapid safety assessments following seismic events, aiding engineers in making informed repair and mitigation decisions (Figure \ref{fig:3}).
+	
+	\captionsetup{justification=centering}
+\begin{center}
+\centering
+	\includegraphics[scale=0.8]{pic3.jpg}
+	\captionof{figure}{Individual performance metrics of proposed ML models' predictive capabilities as compared to test set data.}
+	\label{fig:3}
+\end{center}
+
+	The research identifies peak ground acceleration as a key input parameter, consistent with findings in other studies that stress the importance of ground motion variables in structural assessments \cite{lit3}. As in \cite{lit5} study \cite{lit6} also uses \(R^2\).
+	
+	Additionally, the use of LSTM networks in seismic damage state predictions for RC structures, achieving accuracy up to 0.96, reinforces the effectiveness of machine learning in structural evaluations \cite{lit4}. This study's unique focus on post-earthquake capacity predictions provides valuable insights for enhancing infrastructure resilience.
+
+	Overall, the proposed framework signifies a significant advancement in rapid structural evaluations, emphasizing the need for accurate assessments of seismic impacts to inform post-earthquake decision-making.
+
+	In their study on bridge damage detection, Sarwar and Cantero \cite{lit7} propose a Deep Autoencoder (DAE) framework, which effectively identifies damage severity based on vehicle response data. The DAE model, incorporating convolutional and LSTM layers, achieves low reconstruction error (Mean Absolute Error, MAE) in undamaged cases and heightened errors as damage severity increases, ranging from 5\% to 30\% stiffness reductions. This sensitivity is quantified using the Kullback-Leibler divergence-based Damage Index (DI), which shows clear distinctions between undamaged and damaged cases, confirming its accuracy across various operational conditions.
+
+	Like the VHXLA model in \cite{lit3} that integrates VMD, CNN, LSTM, and Attention layers, the DAE model in \cite{lit7} uses CNN and LSTM to assess bridges' damage with high accuracy. Both frameworks show that hybrid ML approaches can effectively analyze complex structural data. Similarly, the stacked LSTM network approach used for seismic damage state predictions in RC structures shares the use of LSTM layers with Sarwar and Cantero's DAE model. Both studies highlight LSTM's strength in processing time-series data.
+
+	The seismic response prediction study for high-speed railway bridges \cite{lit5} utilized RF, XGBoost, and LightGBM, achieving \(R^2\) values above 0.847 and low MSE, RMSE, and MAE values. Sarwar and Cantero's DAE similarly achieves minimal reconstruction error for undamaged cases and sensitivity to damage, underscoring that ensemble models and DAE architectures both excel in predictive accuracy for bridge and structural assessments.
+
+	The study \cite{lit1} used taxonomical, stiffness, and excitation variables as key inputs, reflecting similar variable importance as Sarwar and Cantero’s DAE \cite{lit7}, which also emphasized the vehicle's dynamic responses and interaction with bridge stiffness variations. Both studies underscore the relevance of stiffness and excitation data in accurately predicting damage states.
+
+	Similar to the damage detection approach used in Sarwar and Cantero \cite{lit7}, which employs Deep Autoencoders (DAE) with CNN and LSTM layers for bridge damage assessment, Parisi et al. \cite{lit8} also highlight the importance of CNN layers in analyzing complex sensor data. Both studies emphasize the strength of hybrid ML approaches in processing raw sensor data to assess damage, albeit Parisi et al.'s approach focuses specifically on steel truss bridges and their unique strain signals.
+
+	The approach used by Parisi et al. \cite{lit8} aligns with the seismic damage state predictions study for reinforced concrete (RC) structures in \cite{lit4}, where LSTM layers were used to process time-series data for predicting structural damage. Similarly, Parisi et al.'s study underscores the relevance of machine learning models that can handle sensor data to assess structural health effectively.
+
+	While the study by Sarwar and Cantero \cite{lit7} demonstrates low reconstruction errors in vehicle response data for bridges, Parisi et al.'s model, focused on strain signals from steel truss bridges, showcases the versatility of machine learning techniques like KNN and CNN in different structural contexts. Both studies underline the capability of machine learning to enhance the accuracy and robustness of damage detection systems in complex environments.
+	
+	In their study on seismic damage identification for high arch dams, Cao et al. \cite{lit9} propose an unsupervised deep learning framework for detecting damage using acceleration response signals. The model, which integrates various data inputs, including damage scenarios and multi-frequency sinusoidal waves, effectively identifies the structural condition of the dam by analyzing changes in its dynamic response. The model demonstrates high accuracy, with minimal reconstruction error for undamaged scenarios and increased sensitivity to damage as the severity of structural alterations, such as stiffness reductions, escalates.
+
+Similar to the approach in \cite{lit7} using Deep Autoencoders (DAE) for bridge damage assessment, Cao et al. \cite{lit9} adopt a deep learning-based methodology to analyze dynamic responses. Both models use unsupervised learning techniques, focusing on minimizing reconstruction error as a key indicator of structural health. The deep learning models in these studies emphasize the importance of sensitivity to damage severity, showing that variations in structural responses (whether from bridges or dams) can be effectively captured through dynamic signal analysis.
+
+Furthermore, the framework from \cite{lit9} for seismic damage identification in high arch dams shares similarities with the hybrid machine learning approach used for the seismic response prediction in high-speed railway bridges \cite{lit5}. Both studies incorporate various dynamic signals, such as seismic and acceleration response data, to accurately predict structural damage. The seismic fragility assessment approach in \cite{lit5}, employing models like Random Forest (RF), XGBoost, and LightGBM, yields high \(R^2\) values and low MAE and RMSE values, paralleling the precision achieved by Cao et al.’s model in damage detection for high arch dams.
+
+Similar to the model in \cite{lit5}, which utilizes RF and XGBoost for high-speed railway bridge assessments, the RF model in \cite{lit10} excels in capturing the complex relationships between input variables like ground motion characteristics and material properties, ensuring accurate seismic response predictions. The ANN models in \cite{lit5}, \cite{lit10} leverage deep learning techniques to process time-series data, with Akbarnezhad et al.'s model demonstrating the robustness of ANN for seismic vulnerability assessments in complex bridge systems.
+
+Like the study \cite{lit6} on seismic capacity estimation for reinforced concrete bridge piers, Akbarnezhad et al.'s approach emphasizes the importance of incorporating both structural and material property variables in predictive modeling. Both studies use a combination of regression and machine learning models to estimate seismic capacities, underlining the versatility of these methods in handling various types of structural systems.
+
+	\newpage
+	
+	\section{Conclusion}
+	
+	In conclusion, this review highlights the diverse applications of machine learning (ML) models in seismic damage assessment and structural health monitoring, focusing on their ability to predict and classify damage in various types of civil infrastructure. Across the studies discussed, a range of ML techniques have been employed to assess seismic damage, with hybrid models consistently demonstrating superior performance in prediction accuracy.
+
+Key findings from the reviewed papers include the importance of input features like structural material properties, stiffness, and ground motion characteristics, which significantly influence model predictions. Additionally, models that incorporate time-series data, such as LSTM networks, and ensemble methods like RF and XGBoost, have proven particularly effective in handling the complexities of seismic response data. The use of advanced techniques such as SHAP for model interpretability and the combination of signal processing methods like VMD and Hilbert Transform (HT) further enhance the robustness and accuracy of these models.
+
+The studies reviewed also demonstrate that different ML models excel in varying contexts - RF and ANN perform well in general seismic assessments, while more specialized models, such as the VHXLA for high-speed railway systems or Deep Autoencoders for bridge damage detection, show the power of tailored solutions for specific infrastructure types. Moreover, the importance of using balanced datasets and incorporating both structural and seismic parameters is emphasized, as it ensures more reliable and generalizable results.
+
+While the advances in machine learning for seismic damage identification and structural health monitoring are promising, there is still a need for further research to improve model generalization across diverse infrastructure types and to address challenges related to data quality, model interpretability, and real-time application in post-earthquake scenarios. The reviewed studies provide valuable insights into the future potential of ML in seismic risk assessment and highlight the importance of multi-disciplinary approaches in enhancing the resilience of critical infrastructure.
+	
+	\newpage
+	
+	\addcontentsline{toc}{section}{References}
+	\begin{thebibliography}{4}
+		\bibitem{lit1} Dipendra Gautam, Ankit Bhattarai, Rajesh Rupakhety "Machine learning and soft voting ensemble classification for earthquake induced damage to bridges", Engineering Structures, vol. 303, 2024, doi: \href{https://doi.org/10.1016/j.engstruct.2024.117534}{https://doi.org/10.1016/j.engstruct.2024.117534}
+		\bibitem{lit2} Wentao Wang, Lei Li, Zhe Qu "Machine learning-based collapse prediction for post-earthquake damaged RC columns under subsequent earthquakes", Soil Dynamics and Earthquake Engineering, vol. 172, 2023, doi: \href{https://doi.org/10.1016/j.soildyn.2023.108036}{https://doi.org/10.1016/j.soildyn.2023.108036}
+		\bibitem{lit3} Kang Peng , Wangbao Zhou, Lizhong Jiang, Lijun Xiong, Jian Yu "VHXLA: A post-earthquake damage prediction method for high-speed railway track-bridge system using VMD and hybrid neural network", Engineering Structures, vol. 298, 2024, doi: \href{https://doi.org/10.1016/j.engstruct.2023.117048}{https://doi.org/10.1016/j.engstruct.2023.117048}
+		\bibitem{lit4} Bilal Ahmed, Sujith Mangalathu, Jong-Su Jeon "Seismic damage state predictions of reinforced concrete structures using stacked long short-term memory neural networks", Journal of Building Engineering, vol. 46, 2022, doi: \href{https://doi.org/10.1016/j.jobe.2021.103737}{https://doi.org/10.1016/j.jobe.2021.103737}
+		\bibitem{lit5} Biao Wei, Xianglin Zheng, Lizhong Jiang, Zhipeng Lai, Ruimin Zhang, Jun Chen, Zhixing Yang "Seismic response prediction and fragility assessment of high-speed railway bridges using machine learning technology", Structures, vol. 66, 2024, doi: \href{https://doi.org/10.1016/j.istruc.2024.106845}{https://doi.org/10.1016/j.istruc.2024.106845}
+		\bibitem{lit6} Borislav Todorov, A.H.M. Muntasir Billah "Post-earthquake seismic capacity estimation of reinforced concrete bridge piers using Machine learning techniques", Structures, vol. 41, 2022, doi: \href{https://doi.org/10.1016/j.istruc.2022.05.067}{https://doi.org/10.1016/j.istruc.2022.05.067}
+		\bibitem{lit7} Muhammad Zohaib Sarwar, Daniel Cantero "Deep autoencoder architecture for bridge damage assessment using responses from several vehicles", Engineering Structures, vol. 246, 2021, doi: \href{https://doi.org/10.1016/j.engstruct.2021.113064}{https://doi.org/10.1016/j.engstruct.2021.113064}
+		\bibitem{lit8} F. Parisi, A.M. Mangini, M.P. Fanti, Jose M. Adam "Automated location of steel truss bridge damage using machine learning and raw strain sensor data", Automation in Construction, vol. 138, 2022, doi: \href{https://doi.org/10.1016/j.autcon.2022.104249}{https://doi.org/10.1016/j.autcon.2022.104249}
+		\bibitem{lit9} Xiangyu Cao, Liang Chen, Jianyun Chen, Jing Li, Wenyan Lu, Haixiang Liu, Minyong Ke, Yunqing Tang "Seismic damage identification of high arch dams based on an unsupervised deep learning approach", Soil Dynamics and Earthquake Engineering, vol. 168, 2023, doi: \href{https://doi.org/10.1016/j.soildyn.2023.107834}{https://doi.org/10.1016/j.soildyn.2023.107834}
+		\bibitem{lit10} Miles Akbarnezhad, Mohammad Salehi, Reginald DesRoches "Application of machine learning in seismic fragility assessment of bridges with SMA-restrained rocking columns", Structures, vol. 50, 2023, doi: \href{https://doi.org/10.1016/j.istruc.2023.02.105}{https://doi.org/10.1016/j.istruc.2023.02.105}
+	\end{thebibliography}
+	
+	\newpage
+	
+	\addcontentsline{toc}{section}{Appendix A. Methods used in research papers}
+	
+	\includepdf[fitpaper]{app1.pdf}
+	
+	\newpage
+	
+	\addcontentsline{toc}{section}{Appendix B. Comparison of Results}
+	
+	\includepdf[fitpaper]{app2.pdf}
+	
+\end{document}

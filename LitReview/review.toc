@@ -1,0 +1,8 @@
+\babel@toc {english}{}\relax 
+\contentsline {section}{\numberline {1}Key words}{3}{section.1}%
+\contentsline {section}{\numberline {2}Introduction}{4}{section.2}%
+\contentsline {section}{\numberline {3}Analysis}{5}{section.3}%
+\contentsline {section}{\numberline {4}Conclusion}{12}{section.4}%
+\contentsline {section}{References}{13}{section.4}%
+\contentsline {section}{Appendix A. Methods used in research papers}{14}{section*.5}%
+\contentsline {section}{Appendix B. Comparison of Results}{15}{section*.5}%
