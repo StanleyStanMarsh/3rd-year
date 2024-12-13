@@ -1,0 +1,1400 @@
+\documentclass[a4paper, final]{article}
+%\usepackage{literat} % Нормальные шрифты
+\usepackage[14pt]{extsizes} % для того чтобы задать нестандартный 14-ый размер шрифта
+\usepackage{cmap}
+\usepackage[T2A]{fontenc}
+\usepackage[cp1251]{inputenc}
+\usepackage[russian]{babel}
+\usepackage{amsmath}
+\usepackage[left=25mm, top=20mm, right=20mm, bottom=20mm, footskip=10mm]{geometry}
+\usepackage{ragged2e} %для растягивания по ширине
+\usepackage{setspace} %для межстрочного интервала
+\usepackage{moreverb} %для работы с листингами
+\usepackage{indentfirst} % для абзацного отступа
+\usepackage{moreverb} %для печати в листинге исходного кода программ
+\renewcommand\verbatimtabsize{4\relax}
+\renewcommand\listingoffset{0.2em} %отступ от номеров строк в листинге
+\renewcommand{\arraystretch}{1.4} % изменяю высоту строки в таблице
+\usepackage[font=small, singlelinecheck=false, justification=raggedleft, format=plain, labelsep=period]{caption} %для настройки заголовка таблицы
+\usepackage{amssymb}
+\usepackage{listings} %листинги
+\usepackage{xcolor} % цвета
+\usepackage{hyperref}% для гиперссылок
+\usepackage{enumitem} %для перечислений
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{multirow}
+\usepackage{makecell}
+\usepackage{array}
+
+%\makeatletter 
+%\@namedef{ver@float.sty}{3000/12/31}
+%\makeatother
+
+\usepackage{minted}
+%\usemintedstyle{vs}
+\definecolor{LightGray}{gray}{0.9}
+
+\setlist[enumerate,itemize]{leftmargin=1.2cm} %отступ в перечислениях
+
+\hypersetup{colorlinks,
+	allcolors=[RGB]{010 090 200}} %красивые гиперссылки (не красные)
+
+\begin{document}
+
+		% НАЧАЛО ТИТУЛЬНОГО ЛИСТА
+	\begin{center}
+		\hfill \break
+		\hfill \break
+		\normalsize{МИНИСТЕРСТВО НАУКИ И ВЫСШЕГО ОБРАЗОВАНИЯ РОССИЙСКОЙ ФЕДЕРАЦИИ\\
+			федеральное государственное автономное образовательное учреждение высшего образования «Санкт-Петербургский политехнический университет Петра Великого»\\[10pt]}
+		\normalsize{Институт компьютерных наук и кибербезопасности}\\[10pt] 
+		\normalsize{Высшая школа технологий искусственного интеллекта}\\[10pt] 
+		\normalsize{Направление: 02.03.01 <<Математика и компьютерные науки>>}\\
+		
+		\hfill \break
+		\hfill \break
+		\hfill \break
+		\hfill \break
+		\large{Отчет о выполнении лабораторных работ по предмету}\\
+		\large{<<Методы проектирования баз данных>>}\\
+		\hfill \break
+		\hfill \break
+		\hfill \break
+		\hfill \break
+		
+		\hfill \break
+		\hfill \break
+	\end{center}
+	
+	\small{ 
+		\begin{tabular}{lrrl}
+			\!\!\!Студент, & \hspace{2cm} & & \\
+			\!\!\!группы 5130201/20101 & \hspace{2cm} & \underline{\hspace{3cm}} &Астафьев И. Е. \\\\
+			\!\!\!Преподаватель & \hspace{2cm} &  \underline{\hspace{3cm}} &  Попов С. Г.\\\\
+			&&\hspace{5cm}
+		\end{tabular}
+		\begin{flushright}
+			<<\underline{\hspace{1cm}}>>\underline{\hspace{2.5cm}} 2024г.
+		\end{flushright}
+	}
+	
+	\hfill \break
+	\begin{center} \small{Санкт-Петербург, 2024} \end{center}
+	\thispagestyle{empty} % выключаем отображение номера для этой страницы
+	
+	% КОНЕЦ ТИТУЛЬНОГО ЛИСТА
+	\newpage
+	
+	\tableofcontents
+	
+	\newpage
+
+\section*{Введение}
+	\addcontentsline{toc}{section}{Введение}
+	
+	В современном мире информация является одним из ключевых ресурсов, и эффективное управление ею становится всё более важным для организаций любого масштаба. Базы данных позволяют эффективно хранить, обрабатывать и извлекать данные. Проектирование баз данных – это процесс создания логической и физической структуры базы данных, который включает в себя определение сущностей, атрибутов, связей между ними и других элементов. Целью лабораторных работ по методам проектирования баз данных является практическое освоение основных принципов и подходов к работе с ними.
+	
+	В базе данных для <<Сети ресторанов быстрого питания>> реализованы улучшения для упрощения и оптимизации взаимодействия с данными. Внедрены новое представление и триггеры для автоматического обновления информации, разработаны функция и процедура для удобного управления данными, а также проанализирован уровень изоляции \texttt{READ COMMITTED} и неповторяющееся чтение. 
+	
+	\newpage
+	\section{Постановка задачи}
+	
+	В данных лабораторных работах необходимо:
+
+\begin{itemize}
+\item создать представление (view) для подсчета использования ингредиентов и заказов блюд;
+\item создать триггер для отображения изменения количества клиентов в каждом ресторане;
+\item создать пользователей: первый должен иметь права на просмотр представления, а второй на просмотр, а также на вставку, удаление и редактирование строк в используемых для создания представления таблицах;
+\item написать функцию, которая принимает фамилию, имя и отчество и форматирует их;
+\item написать процедуру для проверки и дополнения данных в таблицах;
+\item реализовать управление транзакциями и проверить неповторяющеся чтение.
+\end{itemize}
+
+	\newpage
+	
+	\section{Создание представления}
+	
+	\subsection{Формулировка задания}
+	
+	Для каждого ингредиента посчитать число блюд, в которых он используется и посчитать число заказов этих блюд.
+	
+	\subsection{Реализация}
+
+Код для создания представления:	
+	
+\begin{minted}[
+  frame=lines,
+  framesep=2mm,
+  baselinestretch=1.2,
+  bgcolor=LightGray,
+  fontsize=\footnotesize,
+  linenos,
+  breaklines
+  ]{sql}
+CREATE OR REPLACE VIEW ingredient_view AS
+	SELECT
+    	i.id_ingredient,
+    	i.name,
+    	COUNT(DISTINCT d.id_dish) AS num_dishes,
+    	COUNT(o.id_order) AS num_orders
+	FROM
+    	ingredient i
+	LEFT JOIN
+    	ready_ingredient ri ON i.id_ingredient = ri.id_ingredient
+	LEFT JOIN
+    	dish d ON ri.id_dish = d.id_dish
+	LEFT JOIN
+    	list_of_dishes lod ON d.id_dish = lod.id_dish
+	LEFT JOIN
+		"order" o ON lod.id_order = o.id_order
+	GROUP BY
+		i.id_ingredient, i.name;
+\end{minted}
+
+Этот запрос создаёт представление \texttt{ingredient\_view}, обобщающее информацию об ингредиентах, блюдах и заказах:
+
+\begin{itemize}
+\item Для каждого ингредиента он показывает его ID и название.
+\item Считает, в скольких уникальных блюдах используется ингредиент.
+\item Определяет, в скольких уникальных заказах фигурируют эти блюда.
+\end{itemize}
+
+Данные собираются через соединение таблиц (\texttt{LEFT JOIN}), где ингредиенты связываются с блюдами, а блюда — с заказами. Результат группируется по идентификатору и названию ингредиента.
+
+	\subsection{Результат}	
+	
+\captionsetup{justification=centering}
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1]{pic1.png}
+	\caption{Таблица с представлением}
+\end{figure}
+
+Время выполнения запроса для представления: 1.704 с.
+
+	\subsection{Запрос с использованием представления}
+	
+	\subsubsection*{Запрос}
+	
+	Для каждого состояния ингредиента посчитать число блюд в которых оно используется.
+	
+\begin{minted}[
+  frame=lines,
+  framesep=2mm,
+  baselinestretch=1.2,
+  bgcolor=LightGray,
+  fontsize=\footnotesize,
+  linenos,
+  breaklines
+  ]{sql}
+SELECT
+	cnd.id_condition,
+	cnd.condition,
+	SUM(iv.num_dishes) AS number_of_dishes
+FROM
+	condition cnd
+JOIN
+	ready_ingredient ri ON cnd.id_condition = ri.id_condition
+JOIN
+	ingredient_view iv ON ri.id_ingredient = iv.id_ingredient
+GROUP BY
+	cnd.id_condition;
+\end{minted}
+
+	\subsubsection*{Объяснение запроса}
+	
+	Запрос подсчитывает общее количество блюд для каждого уникального состояния, используя данные из таблицы состояний (\texttt{condition}), связывающей их с ингредиентами (\texttt{ready\_ingredient}), и представления (\texttt{ingredient\_view}), содержащего количество блюд для каждого ингредиента.
+	
+	\subsubsection*{Результат запроса}
+	
+	Результатом является список состояний с общей суммой блюд для каждого из них (Рис. 2).
+	
+	\captionsetup{justification=centering}
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.7]{pic2.png}
+	\caption{Результат запроса с использованием представления}
+\end{figure}
+
+
+	\section{Создание триггера}
+	
+	\subsection{Формулировка задания}
+	
+	Для каждого ресторана посчитать число клиентов, которые к ним приходили, чтобы данные динамически обновлялись при добавлении или удалении клиентов в ресторане.
+	
+	\subsection{Реализация}
+	
+	Сначала необходимо создать и заполнить дополнительную таблицу, которая для каждого ресторана хранит количество клиентов, делавших в нем хоть раз заказ.
+	
+\begin{minted}[
+  frame=lines,
+  framesep=2mm,
+  baselinestretch=1.2,
+  bgcolor=LightGray,
+  fontsize=\footnotesize,
+  linenos,
+  breaklines
+  ]{sql}
+CREATE TABLE IF NOT EXISTS restaurant_clients (
+	id_restaurant integer NOT NULL,
+	"name" varchar(260),
+	address varchar(200),
+	clients_count integer NOT NULL
+);
+
+INSERT INTO restaurant_clients (id_restaurant, "name", address, clients_count)
+	SELECT 
+		restaurant.id_restaurant,
+		restaurant."name",
+		restaurant.address,
+		COALESCE(count(client_order.id_client), 0) as clients_count
+	FROM 
+		restaurant 
+		LEFT JOIN 
+		"order"
+		ON restaurant.id_restaurant = "order".id_restaurant
+		LEFT JOIN
+		client_order
+		ON "order".id_order = client_order.id_order
+		GROUP BY restaurant.id_restaurant;
+\end{minted}
+
+Этот SQL-запрос выполняет две задачи:
+
+\begin{enumerate}
+
+\item Создание таблицы:
+	
+	Создает таблицу \texttt{restaurant\_clients}, если она еще не существует, со столбцами для идентификатора ресторана, названия, адреса и количества клиентов.
+
+\item Вставка данных:
+\begin{itemize}
+
+   \item Заполняет таблицу данными, извлекая их из таблиц \texttt{restaurant}, \texttt{order} и \texttt{client\_order}.
+   \item Считает количество клиентов для каждого ресторана, основываясь на заказах, и вставляет эту информацию вместе с названием и адресом ресторана в новую таблицу.
+   
+\end{itemize}
+
+\end{enumerate}
+
+Затем создается триггер и функция, которые обрабатывают изменения в таблице \texttt{client\_order}.
+
+\begin{minted}[
+  frame=lines,
+  framesep=2mm,
+  baselinestretch=1.2,
+  bgcolor=LightGray,
+  fontsize=\footnotesize,
+  linenos,
+  breaklines
+  ]{sql}
+-- По номеру заказа получаем информацию об id ресторана, в котором он был сделан,
+-- затем увеличиваем/уменьшаем число клиентов
+CREATE OR REPLACE FUNCTION update_client_count()
+RETURNS TRIGGER
+LANGUAGE plpgsql
+AS
+$$
+DECLARE
+  restaurant_id INT;
+  client_id INT;
+  count_clients INT;
+BEGIN
+  IF TG_OP = 'INSERT' THEN
+    SELECT id_restaurant INTO restaurant_id
+    FROM "order"
+    WHERE "order".id_order = NEW.id_order;
+
+    SELECT id_client INTO client_id
+    FROM client_order
+    WHERE client_order.id_order = NEW.id_order;
+
+    -- Пересчитываем count_clients после вставки
+    SELECT COUNT(DISTINCT client_order.id_order) INTO count_clients
+    FROM client_order
+    JOIN "order" ON client_order.id_order = "order".id_order
+    WHERE "order".id_restaurant = restaurant_id AND client_order.id_client = client_id;
+    
+    IF count_clients = 1 THEN
+      -- Увеличиваем кол-во клиентов
+      UPDATE restaurant_clients
+      SET clients_count = clients_count + 1
+      WHERE id_restaurant = restaurant_id;
+    END IF;
+
+  ELSIF TG_OP = 'DELETE' THEN
+    SELECT id_restaurant INTO restaurant_id
+    FROM "order"
+    WHERE "order".id_order = OLD.id_order;
+
+    SELECT id_client INTO client_id
+    FROM client_order
+    WHERE client_order.id_order = OLD.id_order;
+
+    -- Пересчитываем count_clients после удаления
+    SELECT COUNT(DISTINCT client_order.id_order) INTO count_clients
+    FROM client_order
+    JOIN "order" ON client_order.id_order = "order".id_order
+    WHERE "order".id_restaurant = restaurant_id AND client_order.id_client = client_id;
+
+    IF count_clients = 0 THEN
+      -- Уменьшаем кол-во клиентов
+      UPDATE restaurant_clients
+      SET clients_count = clients_count - 1
+      WHERE id_restaurant = restaurant_id;
+    END IF;
+  END IF;
+
+  RETURN NULL;
+END;
+$$;
+
+-- Триггер
+CREATE OR REPLACE TRIGGER after_update_client_order
+	AFTER INSERT OR DELETE ON client_order
+	FOR EACH ROW
+	EXECUTE FUNCTION update_client_count();
+\end{minted}
+
+Этот SQL-запрос создает функцию и триггер для автоматического обновления количества клиентов в ресторане:
+
+\begin{enumerate}
+
+\item Функция \texttt{update\_client\_count} обрабатывает вставку (\texttt{INSERT}) или удаление\\ (\texttt{DELETE}) записей в таблицу \texttt{client\_order}.
+\begin{itemize}
+
+   \item При вставке: получает ID ресторана и клиента; если это первый заказ клиента в ресторане, увеличивает количество клиентов в таблице\\ \texttt{restaurant\_clients}.
+   \item При удалении: если это был единственный заказ клиента в ресторане, уменьшает количество клиентов.
+
+\end{itemize}
+\item Триггер \texttt{after\_update\_client\_order}: запускается после вставки или удаления записей в \texttt{client\_order} и активирует функцию \texttt{update\_client\_count} для соответствующей обработки.
+
+\end{enumerate}
+
+В результате автоматически поддерживается корректное количество клиентов для каждого ресторана.
+
+После этого создается функция и триггер для обработки изменений в таблице \texttt{restaurant}.
+
+\begin{minted}[
+  frame=lines,
+  framesep=2mm,
+  baselinestretch=1.2,
+  bgcolor=LightGray,
+  fontsize=\footnotesize,
+  linenos,
+  breaklines
+  ]{sql}
+CREATE OR REPLACE FUNCTION update_restaurant_clients()
+RETURNS TRIGGER
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    IF TG_OP = 'INSERT' THEN
+        -- Вставляет новую строку в restaurant_clients с числом клиентов по умолчанию равным 0
+        INSERT INTO restaurant_clients (id_restaurant, "name", address, clients_count)
+        VALUES (NEW.id_restaurant, NEW."name", NEW.address, 0);
+
+    ELSIF TG_OP = 'UPDATE' THEN
+        -- Обновляет соответствующую строку в restaurant_clients
+        UPDATE restaurant_clients
+        SET "name" = NEW."name", address = NEW.address
+        WHERE id_restaurant = OLD.id_restaurant;
+
+    ELSIF TG_OP = 'DELETE' THEN
+        -- Удаляет соответствующую строку из restaurant_clients
+        DELETE FROM restaurant_clients
+        WHERE id_restaurant = OLD.id_restaurant;
+    END IF;
+    RETURN NULL;
+END;
+$$;
+
+
+-- Триггер для вставки и удаления
+CREATE TRIGGER restaurant_clients_insert
+AFTER INSERT OR DELETE ON restaurant
+FOR EACH ROW EXECUTE FUNCTION update_restaurant_clients();
+
+-- Триггер для обновления названия или адреса ресторана
+CREATE TRIGGER restaurant_clients_update
+AFTER UPDATE OF name, address ON restaurant
+FOR EACH ROW EXECUTE FUNCTION update_restaurant_clients();
+\end{minted}
+
+Этот SQL-запрос создает функцию и триггеры для автоматического управления информацией о ресторанах и их клиентах в базе данных:
+
+\begin{enumerate}
+
+\item Функция \texttt{update\_restaurant\_clients} обрабатывает операции вставки (\texttt{INSERT}), обновления (\texttt{UPDATE}) и удаления (\texttt{DELETE}) записей в таблице \texttt{restaurant}.
+\begin{itemize}
+   
+   \item При вставке: добавляет новую запись в таблицу \texttt{restaurant\_clients} с указанием идентификатора ресторана, имени, адреса и с числом клиентов, равным 0. Это создаёт запись для нового ресторана с изначальным нулевым количеством клиентов.
+   
+   \item При обновлении: обновляет соответствующую запись в таблице\\ \texttt{restaurant\_clients} с новыми значениями имени и адреса ресторана. Это обеспечивает актуальность данных о ресторане при изменении этих полей.
+   
+   \item При удалении: удаляет запись из \texttt{restaurant\_clients}, соответствующую ресторану, который удаляется из \texttt{restaurant}. Таким образом, удалённые рестораны не будут отображаться в списке клиентов.
+
+\end{itemize}
+
+\item Триггер \texttt{restaurant\_clients\_insert}: срабатывает после вставки или удаления записей в таблице \texttt{restaurant}. Он активирует функцию\\ \texttt{update\_restaurant\_clients} для обработки соответствующих изменений.
+
+\item Триггер \texttt{restaurant\_clients\_update}: запускается после обновления полей \texttt{name} или \texttt{address} в таблице \texttt{restaurant}. Он также активирует функцию\\ \texttt{update\_restaurant\_clients} для поддержания актуальной информации в таблице \texttt{restaurant\_clients}.
+
+\end{enumerate}
+
+В результате автоматически поддерживается актуальная информация о ресторанах и их клиентах, включая добавление, обновление и удаление данных.
+
+	\subsection{Результат}
+	
+	Как можно видеть на Рис. 3, у ресторана с ID=47 clients\_count=597 (число клиентов).
+	
+\captionsetup{justification=centering}
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.7]{pic3.png}
+	\caption{Промежуточная таблица \texttt{restaurant\_clients} до добавления клиента}
+\end{figure}
+
+Затем добавим одного клиента следующим запросом:
+
+\begin{minted}[
+  frame=lines,
+  framesep=2mm,
+  baselinestretch=1.2,
+  bgcolor=LightGray,
+  fontsize=\footnotesize,
+  linenos,
+  breaklines
+  ]{sql}
+INSERT INTO client(id_client, surname, "name", patronymic, phone_number)
+	VALUES(500, 'АСТАФЬЕВ', 'ИГОРЬ', 'ЕВГЕНЬЕВИЧ', '+79999999999999');
+INSERT INTO "order"(id_order, order_type, id_restaurant) VALUES(150000, 'takeaway'::order_type, 47);
+INSERT INTO client_order(id_client_order, id_client, id_order) VALUES(30001, 500, 150000);
+\end{minted}
+
+Как можно видеть теперь на Рис. 4, в таблице для ресторана с ID=47 число клиентов увеличилось на 1.
+
+\captionsetup{justification=centering}
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.7]{pic4.png}
+	\caption{Промежуточная таблица \texttt{restaurant\_clients} после добавления клиента}
+\end{figure}
+
+Теперь удалим недавно добавленного клиента.
+
+\begin{minted}[
+  frame=lines,
+  framesep=2mm,
+  baselinestretch=1.2,
+  bgcolor=LightGray,
+  fontsize=\footnotesize,
+  linenos,
+  breaklines
+  ]{sql}
+DELETE FROM client WHERE id_client = 500;
+\end{minted}
+
+Так как включено каскадное удаление, то все связанные с данным клиентом строки в других таблицах так же удалятся, в том числе и в таблице \texttt{client\_order}. Как можно видеть на Рис. 5, количество клиентов для ресторана с ID=47 уменьшилось на 1 и снова стало 597.
+
+\captionsetup{justification=centering}
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.7]{pic5.png}
+	\caption{Промежуточная таблица \texttt{restaurant\_clients} после удаления клиента}
+\end{figure}
+
+Теперь необходимо проверить триггеры, срабатывающие при изменении в таблице \texttt{restaurant}. Добавление нового ресторана.
+
+\begin{minted}[
+  frame=lines,
+  framesep=2mm,
+  baselinestretch=1.2,
+  bgcolor=LightGray,
+  fontsize=\footnotesize,
+  linenos,
+  breaklines
+  ]{sql}
+INSERT INTO restaurant (id_restaurant, name, registration_info, address, space, capacity)
+VALUES (51, 'ГастроLAB', 'ИНН 8901234567', 'Новосибирск, ул. Ленина, д. 20', 120, 150);
+\end{minted}
+
+\captionsetup{justification=centering}
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.7]{pic6.png}
+	\caption{Промежуточная таблица \texttt{restaurant\_clients} после добавления ресторана}
+\end{figure}
+
+Как можно увидеть на Рис. 6, в таблице \texttt{restaurant\_clients} появилась новая строка с добавленным рестораном. Теперь изменим название ресторана с ID=4, который как видно на Рис. 6, называется <<Кафе на речном>>.
+
+\begin{minted}[
+  frame=lines,
+  framesep=2mm,
+  baselinestretch=1.2,
+  bgcolor=LightGray,
+  fontsize=\footnotesize,
+  linenos,
+  breaklines
+  ]{sql}
+UPDATE restaurant
+SET name = 'Вкусный берег'
+WHERE id_restaurant = 4;
+\end{minted}
+
+После изменения названия ресторана на <<Вкусный берег>> в таблице\\ \texttt{restaurant\_clients} название так же помеялось, что можно увидеть на Рис. 7.
+
+\captionsetup{justification=centering}
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.7]{pic7.png}
+	\caption{Промежуточная таблица \texttt{restaurant\_clients} после изменения названия ресторана}
+\end{figure}
+
+Теперь удалим ресторан, который до этого был добавлен (ID=51).
+
+\begin{minted}[
+  frame=lines,
+  framesep=2mm,
+  baselinestretch=1.2,
+  bgcolor=LightGray,
+  fontsize=\footnotesize,
+  linenos,
+  breaklines
+  ]{sql}
+DELETE FROM restaurant WHERE id_restaurant = 51;
+\end{minted}
+
+Как можно видеть на Рис. 8 в таблице \texttt{restaurant\_clients} больше нет ресторана с ID=51.
+
+\captionsetup{justification=centering}
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.7]{pic8.png}
+	\caption{Промежуточная таблица \texttt{restaurant\_clients} после удаления ресторана}
+\end{figure}
+
+Для демонстрации наличия триггеров на Рис. 9 представлены триггеры из таблицы \texttt{information\_schema}, которая содержит метаинформацию о базе данных. Чтобы увидеть эти данные, необходимо выполнить следующий запрос:
+
+\begin{minted}[
+  frame=lines,
+  framesep=2mm,
+  baselinestretch=1.2,
+  bgcolor=LightGray,
+  fontsize=\footnotesize,
+  linenos,
+  breaklines
+  ]{sql}
+SELECT
+	trigger_name,
+	event_object_table,
+	event_manipulation,
+	action_statement
+FROM information_schema.triggers;
+\end{minted}
+
+\captionsetup{justification=centering}
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.6]{pic9.png}
+	\caption{Триггер в таблице \texttt{information\_schema}}
+\end{figure}
+
+Как можно видеть, для таблицы \texttt{client\_order} существует триггер на события \texttt{INSERT} и \texttt{DELETE}, при срабатывании которого выполняется функция\\ \texttt{update\_client\_count()}, для таблицы \texttt{restaurant} - триггер на события \texttt{INSERT}, \texttt{DELETE} и \texttt{UPDATE}, при срабатывании которых выполняется функция\\ \texttt{update\_restaurant\_clients()}.
+
+	\section{Создание пользователей и разделение прав}
+	
+	\subsection{Формулировка задания}
+	
+	Создать двух пользователей, один из которых имеет право на просмотр созданного представления \texttt{ingredients\_view}, а второй на просмотр texttt{ingredients\_view} а также просмотр, вставку, удаление и редактирование строк в таблицах, используемых для создания этого представления.
+	
+	\subsection{Реализация}
+	
+\begin{minted}[
+  frame=lines,
+  framesep=2mm,
+  baselinestretch=1.2,
+  bgcolor=LightGray,
+  fontsize=\footnotesize,
+  linenos,
+  breaklines
+  ]{sql}
+-- Создание пользователя butters и назначение прав
+CREATE USER butters WITH PASSWORD '1234';
+GRANT SELECT ON ingredient_view TO butters;
+
+-- Создание пользователя cartman и назначение прав
+CREATE USER cartman WITH PASSWORD '1234';
+GRANT SELECT, INSERT, DELETE, UPDATE ON ingredient TO cartman;
+GRANT SELECT, INSERT, DELETE, UPDATE ON "order" TO cartman;
+GRANT SELECT, INSERT, DELETE, UPDATE ON ready_ingredient TO cartman;
+GRANT SELECT, INSERT, DELETE, UPDATE ON dish TO cartman;
+GRANT SELECT, INSERT, DELETE, UPDATE ON list_of_dishes TO cartman;
+GRANT SELECT ON ingredient_view TO cartman;
+\end{minted}
+
+В данном запросе:
+
+\begin{itemize}
+    \item Создаётся пользователь \texttt{butters} с паролем, предоставляется право на чтение из \texttt{ingredient\_view}.
+    \item Создаётся пользователь \texttt{cartman} с полными правами (чтение, вставка, удаление, обновление) на таблицы \texttt{ingredient}, \texttt{order}, \texttt{ready\_ingredient}, \texttt{dish},\\ \texttt{list\_of\_dishes} и правом на чтение из \texttt{ingredient\_view}.
+\end{itemize}
+
+	\subsection{Результат}
+	
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	
+\begin{table}[H]
+
+    \centering
+    \begin{tabular}{|c|p{8cm}|p{8cm}|}
+    
+        \hline
+        \textbf{№} & \textbf{butters} & \textbf{cartman} \\
+        
+        \hline
+        
+        1 & \multicolumn{2}{|l|}{Выборка всех записей из \texttt{ingredient\_view}} \\
+        \cline{2-3}
+          & \multicolumn{2}{|l|}{\texttt{SELECT * FROM ingredient\_view}} \\
+        \cline{2-3}
+          & \raisebox{-\totalheight}{\includegraphics[height=1.9cm]{view_select_butters.png}} & 
+            \raisebox{-\totalheight}{\includegraphics[height=1.9cm]{view_select_cartman.png}} \\
+          
+        \hline
+        
+        2 & \multicolumn{2}{|l|}{Выборка всех записей из \texttt{ingredient}} \\
+        \cline{2-3}
+          & \multicolumn{2}{|l|}{\texttt{SELECT * FROM ingredient}} \\
+        \cline{2-3}
+          & \raisebox{-\totalheight}{\includegraphics[height=2cm]{ingredient_select_butters.png}} & 
+            \raisebox{-\totalheight}{\includegraphics[height=3.1cm]{ingredient_select_cartman.png}}  \\
+          
+		\hline
+        
+        3 & \multicolumn{2}{|l|}{Выборка всех записей из \texttt{order}} \\
+        \cline{2-3}
+          & \multicolumn{2}{|l|}{\texttt{SELECT * FROM "order"}} \\
+        \cline{2-3}
+          & \raisebox{-\totalheight}{\includegraphics[height=2cm]{order_select_butters.png}} & 
+            \raisebox{-\totalheight}{\includegraphics[height=2.8cm]{order_select_cartman.png}}  \\
+            
+		\hline
+		
+		4 & \multicolumn{2}{|l|}{Выборка всех записей из \texttt{ready\_ingredient}} \\
+        \cline{2-3}
+          & \multicolumn{2}{|l|}{\texttt{SELECT * FROM ready\_ingredient}} \\
+        \cline{2-3}
+          & \raisebox{-\totalheight}{\includegraphics[height=1.7cm]{ri_select_butters.png}} & 
+            \raisebox{-\totalheight}{\includegraphics[height=2.1cm]{ri_select_cartman.png}}  \\
+            
+		\hline
+		
+		5 & \multicolumn{2}{|l|}{Выборка всех записей из \texttt{dish}} \\
+        \cline{2-3}
+          & \multicolumn{2}{|l|}{\texttt{SELECT * FROM dish}} \\
+        \cline{2-3}
+          & \raisebox{-\totalheight}{\includegraphics[height=2cm]{dish_select_butters.png}} & 
+            \raisebox{-\totalheight}{\includegraphics[height=1cm]{dish_select_cartman.png}}  \\
+            
+		\hline
+
+	\end{tabular}
+
+\end{table}
+
+\begin{table}[H]
+
+    \centering
+    \begin{tabular}{|c|p{8cm}|p{8cm}|}
+    
+        \hline
+        \textbf{№} & \textbf{butters} & \textbf{cartman} \\
+        
+        \hline
+		
+		6 & \multicolumn{2}{|l|}{Выборка всех записей из \texttt{list\_of\_dishes}} \\
+        \cline{2-3}
+          & \multicolumn{2}{|l|}{\texttt{SELECT * FROM list\_of\_dishes}} \\
+        \cline{2-3}
+          & \raisebox{-\totalheight}{\includegraphics[height=1.7cm]{ld_select_butters.png}} & 
+            \raisebox{-\totalheight}{\includegraphics[height=2.8cm]{ld_select_cartman.png}}  \\
+            
+		\hline
+		
+		7 & \multicolumn{2}{|l|}{Вставка строки в \texttt{ingredient}} \\
+        \cline{2-3}
+          & \multicolumn{2}{|l|}{
+          \makecell[l]{\texttt{INSERT INTO ingredient (id\_ingredient, name)} \\ \texttt{VALUES (61, Мясо лягушки);}}
+		  } \\
+        \cline{2-3}
+          & \raisebox{-\totalheight}{\includegraphics[height=2cm]{ingredient_select_butters.png}} & 
+            \raisebox{-\totalheight}{\includegraphics[height=3.1cm]{ingredient_insert_cartman.png}}  \\
+            
+		\hline
+		
+		8 & \multicolumn{2}{|l|}{Вставка строки в \texttt{order}} \\
+        \cline{2-3}
+          & \multicolumn{2}{|l|}{
+          \makecell[l]{\texttt{INSERT INTO "order" (id\_order, order\_type, id\_restaurant)} \\ \texttt{VALUES (30002, 'in\_hall'::order\_type, 3);}}
+          } \\
+        \cline{2-3}
+          & \raisebox{-\totalheight}{\includegraphics[height=2cm]{order_select_butters.png}} & 
+            \raisebox{-\totalheight}{\includegraphics[height=3.1cm]{order_insert_cartman.png}}  \\
+            
+		\hline
+		
+		9 & \multicolumn{2}{|l|}{Вставка строки в \texttt{ready\_ingredient}} \\
+        \cline{2-3}
+          & \multicolumn{2}{|l|}{
+          \makecell[l]{\texttt{INSERT INTO ready\_ingredient (id\_ready\_ingredient, id\_condition,}\\
+          \texttt{id\_ingredient, id\_dish)} \\ \texttt{VALUES (126, 1, 1, 1);}}
+          } \\
+        \cline{2-3}
+          & \raisebox{-\totalheight}{\includegraphics[height=1.7cm]{ri_select_butters.png}} & 
+            \raisebox{-\totalheight}{\includegraphics[height=2cm]{ri_insert_cartman.png}}  \\
+            
+		\hline
+		
+	\end{tabular}
+	
+\end{table}
+
+\begin{table}[H]
+
+    \centering
+    \begin{tabular}{|c|p{8cm}|p{8cm}|}
+    
+    \hline
+        \textbf{№} & \textbf{butters} & \textbf{cartman} \\
+        
+	\hline
+	
+		10 & \multicolumn{2}{|l|}{Вставка строки в \texttt{dish}} \\
+        \cline{2-3}
+          & \multicolumn{2}{|l|}{
+          \makecell[l]{\texttt{INSERT INTO dish (id\_dish, name, price, weight, proteins, fats,}\\
+          \texttt{carbohydrates, calories)} \\ \texttt{VALUES (51, 'Мясо по-французски', 1234, 100, 1, 2, 3, 100);}}
+          } \\
+        \cline{2-3}
+          & \raisebox{-\totalheight}{\includegraphics[height=2cm]{dish_select_butters.png}} & 
+            \raisebox{-\totalheight}{\includegraphics[height=1cm]{dish_insert_cartman.png}}  \\
+            
+		\hline
+		
+		11 & \multicolumn{2}{|l|}{Вставка строки в \texttt{list\_of\_dishes}} \\
+        \cline{2-3}
+          & \multicolumn{2}{|l|}{
+          \makecell[l]{\texttt{INSERT INTO list\_of\_dishes (id\_list\_of\_dishes, id\_dish,} \\
+          \texttt{id\_order)} \\ \texttt{VALUES (254873, 1, 2);}}
+          } \\
+        \cline{2-3}
+          & \raisebox{-\totalheight}{\includegraphics[height=1.7cm]{ld_select_butters.png}} & 
+            \raisebox{-\totalheight}{\includegraphics[height=2.8cm]{ld_insert_cartman.png}}  \\
+            
+		\hline
+		
+		12 & \multicolumn{2}{|l|}{Удаление из \texttt{ingredient}} \\
+        \cline{2-3}
+          & \multicolumn{2}{|l|}{\texttt{DELETE FROM ingredient WHERE id\_ingredient = 61;}} \\
+        \cline{2-3}
+          & \raisebox{-\totalheight}{\includegraphics[height=2cm]{ingredient_select_butters.png}} & 
+            \raisebox{-\totalheight}{\includegraphics[height=2.9cm]{ingredient_delete_cartman.png}}  \\
+            
+		\hline
+		
+		13 & \multicolumn{2}{|l|}{Удаление из \texttt{order}} \\
+        \cline{2-3}
+          & \multicolumn{2}{|l|}{\texttt{DELETE FROM "order" WHERE id\_order = 30002;}} \\
+        \cline{2-3}
+          & \raisebox{-\totalheight}{\includegraphics[height=2cm]{order_select_butters.png}} & 
+            \raisebox{-\totalheight}{\includegraphics[height=3cm]{order_delete_cartman.png}}  \\
+            
+		\hline
+
+	\end{tabular}
+
+\end{table}
+
+\begin{table}[H]
+
+    \centering
+    \begin{tabular}{|c|p{8cm}|p{8cm}|}
+    
+    \hline
+        \textbf{№} & \textbf{butters} & \textbf{cartman} \\
+        
+	\hline
+	
+	14 & \multicolumn{2}{|l|}{Удаление из \texttt{ready\_ingredient}} \\
+    \cline{2-3}
+      & \multicolumn{2}{|l|}{\texttt{DELETE FROM ready\_ingredient WHERE id\_ready\_ingredient = 126;}} \\
+     \cline{2-3}
+       & \raisebox{-\totalheight}{\includegraphics[height=1.7cm]{ri_select_butters.png}} & 
+         \raisebox{-\totalheight}{\includegraphics[height=2.3cm]{ri_delete_cartman.png}}  \\
+            
+		\hline
+		
+	15 & \multicolumn{2}{|l|}{Удаление из \texttt{dish}} \\
+    \cline{2-3}
+      & \multicolumn{2}{|l|}{\texttt{DELETE FROM dish WHERE id\_dish = 51;}} \\
+    \cline{2-3}
+      & \raisebox{-\totalheight}{\includegraphics[height=2cm]{dish_select_butters.png}} & 
+        \raisebox{-\totalheight}{\includegraphics[height=1.5cm]{dish_delete_cartman.png}}  \\
+            
+		\hline
+
+		16 & \multicolumn{2}{|l|}{Удаление из \texttt{list\_of\_dishes}} \\
+        \cline{2-3}
+          & \multicolumn{2}{|l|}{DELETE FROM list\_of\_dishes WHERE id\_list\_of\_dishes = 254873;} \\
+        \cline{2-3}
+          & \raisebox{-\totalheight}{\includegraphics[height=1.7cm]{ld_select_butters.png}} & 
+            \raisebox{-\totalheight}{\includegraphics[height=2.3cm]{ld_delete_cartman.png}}  \\
+            
+		\hline
+		
+		17 & \multicolumn{2}{|l|}{Обновление данных \texttt{ingredient}} \\
+        \cline{2-3}
+          & \multicolumn{2}{|l|}{\texttt{UPDATE ingredient SET name = 'Баклажан' WHERE id\_ingredient = 1;}} \\
+        \cline{2-3}
+          & \raisebox{-\totalheight}{\includegraphics[height=2cm]{ingredient_select_butters.png}} & 
+            \raisebox{-\totalheight}{\includegraphics[height=2.9cm]{ingredient_update_cartman.png}}  \\
+            
+		\hline
+		
+		18 & \multicolumn{2}{|l|}{Обновление данных \texttt{order}} \\
+        \cline{2-3}
+          & \multicolumn{2}{|l|}{
+          \makecell[l]{\texttt{UPDATE "order" SET order\_type = 'in\_hall'::order\_type} \\ \texttt{WHERE id\_order = 1;}}
+          } \\
+        \cline{2-3}
+          & \raisebox{-\totalheight}{\includegraphics[height=2cm]{order_select_butters.png}} & 
+            \raisebox{-\totalheight}{\includegraphics[height=2.7cm]{order_update_cartman.png}}  \\
+            
+		\hline
+	
+	\end{tabular}
+
+\end{table}
+
+\begin{table}[H]
+
+    \centering
+    \begin{tabular}{|c|p{8cm}|p{8cm}|}
+    
+    \hline
+        \textbf{№} & \textbf{butters} & \textbf{cartman} \\
+        
+	\hline
+	
+	19 & \multicolumn{2}{|l|}{Обновление данных \texttt{ready\_ingredient}} \\
+    \cline{2-3}
+      & \multicolumn{2}{|l|}{
+      \makecell[l]{\texttt{UPDATE ready\_ingredient SET id\_ingredient = 1} \\ \texttt{WHERE id\_ready\_ingredient = 1;}}
+      } \\
+     \cline{2-3}
+       & \raisebox{-\totalheight}{\includegraphics[height=1.7cm]{ri_select_butters.png}} & 
+         \raisebox{-\totalheight}{\includegraphics[height=2cm]{ri_update_cartman.png}}  \\
+            
+		\hline
+		
+	20 & \multicolumn{2}{|l|}{Обновление данных \texttt{dish}} \\
+    \cline{2-3}
+      & \multicolumn{2}{|l|}{\texttt{UPDATE dish SET name = 'Сибирский бургер' WHERE id\_dish = 1;}} \\
+    \cline{2-3}
+      & \raisebox{-\totalheight}{\includegraphics[height=2cm]{dish_select_butters.png}} & 
+        \raisebox{-\totalheight}{\includegraphics[height=1cm]{dish_update_cartman.png}}  \\
+            
+		\hline
+		
+		21 & \multicolumn{2}{|l|}{Обновление данных \texttt{list\_of\_dishes}} \\
+        \cline{2-3}
+          & \multicolumn{2}{|l|}{
+          \makecell[l]{\texttt{UPDATE list\_of\_dishes SET id\_dish = 1} \\ \texttt{WHERE id\_list\_of\_dishes = 1;}}
+          } \\
+        \cline{2-3}
+          & \raisebox{-\totalheight}{\includegraphics[height=1.7cm]{ld_select_butters.png}} & 
+            \raisebox{-\totalheight}{\includegraphics[height=2.7cm]{ld_update_cartman.png}}  \\
+            
+		\hline
+		
+		22 & \multicolumn{2}{|l|}{Выборка всех записей из \texttt{client}} \\
+        \cline{2-3}
+          & \multicolumn{2}{|l|}{\texttt{SELECT * FROM client;}} \\
+        \cline{2-3}
+          & \raisebox{-\totalheight}{\includegraphics[height=1.7cm]{client_select_butters.png}} & 
+            \raisebox{-\totalheight}{\includegraphics[height=1.7cm]{client_select_butters.png}}  \\
+            
+		\hline
+        
+    \end{tabular}
+    \caption{Таблица прав пользователей}
+    
+\end{table}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+	\section{Создание функции}
+	
+	\subsection{Формулировка задания}
+	
+	Для фамилии, имени и отчества, передаваемых в формате строк, вернуть строку в формате <<И. О. Фамилия>>. Если отчества нет (пустая строка или значение \texttt{NULL}), то вернуть строку формата <<И. Фамилия>>.
+	
+	\subsection{Реализация}
+	
+\begin{minted}[
+  frame=lines,
+  framesep=2mm,
+  baselinestretch=1.2,
+  bgcolor=LightGray,
+  fontsize=\footnotesize,
+  linenos,
+  breaklines
+  ]{sql}
+CREATE FUNCTION get_initials_with_surname(surname varchar(30),
+					  name varchar(30),
+					  patronymic varchar(30))
+RETURNS varchar(36) AS $$
+BEGIN
+	IF patronymic IS NULL OR patronymic = '' THEN
+		RETURN substring(name for 1) || '. ' || surname;
+	ELSE
+		RETURN substring(name for 1) || '. ' || substring(patronymic for 1) || '. ' || surname;
+	END IF;
+END$$ LANGUAGE plpgsql;
+\end{minted}
+
+Функция принимает три аргумента: surname (фамилия), name (имя) и patronymic (отчество), каждый из которых имеет тип \texttt{varchar(30)}.
+
+Функция возвращает строку (\texttt{varchar(36)}) и работает следующим образом:
+
+\begin{enumerate}
+
+\item Проверяет, является ли отчество (patronymic) пустым или равным \texttt{NULL}.
+\item Если отчество отсутствует или пустое, функция возвращает строку, состоящую из первой буквы имени (name), точки, пробела и фамилии (surname).
+\item Если отчество присутствует, функция возвращает строку, состоящую из первой буквы имени, точки, пробела, первой буквы отчества, точки и фамилии.
+\item Инициалы имени и отчества, а также фамилия объединяются в одну строку с помощью операции конкатенации.
+
+\end{enumerate}
+
+Таким образом, функция формирует строку из инициалов и фамилии, в зависимости от наличия отчества.
+
+	\subsection{Результат}
+	
+	Работу функции можно проверить выполнив следующий запрос, который для каждого клиента из таблицы client выводит его фамилию с инициалами и номер телефона.
+	
+\begin{minted}[
+  frame=lines,
+  framesep=2mm,
+  baselinestretch=1.2,
+  bgcolor=LightGray,
+  fontsize=\footnotesize,
+  linenos,
+  breaklines
+  ]{sql}
+SELECT
+	get_initials_with_surname(surname, name, patronymic) AS "ФИО",
+	phone_number AS "Тел. номер"
+FROM client;
+\end{minted}
+
+	На Рис. 10 представлен результат выполнения этого запроса, использующего функцию.
+	
+\captionsetup{justification=centering}
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.7]{function_success_result.png}
+	\caption{Таблица client с преобразованными фамилией, именем и отчеством}
+\end{figure}
+
+	Для строк, в которых у клиента отсутствует отчество, следующий запрос так же будет корректно работать. Результат продемонстрирован на Рис. 11.
+	
+\begin{minted}[
+  frame=lines,
+  framesep=2mm,
+  baselinestretch=1.2,
+  bgcolor=LightGray,
+  fontsize=\footnotesize,
+  linenos,
+  breaklines
+  ]{sql}
+SELECT
+	get_initials_with_surname(surname, name, patronymic) AS "ФИО",
+	phone_number AS "Тел. номер"
+FROM client
+WHERE client.patronymic = '';
+\end{minted}
+
+\captionsetup{justification=centering}
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.7]{function_success_result2.png}
+	\caption{Строки таблицы client с преобразованными фамилией, именем и отсутствующим отчеством}
+\end{figure}
+
+	Неправильное применении функции, например, при попытке вызвать функцию используя другую таблицу, то есть с некорректными для функции данными, приведет к ошибке. Можно попробовать выполнить следующий запрос.
+	
+\begin{minted}[
+  frame=lines,
+  framesep=2mm,
+  baselinestretch=1.2,
+  bgcolor=LightGray,
+  fontsize=\footnotesize,
+  linenos,
+  breaklines
+  ]{sql}
+SELECT
+	get_initials_with_surname(surname, name, patronymic) AS "ФИО"
+FROM dish;
+\end{minted}
+
+	Однако запрос вызовет ошибку, которая продемонстрирована на Рис. 12.
+	
+\captionsetup{justification=centering}
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.7]{function_failure_result.png}
+	\caption{Ошибка при некорректном вызове функции get\_initials\_with\_surname()}
+\end{figure}
+
+	\section{Создание процедуры}
+	
+	\subsection{Формулировка задания}
+	
+	Написать запрос, который выполняет проверку наличия данных в нескольких таблицах на основе переданных параметров:
+	\begin{itemize}
+	\item Наименование ресторана, адрес и номер свидетельства о регистрации должны соответствовать записи в таблице \texttt{restaurant}.
+	\item Название ингредиента должно присутствовать в таблице \texttt{ingredient}.
+	\item Количество указанного ингредиента на складе в указанном ресторане в таблице \texttt{ingredient\_in\_storage} должно принять новое передаваемое значение.
+	\end{itemize}
+	
+	При отсутствии ресторана с данными параметрами, добавить запись в таблицу \texttt{restaurant}, при отсутствии ингредиента с данным названием, добавить запись в соответствующую таблицу. При отсутствии на складе строки с указанными рестораном и ингредиентом, добавить запись в таблицу \texttt{ingredient\_in\_storage}.
+	
+	\subsection{Реализация}
+	
+\begin{minted}[
+  frame=lines,
+  framesep=2mm,
+  baselinestretch=1.2,
+  bgcolor=LightGray,
+  fontsize=\footnotesize,
+  linenos,
+  breaklines
+  ]{sql}
+CREATE OR REPLACE PROCEDURE upsert_restaurant_ingredient(
+    restaurant_name TEXT, 
+    restaurant_address TEXT, 
+    restaurant_registration_info TEXT, 
+    ingredient_name TEXT, 
+    ingredient_amount INT
+)
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    restaurant_id INT;
+    ingredient_id INT;
+    storage_id INT;
+BEGIN
+    -- Get or insert restaurant
+    SELECT id_restaurant INTO restaurant_id 
+    FROM restaurant 
+    WHERE name = restaurant_name AND address = restaurant_address AND registration_info = restaurant_registration_info;
+
+    IF restaurant_id IS NULL THEN
+		LOCK TABLE restaurant IN EXCLUSIVE MODE;
+        SELECT max(id_restaurant) + 1 INTO restaurant_id FROM restaurant;
+        INSERT INTO restaurant (id_restaurant, name, address, registration_info, space, capacity)
+        VALUES (restaurant_id, restaurant_name, restaurant_address, restaurant_registration_info, DEFAULT, DEFAULT);
+    END IF;
+
+    -- Get or insert ingredient
+    SELECT id_ingredient INTO ingredient_id 
+    FROM ingredient 
+    WHERE name = ingredient_name;
+
+    IF ingredient_id IS NULL THEN
+		LOCK TABLE ingredient IN EXCLUSIVE MODE;
+        SELECT max(id_ingredient) + 1 INTO ingredient_id FROM ingredient;
+        INSERT INTO ingredient (id_ingredient, name)
+        VALUES (ingredient_id, ingredient_name);
+    END IF;
+
+    -- Get or insert/update ingredient_in_storage
+    SELECT id_ingredient_in_storage INTO storage_id
+    FROM ingredient_in_storage 
+    WHERE id_ingredient = ingredient_id AND id_restaurant = restaurant_id;
+
+    IF storage_id IS NULL THEN
+		LOCK TABLE ingredient_in_storage IN EXCLUSIVE MODE;
+        SELECT max(id_ingredient_in_storage) + 1 INTO storage_id FROM ingredient_in_storage;
+        INSERT INTO ingredient_in_storage (id_ingredient_in_storage, amount, id_restaurant, id_ingredient)
+        VALUES (storage_id, ingredient_amount, restaurant_id, ingredient_id);
+    ELSE
+        UPDATE ingredient_in_storage 
+        SET amount = ingredient_amount 
+        WHERE id_ingredient_in_storage = storage_id;
+    END IF;
+    
+END;
+$$;
+\end{minted}
+
+	Процедура \texttt{upsert\_restaurant\_ingredient()} выполняет операцию <<UPSERT>> \\(вставка или обновление) для данных о ресторанах, ингредиентах и их наличии на складе. Она принимает параметры: restaurant\_name - имя ресторана, restaurant\_address - адрес ресторана, restaurant\_registration\_info - регистрационную информацию, ingredient \_name - название ингредиента, ingredient\_amount - количество ингредиента на складе. ingredient\_amount имеет тип \texttt{INT}, остальные тип \texttt{TEXT}.
+
+	Сначала проверяет наличие ресторана в таблице \texttt{restaurant}: если нет, добавляет новую запись с автоинкрементом ID. Потом проверяет наличие ингредиента в таблице \texttt{ingredient}: если его нет, создает новый. Наконец, проверяет таблицу \texttt{ingredient\_in \_storage}: если записи о данном ингредиенте в этом ресторане нет, вставляется новая с количеством, иначе количество обновляется.
+	
+	Так как столбец \texttt{id\_client} использует тип данных \texttt{integer}, а в PostgreSQL не поддерживается автоматическая инкрементация данного типа, то при вставке строк используется встроенная функция max(), которая находит максимальный id в таблице клиент и записывает результат функции плюс один записывается в переменную. Переменная является новым id и используется для последующей вставки строки в таблицу. Однако может возникнуть ситуация, когда между поиском id и вставкой новой строки может вклиниться другая транзакция, выполняющая ту же процедуру, и добавить новую строку, так что найденный id не будет соответствовать ожидаемому, и процедура сработает неправильно или вызовет ошибку. Для обеспечения целостности данных и предотвращения конкурентного изменения таблиц, процедура использует блокировки таблиц: таблицы \texttt{restaurant}, \texttt{ingredient}, \texttt{ingredient\_in\_storage} блокируется в режиме \texttt{EXCLUSIVE MODE} перед проверкой и вставкой строки.
+
+	\subsection{Результат}
+	
+	Данную процедуру можно использовать для быстрой вставки ресторана, ингредиента, а также обновления количества заданного ингредиента в указанном ресторане. 
+	
+	\subsubsection*{1 вариант использования}
+	
+	Так, следующий запрос добавит новый ресторан <<Пельменная>> с указанными характеристиками в таблицу \texttt{restaurant} (Рис. 13), новый ингредиент <<Фарш свинина-говядина>> в таблицу \texttt{ingredient} (Рис. 14), а так же создаст запись для данного ресторана и ингредиента с количеством 100 в таблице \texttt{ingredient\_in\_storage} (Рис. 15).
+	
+\begin{minted}[
+  frame=lines,
+  framesep=2mm,
+  baselinestretch=1.2,
+  bgcolor=LightGray,
+  fontsize=\footnotesize,
+  linenos,
+  breaklines
+  ]{sql}
+CALL upsert_restaurant_ingredient(
+	'Пельменная',
+	'Самара, ул. Ленина, д. 10',
+	'ИНН 0123456789',
+	'Фарш свинина-говядина',
+	100
+);
+\end{minted}
+
+\captionsetup{justification=centering}
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.6]{procedure_restaurant.png}
+	\caption{Добавленная запись в таблицу \texttt{restaurant}}
+\end{figure}
+
+\captionsetup{justification=centering}
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.7]{procedure_ingredient.png}
+	\caption{Добавленная запись в таблицу \texttt{ingredient}}
+\end{figure}
+
+\captionsetup{justification=centering}
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.7]{procedure_storage.png}
+	\caption{Добавленная запись в таблицу \texttt{ingredient\_in\_storage}}
+\end{figure}
+
+\subsubsection*{2 вариант использования}
+
+	Следующий запрос добавит запись в таблицу \texttt{restaurant} (Рис. 16), а так же строку в таблицу \texttt{ingredient\_in\_storage} (Рис. 17), таблица \texttt{ingredient} останется прежней, так как ингредиент <<Фарш свинина-говядина>> уже присутствует в ней.
+	
+\begin{minted}[
+  frame=lines,
+  framesep=2mm,
+  baselinestretch=1.2,
+  bgcolor=LightGray,
+  fontsize=\footnotesize,
+  linenos,
+  breaklines
+  ]{sql}
+CALL upsert_restaurant_ingredient(
+	'Закусочная Весла',
+	'Краснодар, ул. Восточная, д. 21',
+	'ИНН 1234567890',
+	'Фарш свинина-говядина',
+	100
+);
+\end{minted}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.6]{procedure_restaurant2.png}
+	\caption{Добавленная запись в таблицу \texttt{restaurant}}
+\end{figure}
+
+\captionsetup{justification=centering}
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.7]{procedure_storage2.png}
+	\caption{Добавленная запись в таблицу \texttt{ingredient\_in\_storage}}
+\end{figure}
+
+	\subsubsection*{3 вариант использования}
+
+	Следующий запрос добавит запись в таблицу \texttt{ingredient} (Рис. 18), а так же строку в таблицу \texttt{ingredient\_in\_storage} (Рис. 19), таблица \texttt{restaurant} останется прежней, так как ресторан <<Закусочная Весла>> с регистрацией <<ИНН 1234567890>> по адресу <<Краснодар, ул. Восточная, д. 21>> уже присутствует в ней.
+	
+\begin{minted}[
+  frame=lines,
+  framesep=2mm,
+  baselinestretch=1.2,
+  bgcolor=LightGray,
+  fontsize=\footnotesize,
+  linenos,
+  breaklines
+  ]{sql}
+CALL upsert_restaurant_ingredient(
+	'Закусочная Весла',
+	'Краснодар, ул. Восточная, д. 21',
+	'ИНН 1234567890',
+	'Желатин сухой пищевой',
+	111
+);
+\end{minted}
+
+\captionsetup{justification=centering}
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.7]{procedure_ingredient3.png}
+	\caption{Добавленная запись в таблицу \texttt{ingredient}}
+\end{figure}
+
+\captionsetup{justification=centering}
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.7]{procedure_storage3.png}
+	\caption{Добавленная запись в таблицу \texttt{ingredient\_in\_storage}}
+\end{figure}
+
+	\subsubsection*{4 вариант использования}
+	
+	Следующий запрос обновит количество ингредиентов в таблице \texttt{ingredient\_in\_storage} (Рис. 20), для указанных ингредиента и ресторана.
+	
+\begin{minted}[
+  frame=lines,
+  framesep=2mm,
+  baselinestretch=1.2,
+  bgcolor=LightGray,
+  fontsize=\footnotesize,
+  linenos,
+  breaklines
+  ]{sql}
+CALL upsert_restaurant_ingredient(
+	'Закусочная Весла',
+	'Краснодар, ул. Восточная, д. 21',
+	'ИНН 1234567890',
+	'Желатин сухой пищевой',
+	222
+);
+\end{minted}
+
+\captionsetup{justification=centering}
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.7]{procedure_storage4.png}
+	\caption{Обновленная запись в таблице \texttt{ingredient\_in\_storage}}
+\end{figure}
+
+	\section{Использование транзакций}
+	
+	\subsection{Формулировка задания}
+	
+	Необходимо задать уровень изоляции транзакций \texttt{READ COMMITTED} и выполнить проверку неповторяющегося чтения.
+	
+	\subsection{Реализация и результат}
+	
+	\begin{table}[H]
+\begin{center}
+\begin{tabular} {|p{0.5cm}|p{5cm}|p{5cm}|}
+\hline
+№ & {Транзакция 1} & {Транзакция 2} \\
+\hline
+\multirow{2}{*}{\(t_1\)} & \multicolumn{2}{c|}{Установка уровня изоляции и начало транзакции 1} \\
+\cline{2-3}
+            & \multicolumn{1}{l|}{\texttt{BEGIN TRANSACTION ISOLATION}}  & \multicolumn{1}{c|}{} \\
+            & \multicolumn{1}{l|}{\texttt{LEVEL READ COMMITTED;}}  & \multicolumn{1}{c|}{} \\
+            & \multicolumn{1}{c|}{\includegraphics[scale=1]{begin_transaction.png}} & \multicolumn{1}{c|}{} \\
+\hline
+\multirow{2}{*}{\(t_2\)} & \multicolumn{2}{c|}{Установка уровня изоляции и начало транзакции 2} \\
+\cline{2-3}
+            & \multicolumn{1}{c|}{} & \multicolumn{1}{l|}{\texttt{BEGIN TRANSACTION ISOLATION}} \\
+            & \multicolumn{1}{c|}{} & \multicolumn{1}{l|}{\texttt{LEVEL READ COMMITTED;}} \\
+            & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{\includegraphics[scale=1]{begin_transaction.png}} \\
+\hline
+\multirow{5}{*}{\(t_3\)} & \multicolumn{2}{c|}{Чтение данных из таблицы client} \\
+\cline{2-3}
+            & \multicolumn{1}{l|}{\texttt{SELECT * FROM client}} & \multicolumn{1}{c|}{} \\
+             & \multicolumn{1}{l|}{\texttt{WHERE name = 'ИРИНА'}} & \multicolumn{1}{c|}{} \\
+              & \multicolumn{1}{l|}{\texttt{AND surname = 'АБАЛКИНА';}} & \multicolumn{1}{c|}{} \\
+            & \multicolumn{1}{c|}{\includegraphics[scale=0.35]{transaction1_read1.png}} & \multicolumn{1}{c|}{} \\
+\hline
+\multirow{3}{*}{\(t_4\)} & \multicolumn{2}{c|}{Изменение отчества (\texttt{patronymic}) клиента в таблице client} \\
+\cline{2-3}
+            & \multicolumn{1}{c|}{} & \multicolumn{1}{l|}{\texttt{UPDATE client}} \\
+             & \multicolumn{1}{c|}{} & \multicolumn{1}{l|}{\texttt{SET patronymic = 'АРТЕМОВНА'}} \\
+             & \multicolumn{1}{c|}{} & \multicolumn{1}{l|}{\texttt{WHERE name = 'ИРИНА'}} \\
+             & \multicolumn{1}{c|}{} & \multicolumn{1}{l|}{\texttt{AND surname = 'АБАЛКИНА';}} \\
+             & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{\includegraphics[scale=1]{transaction2_update.png}} \\
+\hline
+
+\end{tabular}
+\end{center}
+\end{table}
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular} {|p{0.5cm}|p{5cm}|p{5cm}|}
+\hline
+№ & {Первая транзакция} & {Вторая транзакция} \\
+\hline
+\multirow{2}{*}{\(t_5\)} & \multicolumn{2}{c|}{Cохранение результата} \\
+\cline{2-3}
+            & \multicolumn{1}{c|}{} & \multicolumn{1}{l|}{\texttt{COMMIT;}} \\
+             & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{\includegraphics[scale=1]{commit.png}} \\
+\hline
+\multirow{2}{*}{\(t_6\)} & \multicolumn{2}{c|}{Проверка изменения данных} \\
+\cline{2-3}
+              & \multicolumn{1}{c|}{} & \multicolumn{1}{l|}{\texttt{SELECT * FROM client}} \\
+             & \multicolumn{1}{c|}{} & \multicolumn{1}{l|}{\texttt{WHERE name = 'ИРИНА'}} \\
+              & \multicolumn{1}{c|}{} & \multicolumn{1}{l|}{\texttt{AND surname = 'АБАЛКИНА';}} \\
+            & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{\includegraphics[scale=0.35]{trans2.png}} \\
+\hline
+\multirow{5}{*}{\(t_7\)} & \multicolumn{2}{c|}{Чтение данных из таблицы client} \\
+\cline{2-3}
+            & \multicolumn{1}{l|}{\texttt{SELECT * FROM client}} & \multicolumn{1}{c|}{} \\
+             & \multicolumn{1}{l|}{\texttt{WHERE name = 'ИРИНА'}} & \multicolumn{1}{c|}{} \\
+              & \multicolumn{1}{l|}{\texttt{AND surname = 'АБАЛКИНА';}} & \multicolumn{1}{c|}{} \\
+            & \multicolumn{1}{c|}{\includegraphics[scale=0.35]{trans2.png}} & \multicolumn{1}{c|}{} \\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+	В момент времени \(t_3\) в первой транзакции при чтении строки в таблице \texttt{client} пользователь видит строку с \texttt{id\_client} = 418 где отчество \texttt{patronymic} = <<ВИКТОРОВНА>>. В момент времени \(t_7\) в первой транзакции при выполнении того же запроса на чтение пользователь ожидает увидеть ту же самую строку с тем же отчеством, однако видит \texttt{patronymic} = <<АРТЕМОВНА>>. Это связано с тем, что во второй транзакции в момент \(t_4\) данная строка была изменена и на моменте \(t_5\) был сделан \texttt{COMMIT}. Таким образом, при уровне изоляции \texttt{READ COMMITTED} неповторяющееся чтение выполняется.
+
+	\newpage
+	
+	\section*{Заключение}
+
+	В ходе выполнения поставленных задач было сделано следующее:
+	
+\begin{itemize}
+\item Было создано представление (view), которое рассчитывает количество блюд, в которых используется каждый ингредиент, а также общее число заказов этих блюд. Составлен запрос, который использует представление. Показано, что в представлении невозможно добавить или удалить данные.
+\item Реализованы триггеры, которые автоматически обновляют количество клиентов для каждого ресторана. Создана новая таблица, которая отражает изменения данных при добавлении или удалении клиентов.
+\item Созданы два пользователя с различными уровнями доступа. Первый пользователь имеет права только на просмотр созданного представления, в то время как второй может не только просматривать, но и вносить изменения в исходные таблицы, что показало возможность детального управления правами доступа. Была сделана таблица для демонстрации и сравнения прав доступа двух пользователей для различных операций.
+\item Написана функция, которая принимает на вход фамилию, имя и отчество, и форматирует их в заданном виде. В случае отсутствия отчества функция корректно обрабатывает данные, что упрощает работу с ФИО в различных форматах. Также продемонстрирован вариант неверного вызова функции.
+\item Разработана процедура, проводящая проверку наличия данных в нескольких связанных таблицах. При отсутствии данных, соответствующие таблицы дополняются новыми строками.
+\item Реализовано управление транзакциями с уровнем изоляции \texttt{READ COMMITTED}, проведена проверка неповторяющегося чтения. Изучение этого уровня изоляции подтвердило что защита от неповторяющегося чтения не выполняется при параллельных транзакциях.
+\end{itemize}
+
+	Итого было сделано 5 лабораторных работ, в ходе которых было создано 1 представление, 2 триггера, 2 пользователя с различными привелегиями, 1 функция, 1 процедура и было проведено параллельное выполнение 2 транзакций при режиме изоляции \texttt{READ COMMITTED}. Таким образом, лабораторные работы способствовали развитию навыков работы с SQL и базами данных, а также позволили глубже понять механизмы обеспечения целостности данных и управления доступом.
+	
+	\newpage
+
+	\addcontentsline{toc}{section}{Список используемой литературы}
+	\begin{thebibliography}{4}
+		\bibitem{s05} PostgreSQL: Documentation : сайт. – URL: https://www.postgresql.org/docs/ (дата обращения: 17.05.2024)	
+	\end{thebibliography}
+	
+	
+	
+\end{document}

@@ -1,0 +1,9 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{CALL}\PYG{+w}{ }\PYG{n}{upsert\PYGZus{}restaurant\PYGZus{}ingredient}\PYG{p}{(}
+\PYG{+w}{	}\PYG{l+s+s1}{\PYGZsq{}Пельменная\PYGZsq{}}\PYG{p}{,}
+\PYG{+w}{	}\PYG{l+s+s1}{\PYGZsq{}Самара, ул. Ленина, д. 10\PYGZsq{}}\PYG{p}{,}
+\PYG{+w}{	}\PYG{l+s+s1}{\PYGZsq{}ИНН 0123456789\PYGZsq{}}\PYG{p}{,}
+\PYG{+w}{	}\PYG{l+s+s1}{\PYGZsq{}Фарш свинина\PYGZhy{}говядина\PYGZsq{}}\PYG{p}{,}
+\PYG{+w}{	}\PYG{l+m+mi}{100}
+\PYG{p}{);}
+\end{Verbatim}

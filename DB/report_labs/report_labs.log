@@ -1,0 +1,1573 @@
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.10) (preloaded format=pdflatex 2022.11.3)  13 NOV 2024 13:40
+entering extended mode
+ \write18 enabled.
+ %&-line parsing enabled.
+**./report_labs.tex
+(report_labs.tex
+LaTeX2e <2022-06-01> patch level 5
+L3 programming layer <2022-09-28> (D:\MiKTeX\tex/latex/base\article.cls
+Document Class: article 2021/10/04 v1.4n Standard LaTeX document class
+(D:\MiKTeX\tex/latex/base\size10.clo
+File: size10.clo 2021/10/04 v1.4n Standard LaTeX file (size option)
+)
+\c@part=\count185
+\c@section=\count186
+\c@subsection=\count187
+\c@subsubsection=\count188
+\c@paragraph=\count189
+\c@subparagraph=\count190
+\c@figure=\count191
+\c@table=\count192
+\abovecaptionskip=\skip47
+\belowcaptionskip=\skip48
+\bibindent=\dimen138
+)
+(D:\MiKTeX\tex/latex/extsizes\extsizes.sty
+Package: extsizes 1996/10/08 v1.0 Non Standard LaTeX Package
+
+
+Package ExtSizes Warning: It is better to use one of the extsizes classes,
+ if you can.
+
+(D:\MiKTeX\tex/latex/extsizes\size14.clo
+File: size14.clo 1999/11/11 v1.4a NON-Standard LaTeX file (size option)
+)) (D:\MiKTeX\tex/latex/cmap\cmap.sty
+Package: cmap 2021/02/06 v1.0j CMap support: searchable PDF
+)
+(D:\MiKTeX\tex/latex/base\fontenc.sty
+Package: fontenc 2021/04/29 v2.0v Standard LaTeX package
+ (D:\MiKTeX\tex/latex/cyrillic\t2aenc.def
+File: t2aenc.def 2022/06/11 v1.0j Cyrillic encoding definition file
+Now handling font encoding T2A ...
+... processing UTF-8 mapping file for font encoding T2A
+
+(D:\MiKTeX\tex/latex/base\t2aenc.dfu
+File: t2aenc.dfu 2022/06/07 v1.3c UTF-8 support
+   defining Unicode char U+00A4 (decimal 164)
+   defining Unicode char U+00A7 (decimal 167)
+   defining Unicode char U+00AB (decimal 171)
+   defining Unicode char U+00BB (decimal 187)
+   defining Unicode char U+0131 (decimal 305)
+   defining Unicode char U+0237 (decimal 567)
+   defining Unicode char U+0400 (decimal 1024)
+   defining Unicode char U+0401 (decimal 1025)
+   defining Unicode char U+0402 (decimal 1026)
+   defining Unicode char U+0403 (decimal 1027)
+   defining Unicode char U+0404 (decimal 1028)
+   defining Unicode char U+0405 (decimal 1029)
+   defining Unicode char U+0406 (decimal 1030)
+   defining Unicode char U+0407 (decimal 1031)
+   defining Unicode char U+0408 (decimal 1032)
+   defining Unicode char U+0409 (decimal 1033)
+   defining Unicode char U+040A (decimal 1034)
+   defining Unicode char U+040B (decimal 1035)
+   defining Unicode char U+040C (decimal 1036)
+   defining Unicode char U+040D (decimal 1037)
+   defining Unicode char U+040E (decimal 1038)
+   defining Unicode char U+040F (decimal 1039)
+   defining Unicode char U+0410 (decimal 1040)
+   defining Unicode char U+0411 (decimal 1041)
+   defining Unicode char U+0412 (decimal 1042)
+   defining Unicode char U+0413 (decimal 1043)
+   defining Unicode char U+0414 (decimal 1044)
+   defining Unicode char U+0415 (decimal 1045)
+   defining Unicode char U+0416 (decimal 1046)
+   defining Unicode char U+0417 (decimal 1047)
+   defining Unicode char U+0418 (decimal 1048)
+   defining Unicode char U+0419 (decimal 1049)
+   defining Unicode char U+041A (decimal 1050)
+   defining Unicode char U+041B (decimal 1051)
+   defining Unicode char U+041C (decimal 1052)
+   defining Unicode char U+041D (decimal 1053)
+   defining Unicode char U+041E (decimal 1054)
+   defining Unicode char U+041F (decimal 1055)
+   defining Unicode char U+0420 (decimal 1056)
+   defining Unicode char U+0421 (decimal 1057)
+   defining Unicode char U+0422 (decimal 1058)
+   defining Unicode char U+0423 (decimal 1059)
+   defining Unicode char U+0424 (decimal 1060)
+   defining Unicode char U+0425 (decimal 1061)
+   defining Unicode char U+0426 (decimal 1062)
+   defining Unicode char U+0427 (decimal 1063)
+   defining Unicode char U+0428 (decimal 1064)
+   defining Unicode char U+0429 (decimal 1065)
+   defining Unicode char U+042A (decimal 1066)
+   defining Unicode char U+042B (decimal 1067)
+   defining Unicode char U+042C (decimal 1068)
+   defining Unicode char U+042D (decimal 1069)
+   defining Unicode char U+042E (decimal 1070)
+   defining Unicode char U+042F (decimal 1071)
+   defining Unicode char U+0430 (decimal 1072)
+   defining Unicode char U+0431 (decimal 1073)
+   defining Unicode char U+0432 (decimal 1074)
+   defining Unicode char U+0433 (decimal 1075)
+   defining Unicode char U+0434 (decimal 1076)
+   defining Unicode char U+0435 (decimal 1077)
+   defining Unicode char U+0436 (decimal 1078)
+   defining Unicode char U+0437 (decimal 1079)
+   defining Unicode char U+0438 (decimal 1080)
+   defining Unicode char U+0439 (decimal 1081)
+   defining Unicode char U+043A (decimal 1082)
+   defining Unicode char U+043B (decimal 1083)
+   defining Unicode char U+043C (decimal 1084)
+   defining Unicode char U+043D (decimal 1085)
+   defining Unicode char U+043E (decimal 1086)
+   defining Unicode char U+043F (decimal 1087)
+   defining Unicode char U+0440 (decimal 1088)
+   defining Unicode char U+0441 (decimal 1089)
+   defining Unicode char U+0442 (decimal 1090)
+   defining Unicode char U+0443 (decimal 1091)
+   defining Unicode char U+0444 (decimal 1092)
+   defining Unicode char U+0445 (decimal 1093)
+   defining Unicode char U+0446 (decimal 1094)
+   defining Unicode char U+0447 (decimal 1095)
+   defining Unicode char U+0448 (decimal 1096)
+   defining Unicode char U+0449 (decimal 1097)
+   defining Unicode char U+044A (decimal 1098)
+   defining Unicode char U+044B (decimal 1099)
+   defining Unicode char U+044C (decimal 1100)
+   defining Unicode char U+044D (decimal 1101)
+   defining Unicode char U+044E (decimal 1102)
+   defining Unicode char U+044F (decimal 1103)
+   defining Unicode char U+0450 (decimal 1104)
+   defining Unicode char U+0451 (decimal 1105)
+   defining Unicode char U+0452 (decimal 1106)
+   defining Unicode char U+0453 (decimal 1107)
+   defining Unicode char U+0454 (decimal 1108)
+   defining Unicode char U+0455 (decimal 1109)
+   defining Unicode char U+0456 (decimal 1110)
+   defining Unicode char U+0457 (decimal 1111)
+   defining Unicode char U+0458 (decimal 1112)
+   defining Unicode char U+0459 (decimal 1113)
+   defining Unicode char U+045A (decimal 1114)
+   defining Unicode char U+045B (decimal 1115)
+   defining Unicode char U+045C (decimal 1116)
+   defining Unicode char U+045D (decimal 1117)
+   defining Unicode char U+045E (decimal 1118)
+   defining Unicode char U+045F (decimal 1119)
+   defining Unicode char U+0490 (decimal 1168)
+   defining Unicode char U+0491 (decimal 1169)
+   defining Unicode char U+0492 (decimal 1170)
+   defining Unicode char U+0493 (decimal 1171)
+   defining Unicode char U+0496 (decimal 1174)
+   defining Unicode char U+0497 (decimal 1175)
+   defining Unicode char U+0498 (decimal 1176)
+   defining Unicode char U+0499 (decimal 1177)
+   defining Unicode char U+049A (decimal 1178)
+   defining Unicode char U+049B (decimal 1179)
+   defining Unicode char U+049C (decimal 1180)
+   defining Unicode char U+049D (decimal 1181)
+   defining Unicode char U+04A0 (decimal 1184)
+   defining Unicode char U+04A1 (decimal 1185)
+   defining Unicode char U+04A2 (decimal 1186)
+   defining Unicode char U+04A3 (decimal 1187)
+   defining Unicode char U+04A4 (decimal 1188)
+   defining Unicode char U+04A5 (decimal 1189)
+   defining Unicode char U+04AA (decimal 1194)
+   defining Unicode char U+04AB (decimal 1195)
+   defining Unicode char U+04AE (decimal 1198)
+   defining Unicode char U+04AF (decimal 1199)
+   defining Unicode char U+04B0 (decimal 1200)
+   defining Unicode char U+04B1 (decimal 1201)
+   defining Unicode char U+04B2 (decimal 1202)
+   defining Unicode char U+04B3 (decimal 1203)
+   defining Unicode char U+04B6 (decimal 1206)
+   defining Unicode char U+04B7 (decimal 1207)
+   defining Unicode char U+04B8 (decimal 1208)
+   defining Unicode char U+04B9 (decimal 1209)
+   defining Unicode char U+04BA (decimal 1210)
+   defining Unicode char U+04BB (decimal 1211)
+   defining Unicode char U+04C0 (decimal 1216)
+   defining Unicode char U+04C1 (decimal 1217)
+   defining Unicode char U+04C2 (decimal 1218)
+   defining Unicode char U+04D0 (decimal 1232)
+   defining Unicode char U+04D1 (decimal 1233)
+   defining Unicode char U+04D2 (decimal 1234)
+   defining Unicode char U+04D3 (decimal 1235)
+   defining Unicode char U+04D4 (decimal 1236)
+   defining Unicode char U+04D5 (decimal 1237)
+   defining Unicode char U+04D6 (decimal 1238)
+   defining Unicode char U+04D7 (decimal 1239)
+   defining Unicode char U+04D8 (decimal 1240)
+   defining Unicode char U+04D9 (decimal 1241)
+   defining Unicode char U+04DA (decimal 1242)
+   defining Unicode char U+04DB (decimal 1243)
+   defining Unicode char U+04DC (decimal 1244)
+   defining Unicode char U+04DD (decimal 1245)
+   defining Unicode char U+04DE (decimal 1246)
+   defining Unicode char U+04DF (decimal 1247)
+   defining Unicode char U+04E2 (decimal 1250)
+   defining Unicode char U+04E3 (decimal 1251)
+   defining Unicode char U+04E4 (decimal 1252)
+   defining Unicode char U+04E5 (decimal 1253)
+   defining Unicode char U+04E6 (decimal 1254)
+   defining Unicode char U+04E7 (decimal 1255)
+   defining Unicode char U+04E8 (decimal 1256)
+   defining Unicode char U+04E9 (decimal 1257)
+   defining Unicode char U+04EC (decimal 1260)
+   defining Unicode char U+04ED (decimal 1261)
+   defining Unicode char U+04EE (decimal 1262)
+   defining Unicode char U+04EF (decimal 1263)
+   defining Unicode char U+04F0 (decimal 1264)
+   defining Unicode char U+04F1 (decimal 1265)
+   defining Unicode char U+04F2 (decimal 1266)
+   defining Unicode char U+04F3 (decimal 1267)
+   defining Unicode char U+04F4 (decimal 1268)
+   defining Unicode char U+04F5 (decimal 1269)
+   defining Unicode char U+04F8 (decimal 1272)
+   defining Unicode char U+04F9 (decimal 1273)
+   defining Unicode char U+200C (decimal 8204)
+   defining Unicode char U+2013 (decimal 8211)
+   defining Unicode char U+2014 (decimal 8212)
+   defining Unicode char U+2018 (decimal 8216)
+   defining Unicode char U+2019 (decimal 8217)
+   defining Unicode char U+201C (decimal 8220)
+   defining Unicode char U+201D (decimal 8221)
+   defining Unicode char U+201E (decimal 8222)
+   defining Unicode char U+2030 (decimal 8240)
+   defining Unicode char U+2031 (decimal 8241)
+   defining Unicode char U+2116 (decimal 8470)
+   defining Unicode char U+2329 (decimal 9001)
+   defining Unicode char U+3008 (decimal 12296)
+   defining Unicode char U+232A (decimal 9002)
+   defining Unicode char U+3009 (decimal 12297)
+   defining Unicode char U+2423 (decimal 9251)
+   defining Unicode char U+27E8 (decimal 10216)
+   defining Unicode char U+27E9 (decimal 10217)
+   defining Unicode char U+FB00 (decimal 64256)
+   defining Unicode char U+FB01 (decimal 64257)
+   defining Unicode char U+FB02 (decimal 64258)
+   defining Unicode char U+FB03 (decimal 64259)
+   defining Unicode char U+FB04 (decimal 64260)
+   defining Unicode char U+FB05 (decimal 64261)
+   defining Unicode char U+FB06 (decimal 64262)
+))
+LaTeX Font Info:    Trying to load font information for T2A+cmr on input line 1
+12.
+ (D:\MiKTeX\tex/latex/cyrillic\t2acmr.fd
+File: t2acmr.fd 2001/08/11 v1.0a Computer Modern Cyrillic font definitions
+)<<t2a.cmap>>) (D:\MiKTeX\tex/latex/base\inputenc.sty
+Package: inputenc 2021/02/14 v1.3d Input encoding file
+\inpenc@prehook=\toks16
+\inpenc@posthook=\toks17
+
+(D:\MiKTeX\tex/latex/cyrillic\cp1251.def
+File: cp1251.def 2022/06/11 v1.0e Input encoding file
+))
+(D:\MiKTeX\tex/generic/babel\babel.sty
+Package: babel 2022/10/04 3.81 The Babel package
+\babel@savecnt=\count193
+\U@D=\dimen139
+\l@unhyphenated=\language79
+
+(D:\MiKTeX\tex/generic/babel\txtbabel.def)
+\bbl@readstream=\read2
+\bbl@dirlevel=\count194
+
+*************************************
+* Local config file bblopts.cfg used
+*
+(D:\MiKTeX\tex/latex/arabi\bblopts.cfg
+File: bblopts.cfg 2005/09/08 v0.1 add Arabic and Farsi to "declared" options of
+ babel
+)
+(D:\MiKTeX\tex/latex/babel-russian\russianb.ldf
+File: russianb.ldf 2021/01/10 1.3m Russian support for the Babel system
+Language: russian 2020/09/09 1.3k Russian support for the Babel system
+Package babel Info: Making " an active character on input line 124.
+Package babel Info: Default for \cyrdash is provided on input line 163.
+))
+(D:\MiKTeX\tex/generic/babel/locale/ru\babel-russian.tex
+Package babel Info: Importing font and identification data for russian
+(babel)             from babel-ru.ini. Reported on input line 11.
+)
+(D:\MiKTeX\tex/latex/amsmath\amsmath.sty
+Package: amsmath 2022/04/08 v2.17n AMS math features
+\@mathmargin=\skip49
+
+For additional information on amsmath, use the `?' option.
+(D:\MiKTeX\tex/latex/amsmath\amstext.sty
+Package: amstext 2021/08/26 v2.01 AMS text
+
+(D:\MiKTeX\tex/latex/amsmath\amsgen.sty
+File: amsgen.sty 1999/11/30 v2.0 generic functions
+\@emptytoks=\toks18
+\ex@=\dimen140
+))
+(D:\MiKTeX\tex/latex/amsmath\amsbsy.sty
+Package: amsbsy 1999/11/29 v1.2d Bold Symbols
+\pmbraise@=\dimen141
+)
+(D:\MiKTeX\tex/latex/amsmath\amsopn.sty
+Package: amsopn 2022/04/08 v2.04 operator names
+)
+\inf@bad=\count195
+LaTeX Info: Redefining \frac on input line 234.
+\uproot@=\count196
+\leftroot@=\count197
+LaTeX Info: Redefining \overline on input line 399.
+LaTeX Info: Redefining \colon on input line 410.
+\classnum@=\count198
+\DOTSCASE@=\count199
+LaTeX Info: Redefining \ldots on input line 496.
+LaTeX Info: Redefining \dots on input line 499.
+LaTeX Info: Redefining \cdots on input line 620.
+\Mathstrutbox@=\box51
+\strutbox@=\box52
+LaTeX Info: Redefining \big on input line 722.
+LaTeX Info: Redefining \Big on input line 723.
+LaTeX Info: Redefining \bigg on input line 724.
+LaTeX Info: Redefining \Bigg on input line 725.
+\big@size=\dimen142
+LaTeX Font Info:    Redeclaring font encoding OML on input line 743.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 744.
+\macc@depth=\count266
+LaTeX Info: Redefining \bmod on input line 905.
+LaTeX Info: Redefining \pmod on input line 910.
+LaTeX Info: Redefining \smash on input line 940.
+LaTeX Info: Redefining \relbar on input line 970.
+LaTeX Info: Redefining \Relbar on input line 971.
+\c@MaxMatrixCols=\count267
+\dotsspace@=\muskip16
+\c@parentequation=\count268
+\dspbrk@lvl=\count269
+\tag@help=\toks19
+\row@=\count270
+\column@=\count271
+\maxfields@=\count272
+\andhelp@=\toks20
+\eqnshift@=\dimen143
+\alignsep@=\dimen144
+\tagshift@=\dimen145
+\tagwidth@=\dimen146
+\totwidth@=\dimen147
+\lineht@=\dimen148
+\@envbody=\toks21
+\multlinegap=\skip50
+\multlinetaggap=\skip51
+\mathdisplay@stack=\toks22
+LaTeX Info: Redefining \[ on input line 2953.
+LaTeX Info: Redefining \] on input line 2954.
+)
+(D:\MiKTeX\tex/latex/geometry\geometry.sty
+Package: geometry 2020/01/02 v5.9 Page Geometry
+
+(D:\MiKTeX\tex/latex/graphics\keyval.sty
+Package: keyval 2022/05/29 v1.15 key=value parser (DPC)
+\KV@toks@=\toks23
+)
+(D:\MiKTeX\tex/generic/iftex\ifvtex.sty
+Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
+ (D:\MiKTeX\tex/generic/iftex\iftex.sty
+Package: iftex 2022/02/03 v1.0f TeX engine tests
+))
+\Gm@cnth=\count273
+\Gm@cntv=\count274
+\c@Gm@tempcnt=\count275
+\Gm@bindingoffset=\dimen149
+\Gm@wd@mp=\dimen150
+\Gm@odd@mp=\dimen151
+\Gm@even@mp=\dimen152
+\Gm@layoutwidth=\dimen153
+\Gm@layoutheight=\dimen154
+\Gm@layouthoffset=\dimen155
+\Gm@layoutvoffset=\dimen156
+\Gm@dimlist=\toks24
+ (D:\MiKTeX\tex/latex/geometry\geometry.cfg))
+(D:\MiKTeX\tex/latex/ragged2e\ragged2e.sty
+Package: ragged2e 2021/12/15 v3.1 ragged2e Package
+\CenteringLeftskip=\skip52
+\RaggedLeftLeftskip=\skip53
+\RaggedRightLeftskip=\skip54
+\CenteringRightskip=\skip55
+\RaggedLeftRightskip=\skip56
+\RaggedRightRightskip=\skip57
+\CenteringParfillskip=\skip58
+\RaggedLeftParfillskip=\skip59
+\RaggedRightParfillskip=\skip60
+\JustifyingParfillskip=\skip61
+\CenteringParindent=\skip62
+\RaggedLeftParindent=\skip63
+\RaggedRightParindent=\skip64
+\JustifyingParindent=\skip65
+)
+(D:\MiKTeX\tex/latex/setspace\setspace.sty
+Package: setspace 2011/12/19 v6.7a set line spacing
+)
+(D:\MiKTeX\tex/latex/moreverb\moreverb.sty
+Package: moreverb 2008/06/03 v2.3a `more' verbatim facilities
+
+(D:\MiKTeX\tex/latex/tools\verbatim.sty
+Package: verbatim 2020-07-07 v1.5u LaTeX2e package for verbatim enhancements
+\every@verbatim=\toks25
+\verbatim@line=\toks26
+\verbatim@in@stream=\read3
+)
+\tab@position=\count276
+\tab@size=\count277
+\listing@line=\count278
+)
+(D:\MiKTeX\tex/latex/tools\indentfirst.sty
+Package: indentfirst 1995/11/23 v1.03 Indent first paragraph (DPC)
+)
+(D:\MiKTeX\tex/latex/caption\caption.sty
+Package: caption 2022/03/01 v3.6b Customizing captions (AR)
+
+(D:\MiKTeX\tex/latex/caption\caption3.sty
+Package: caption3 2022/03/17 v2.3b caption3 kernel (AR)
+\caption@tempdima=\dimen157
+\captionmargin=\dimen158
+\caption@leftmargin=\dimen159
+\caption@rightmargin=\dimen160
+\caption@width=\dimen161
+\caption@indent=\dimen162
+\caption@parindent=\dimen163
+\caption@hangindent=\dimen164
+Package caption Info: Standard document class detected.
+)
+\c@caption@flags=\count279
+\c@continuedfloat=\count280
+)
+(D:\MiKTeX\tex/latex/amsfonts\amssymb.sty
+Package: amssymb 2013/01/14 v3.01 AMS font symbols
+
+(D:\MiKTeX\tex/latex/amsfonts\amsfonts.sty
+Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
+\symAMSa=\mathgroup4
+\symAMSb=\mathgroup5
+LaTeX Font Info:    Redeclaring math symbol \hbar on input line 98.
+LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
+(Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
+))
+(D:\MiKTeX\tex/latex/listings\listings.sty
+\lst@mode=\count281
+\lst@gtempboxa=\box53
+\lst@token=\toks27
+\lst@length=\count282
+\lst@currlwidth=\dimen165
+\lst@column=\count283
+\lst@pos=\count284
+\lst@lostspace=\dimen166
+\lst@width=\dimen167
+\lst@newlines=\count285
+\lst@lineno=\count286
+\lst@maxwidth=\dimen168
+
+(D:\MiKTeX\tex/latex/listings\lstmisc.sty
+File: lstmisc.sty 2020/03/24 1.8d (Carsten Heinz)
+\c@lstnumber=\count287
+\lst@skipnumbers=\count288
+\lst@framebox=\box54
+)
+(D:\MiKTeX\tex/latex/listings\listings.cfg
+File: listings.cfg 2020/03/24 1.8d listings configuration
+))
+Package: listings 2020/03/24 1.8d (Carsten Heinz)
+
+(D:\MiKTeX\tex/latex/xcolor\xcolor.sty
+Package: xcolor 2022/06/12 v2.14 LaTeX color extensions (UK)
+
+(D:\MiKTeX\tex/latex/graphics-cfg\color.cfg
+File: color.cfg 2016/01/02 v1.6 sample color configuration
+)
+Package xcolor Info: Driver file: pdftex.def on input line 227.
+
+(D:\MiKTeX\tex/latex/graphics-def\pdftex.def
+File: pdftex.def 2022/09/22 v1.2b Graphics/color driver for pdftex
+\stockwidth=\dimen169
+\stockheight=\dimen170
+)
+(D:\MiKTeX\tex/latex/graphics\mathcolor.ltx)
+Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1353.
+Package xcolor Info: Model `hsb' substituted by `rgb' on input line 1357.
+Package xcolor Info: Model `RGB' extended on input line 1369.
+Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1371.
+Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1372.
+Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1373.
+Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1374.
+Package xcolor Info: Model `Gray' substituted by `gray' on input line 1375.
+Package xcolor Info: Model `wave' substituted by `hsb' on input line 1376.
+)
+(D:\MiKTeX\tex/latex/hyperref\hyperref.sty
+Package: hyperref 2022-09-22 v7.00t Hypertext links for LaTeX
+
+(D:\MiKTeX\tex/generic/ltxcmds\ltxcmds.sty
+Package: ltxcmds 2020-05-10 v1.25 LaTeX kernel commands for general use (HO)
+)
+(D:\MiKTeX\tex/generic/pdftexcmds\pdftexcmds.sty
+Package: pdftexcmds 2020-06-27 v0.33 Utility functions of pdfTeX for LuaTeX (HO
+)
+
+(D:\MiKTeX\tex/generic/infwarerr\infwarerr.sty
+Package: infwarerr 2019/12/03 v1.5 Providing info/warning/error messages (HO)
+)
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+Package pdftexcmds Info: \pdfdraftmode found.
+)
+(D:\MiKTeX\tex/latex/kvsetkeys\kvsetkeys.sty
+Package: kvsetkeys 2022-10-05 v1.19 Key value parser (HO)
+)
+(D:\MiKTeX\tex/generic/kvdefinekeys\kvdefinekeys.sty
+Package: kvdefinekeys 2019-12-19 v1.6 Define keys (HO)
+)
+(D:\MiKTeX\tex/generic/pdfescape\pdfescape.sty
+Package: pdfescape 2019/12/09 v1.15 Implements pdfTeX's escape features (HO)
+)
+(D:\MiKTeX\tex/latex/hycolor\hycolor.sty
+Package: hycolor 2020-01-27 v1.10 Color options for hyperref/bookmark (HO)
+)
+(D:\MiKTeX\tex/latex/letltxmacro\letltxmacro.sty
+Package: letltxmacro 2019/12/03 v1.6 Let assignment for LaTeX macros (HO)
+)
+(D:\MiKTeX\tex/latex/auxhook\auxhook.sty
+Package: auxhook 2019-12-17 v1.6 Hooks for auxiliary files (HO)
+)
+(D:\MiKTeX\tex/latex/hyperref\nameref.sty
+Package: nameref 2022-05-17 v2.50 Cross-referencing by name of section
+
+(D:\MiKTeX\tex/latex/refcount\refcount.sty
+Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
+)
+(D:\MiKTeX\tex/generic/gettitlestring\gettitlestring.sty
+Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
+
+(D:\MiKTeX\tex/latex/kvoptions\kvoptions.sty
+Package: kvoptions 2022-06-15 v3.15 Key value format for package options (HO)
+))
+\c@section@level=\count289
+)
+\@linkdim=\dimen171
+\Hy@linkcounter=\count290
+\Hy@pagecounter=\count291
+
+(D:\MiKTeX\tex/latex/hyperref\pd1enc.def
+File: pd1enc.def 2022-09-22 v7.00t Hyperref: PDFDocEncoding definition (HO)
+Now handling font encoding PD1 ...
+... no UTF-8 mapping file for font encoding PD1
+)
+(D:\MiKTeX\tex/generic/intcalc\intcalc.sty
+Package: intcalc 2019/12/15 v1.3 Expandable calculations with integers (HO)
+)
+(D:\MiKTeX\tex/generic/etexcmds\etexcmds.sty
+Package: etexcmds 2019/12/15 v1.7 Avoid name clashes with e-TeX commands (HO)
+)
+\Hy@SavedSpaceFactor=\count292
+
+(D:\MiKTeX\tex/latex/hyperref\puenc.def
+File: puenc.def 2022-09-22 v7.00t Hyperref: PDF Unicode definition (HO)
+Now handling font encoding PU ...
+... no UTF-8 mapping file for font encoding PU
+)
+Package hyperref Info: Option `unicode' set `true' on input line 3149.
+Package hyperref Info: Option `final' set `true' on input line 4045.
+Package hyperref Info: Hyper figures OFF on input line 4162.
+Package hyperref Info: Link nesting OFF on input line 4167.
+Package hyperref Info: Hyper index ON on input line 4170.
+Package hyperref Info: Plain pages OFF on input line 4177.
+Package hyperref Info: Backreferencing OFF on input line 4182.
+Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
+Package hyperref Info: Bookmarks ON on input line 4410.
+\c@Hy@tempcnt=\count293
+ (D:\MiKTeX\tex/latex/url\url.sty
+\Urlmuskip=\muskip17
+Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
+)
+LaTeX Info: Redefining \url on input line 4748.
+\XeTeXLinkMargin=\dimen172
+
+(D:\MiKTeX\tex/generic/bitset\bitset.sty
+Package: bitset 2019/12/09 v1.3 Handle bit-vector datatype (HO)
+
+(D:\MiKTeX\tex/generic/bigintcalc\bigintcalc.sty
+Package: bigintcalc 2019/12/15 v1.5 Expandable calculations on big integers (HO
+)
+))
+\Fld@menulength=\count294
+\Field@Width=\dimen173
+\Fld@charsize=\dimen174
+Package hyperref Info: Hyper figures OFF on input line 6027.
+Package hyperref Info: Link nesting OFF on input line 6032.
+Package hyperref Info: Hyper index ON on input line 6035.
+Package hyperref Info: backreferencing OFF on input line 6042.
+Package hyperref Info: Link coloring OFF on input line 6047.
+Package hyperref Info: Link coloring with OCG OFF on input line 6052.
+Package hyperref Info: PDF/A mode OFF on input line 6057.
+
+(D:\MiKTeX\tex/latex/base\atbegshi-ltx.sty
+Package: atbegshi-ltx 2021/01/10 v1.0c Emulation of the original atbegshi
+package with kernel methods
+)
+\Hy@abspage=\count295
+\c@Item=\count296
+\c@Hfootnote=\count297
+)
+Package hyperref Info: Driver (autodetected): hpdftex.
+
+(D:\MiKTeX\tex/latex/hyperref\hpdftex.def
+File: hpdftex.def 2022-09-22 v7.00t Hyperref driver for pdfTeX
+
+(D:\MiKTeX\tex/latex/base\atveryend-ltx.sty
+Package: atveryend-ltx 2020/08/19 v1.0a Emulation of the original atveryend pac
+kage
+with kernel methods
+)
+\Fld@listcount=\count298
+\c@bookmark@seq@number=\count299
+
+(D:\MiKTeX\tex/latex/rerunfilecheck\rerunfilecheck.sty
+Package: rerunfilecheck 2022-07-10 v1.10 Rerun checks for auxiliary files (HO)
+
+(D:\MiKTeX\tex/generic/uniquecounter\uniquecounter.sty
+Package: uniquecounter 2019/12/15 v1.4 Provide unlimited unique counter (HO)
+)
+Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
+85.
+)
+\Hy@SectionHShift=\skip66
+)
+(D:\MiKTeX\tex/latex/enumitem\enumitem.sty
+Package: enumitem 2019/06/20 v3.9 Customized lists
+\labelindent=\skip67
+\enit@outerparindent=\dimen175
+\enit@toks=\toks28
+\enit@inbox=\box55
+\enit@count@id=\count300
+\enitdp@description=\count301
+)
+(D:\MiKTeX\tex/latex/float\float.sty
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count302
+\float@exts=\toks29
+\float@box=\box56
+\@float@everytoks=\toks30
+\@floatcapt=\box57
+)
+(D:\MiKTeX\tex/latex/graphics\graphicx.sty
+Package: graphicx 2021/09/16 v1.2d Enhanced LaTeX Graphics (DPC,SPQR)
+
+(D:\MiKTeX\tex/latex/graphics\graphics.sty
+Package: graphics 2022/03/10 v1.4e Standard LaTeX Graphics (DPC,SPQR)
+
+(D:\MiKTeX\tex/latex/graphics\trig.sty
+Package: trig 2021/08/11 v1.11 sin cos tan (DPC)
+)
+(D:\MiKTeX\tex/latex/graphics-cfg\graphics.cfg
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
+)
+Package graphics Info: Driver file: pdftex.def on input line 107.
+)
+\Gin@req@height=\dimen176
+\Gin@req@width=\dimen177
+)
+(D:\MiKTeX\tex/latex/multirow\multirow.sty
+Package: multirow 2021/03/15 v2.8 Span multiple rows of a table
+\multirow@colwidth=\skip68
+\multirow@cntb=\count303
+\multirow@dima=\skip69
+\bigstrutjot=\dimen178
+)
+(D:\MiKTeX\tex/latex/makecell\makecell.sty
+Package: makecell 2009/08/03 V0.1e Managing of Tab Column Heads and Cells
+ (D:\MiKTeX\tex/latex/tools\array.sty
+Package: array 2022/03/10 v2.5f Tabular extension package (FMi)
+\col@sep=\dimen179
+\ar@mcellbox=\box58
+\extrarowheight=\dimen180
+\NC@list=\toks31
+\extratabsurround=\skip70
+\backup@length=\skip71
+\ar@cellbox=\box59
+)
+\rotheadsize=\dimen181
+\c@nlinenum=\count304
+\TeXr@lab=\toks32
+) (D:\MiKTeX\tex/latex/minted\minted.sty
+Package: minted 2023/12/18 v2.9 Yet another Pygments shim for LaTeX
+
+(D:\MiKTeX\tex/latex/fvextra\fvextra.sty
+Package: fvextra 2023/11/28 v1.6.1 fvextra - extensions and patches for fancyvr
+b
+
+(D:\MiKTeX\tex/latex/etoolbox\etoolbox.sty
+Package: etoolbox 2020/10/05 v2.5k e-TeX tools for LaTeX (JAW)
+\etb@tempcnta=\count305
+)
+(D:\MiKTeX\tex/latex/fancyvrb\fancyvrb.sty
+Package: fancyvrb 2024/01/20 4.5c verbatim text (tvz,hv)
+\FV@CodeLineNo=\count306
+\FV@InFile=\read4
+\FV@TabBox=\box60
+\c@FancyVerbLine=\count307
+\FV@StepNumber=\count308
+\FV@OutFile=\write3
+)
+(D:\MiKTeX\tex/latex/upquote\upquote.sty
+Package: upquote 2012/04/19 v1.3 upright-quote and grave-accent glyphs in verba
+tim
+ (D:\MiKTeX\tex/latex/base\textcomp.sty
+Package: textcomp 2020/02/02 v2.0n Standard LaTeX package
+)) (D:\MiKTeX\tex/latex/lineno\lineno.sty
+Package: lineno 2023/05/20 line numbers on paragraphs v5.3
+\linenopenalty=\count309
+\output=\toks33
+\linenoprevgraf=\count310
+\linenumbersep=\dimen182
+\linenumberwidth=\dimen183
+\c@linenumber=\count311
+\c@pagewiselinenumber=\count312
+\c@LN@truepage=\count313
+\c@internallinenumber=\count314
+\c@internallinenumbers=\count315
+\quotelinenumbersep=\dimen184
+\bframerule=\dimen185
+\bframesep=\dimen186
+\bframebox=\box61
+\linenoamsmath@ams@eqpen=\count316
+LaTeX Info: Redefining \\ on input line 3180.
+)
+\c@FancyVerbWriteLine=\count317
+\c@FancyVerbBufferIndex=\count318
+\c@FancyVerbBufferLength=\count319
+\c@FancyVerbBufferLine=\count320
+\c@FV@oldbufferlength=\count321
+\c@FV@TrueTabGroupLevel=\count322
+\c@FV@TrueTabCounter=\count323
+\FV@TabBox@Group=\box62
+\FV@TmpLength=\skip72
+\c@FV@HighlightLinesStart=\count324
+\c@FV@HighlightLinesStop=\count325
+\FV@LoopCount=\count326
+\FV@NCharsBox=\box63
+\FV@BreakIndent=\dimen187
+\FV@BreakIndentNChars=\count327
+\FV@BreakSymbolSepLeft=\dimen188
+\FV@BreakSymbolSepLeftNChars=\count328
+\FV@BreakSymbolSepRight=\dimen189
+\FV@BreakSymbolSepRightNChars=\count329
+\FV@BreakSymbolIndentLeft=\dimen190
+\FV@BreakSymbolIndentLeftNChars=\count330
+\FV@BreakSymbolIndentRight=\dimen191
+\FV@BreakSymbolIndentRightNChars=\count331
+\c@FancyVerbLineBreakLast=\count332
+\FV@LineBox=\box64
+\FV@LineIndentBox=\box65
+\c@FV@BreakBufferDepth=\count333
+\FV@LineWidth=\dimen192
+)
+(D:\MiKTeX\tex/latex/base\ifthen.sty
+Package: ifthen 2022/04/13 v1.1d Standard LaTeX ifthen package (DPC)
+) (D:\MiKTeX\tex/latex/tools\shellesc.sty
+Package: shellesc 2019/11/08 v1.0c unified shell escape interface for LaTeX
+Package shellesc Info: Unrestricted shell escape enabled on input line 75.
+)
+(D:\MiKTeX\tex/latex/ifplatform\ifplatform.sty
+Package: ifplatform 2017/10/13 v0.4a Testing for the operating system
+
+(D:\MiKTeX\tex/generic/catchfile\catchfile.sty
+Package: catchfile 2019/12/09 v1.8 Catch the contents of a file (HO)
+)
+(D:\MiKTeX\tex/generic/iftex\ifluatex.sty
+Package: ifluatex 2019/10/25 v1.5 ifluatex legacy package. Use iftex instead.
+))
+(D:\MiKTeX\tex/latex/xstring\xstring.sty
+(D:\MiKTeX\tex/generic/xstring\xstring.tex
+\xs_counta=\count334
+\xs_countb=\count335
+)
+Package: xstring 2023/08/22 v1.86 String manipulations (CT)
+)
+(D:\MiKTeX\tex/latex/framed\framed.sty
+Package: framed 2011/10/22 v 0.96: framed or shaded text with page breaks
+\OuterFrameSep=\skip73
+\fb@frw=\dimen193
+\fb@frh=\dimen194
+\FrameRule=\dimen195
+\FrameSep=\dimen196
+)
+\minted@appexistsfile=\read5
+\minted@bgbox=\box66
+\minted@code=\write4
+\c@minted@FancyVerbLineTemp=\count336
+\c@minted@pygmentizecounter=\count337
+\@float@every@listing=\toks34
+\c@listing=\count338
+)
+runsystem(if not exist _minted-report_labs mkdir _minted-report_labs)...execute
+d.
+
+Package hyperref Info: Option `colorlinks' set `true' on input line 41.
+runsystem(for ^%i in (pygmentize.exe pygmentize.bat pygmentize.cmd) do set > re
+port_labs.aex <nul: /p x=^%~$PATH:i>> report_labs.aex)...executed.
+
+runsystem(del report_labs.aex)...executed.
+
+
+(D:\MiKTeX\tex/latex/l3backend\l3backend-pdftex.def
+File: l3backend-pdftex.def 2022-09-28 L3 backend support: PDF output (pdfTeX)
+\l__color_backend_stack_int=\count339
+\l__pdf_internal_box=\box67
+) (report_labs.aux)
+\openout1 = `report_labs.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for T2A/cmr/m/n on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Info: Redefining \th on input line 43.
+
+*geometry* driver: auto-detecting
+*geometry* detected driver: pdftex
+*geometry* verbose mode - [ preamble ] result:
+* driver: pdftex
+* paper: a4paper
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: 
+* h-part:(L,W,R)=(71.13188pt, 469.47049pt, 56.9055pt)
+* v-part:(T,H,B)=(56.9055pt, 731.23584pt, 56.9055pt)
+* \paperwidth=597.50787pt
+* \paperheight=845.04684pt
+* \textwidth=469.47049pt
+* \textheight=731.23584pt
+* \oddsidemargin=-1.1381pt
+* \evensidemargin=-1.1381pt
+* \topmargin=-54.36449pt
+* \headheight=14.0pt
+* \headsep=25.0pt
+* \topskip=14.0pt
+* \footskip=28.45274pt
+* \marginparwidth=15.0pt
+* \marginparsep=10.0pt
+* \columnsep=10.0pt
+* \skip\footins=12.0pt plus 4.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidefalse
+* \@mparswitchfalse
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: float package is loaded.
+Package caption Info: hyperref package is loaded.
+Package caption Info: listings package is loaded.
+Package caption Info: End \AtBeginDocument code.
+\c@lstlisting=\count340
+(D:\MiKTeX\tex/context/base/mkii\supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count341
+\scratchdimen=\dimen197
+\scratchbox=\box68
+\nofMPsegments=\count342
+\nofMParguments=\count343
+\everyMPshowfont=\toks35
+\MPscratchCnt=\count344
+\MPscratchDim=\dimen198
+\MPnumerator=\count345
+\makeMPintoPDFobject=\count346
+\everyMPtoPDFconversion=\toks36
+) (D:\MiKTeX\tex/latex/epstopdf-pkg\epstopdf-base.sty
+Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
+85.
+
+(D:\MiKTeX\tex/latex/00miktex\epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
+))
+Package hyperref Info: Link coloring ON on input line 43.
+ (report_labs.out)
+(report_labs.out)
+\@outlinefile=\write5
+\openout5 = `report_labs.out'.
+
+<<ot1.cmap>><<oml.cmap>><<oms.cmap>><<omx.cmap>>
+LaTeX Font Info:    Trying to load font information for U+msa on input line 71.
+
+
+(D:\MiKTeX\tex/latex/amsfonts\umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Trying to load font information for U+msb on input line 71.
+
+ (D:\MiKTeX\tex/latex/amsfonts\umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
+Underfull \hbox (badness 10000) in paragraph at lines 82--83
+
+ []
+
+[1
+
+{C:/Users/iasta/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}]
+(report_labs.toc)
+\tf@toc=\write6
+\openout6 = `report_labs.toc'.
+
+ [2]
+LaTeX Font Info:    Trying to load font information for T2A+cmtt on input line 
+98.
+ (D:\MiKTeX\tex/latex/cyrillic\t2acmtt.fd
+File: t2acmtt.fd 2001/08/11 v1.0a Computer Modern Cyrillic font definitions
+) [3] [4]
+\openout3 = `report_labs.pyg'.
+
+
+(_minted-report_labs/default.pygstyle)
+(_minted-report_labs/28DDA8B08A0AA0BCB7B4A3F3607B716865E6A65E40A5077F0E50B2222E
+B6F2B5.pygtex
+LaTeX Font Info:    Font shape `T2A/cmtt/bx/n' in size <10> not available
+(Font)              Font shape `T2A/cmtt/m/n' tried instead on input line 2.
+)
+<pic1.png, id=168, 486.31688pt x 387.69844pt>
+File: pic1.png Graphic file (type png)
+<use pic1.png>
+Package pdftex.def Info: pic1.png  used on input line 170.
+(pdftex.def)             Requested size: 486.31569pt x 387.69748pt.
+
+Overfull \hbox (16.8452pt too wide) in paragraph at lines 170--171
+ [][] 
+ []
+
+[5]
+\openout3 = `report_labs.pyg'.
+
+
+(_minted-report_labs/1FA755F9E1C444C24163231CFFD35F1965E6A65E40A5077F0E50B2222E
+B6F2B5.pygtex) [6 <./pic1.png>]
+<pic2.png, id=185, 375.65344pt x 112.16907pt>
+File: pic2.png Graphic file (type png)
+<use pic2.png>
+Package pdftex.def Info: pic2.png  used on input line 216.
+(pdftex.def)             Requested size: 262.9556pt x 78.51779pt.
+\openout3 = `report_labs.pyg'.
+
+
+(_minted-report_labs/737A3E2CEC7593ABDD3B6F8D4874C82265E6A65E40A5077F0E50B2222E
+B6F2B5.pygtex) [7 <./pic2.png>]
+\openout3 = `report_labs.pyg'.
+
+
+(_minted-report_labs/ED578AE1C962488D1E87CD4CE676C68B65E6A65E40A5077F0E50B2222E
+B6F2B5.pygtex
+LaTeX Font Info:    Trying to load font information for TS1+cmtt on input line 
+14.
+ (D:\MiKTeX\tex/latex/base\ts1cmtt.fd
+File: ts1cmtt.fd 2019/12/16 v2.5j Standard LaTeX font definitions
+)) [8] [9]
+\openout3 = `report_labs.pyg'.
+
+
+(_minted-report_labs/288C8B7DF4A80468FEBEBDF5EBE6C22965E6A65E40A5077F0E50B2222E
+B6F2B5.pygtex) [10]
+<pic3.png, id=215, 653.44125pt x 353.82187pt>
+File: pic3.png Graphic file (type png)
+<use pic3.png>
+Package pdftex.def Info: pic3.png  used on input line 456.
+(pdftex.def)             Requested size: 457.40576pt x 247.67361pt.
+ [11]
+\openout3 = `report_labs.pyg'.
+
+
+(_minted-report_labs/4A7A60F535B5229CD57EF41EBE30670165E6A65E40A5077F0E50B2222E
+B6F2B5.pygtex)
+<pic4.png, id=223, 654.19406pt x 355.3275pt>
+File: pic4.png Graphic file (type png)
+<use pic4.png>
+Package pdftex.def Info: pic4.png  used on input line 482.
+(pdftex.def)             Requested size: 457.93272pt x 248.72754pt.
+\openout3 = `report_labs.pyg'.
+
+ [12 <./pic3.png> <./pic4.png>]
+(_minted-report_labs/E536FF687762D1E99F1183C1BA43AC7665E6A65E40A5077F0E50B2222E
+B6F2B5.pygtex)
+<pic5.png, id=232, 651.18282pt x 357.58594pt>
+File: pic5.png Graphic file (type png)
+<use pic5.png>
+Package pdftex.def Info: pic5.png  used on input line 505.
+(pdftex.def)             Requested size: 455.82486pt x 250.30844pt.
+\openout3 = `report_labs.pyg'.
+
+
+(_minted-report_labs/5B56E502CF41D0B25A6648AB2F4A98D965E6A65E40A5077F0E50B2222E
+B6F2B5.pygtex)
+<pic6.png, id=233, 649.67719pt x 204.765pt>
+File: pic6.png Graphic file (type png)
+<use pic6.png>
+Package pdftex.def Info: pic6.png  used on input line 527.
+(pdftex.def)             Requested size: 454.77094pt x 143.3345pt.
+\openout3 = `report_labs.pyg'.
+
+ [13 <./pic5.png> <./pic6.png>]
+(_minted-report_labs/63CD6F2603AFA46CE9E3925C3DA727C265E6A65E40A5077F0E50B2222E
+B6F2B5.pygtex)
+<pic7.png, id=243, 651.18282pt x 205.5178pt>
+File: pic7.png Graphic file (type png)
+<use pic7.png>
+Package pdftex.def Info: pic7.png  used on input line 552.
+(pdftex.def)             Requested size: 455.82486pt x 143.86148pt.
+\openout3 = `report_labs.pyg'.
+
+
+(_minted-report_labs/C5B1A144C370098F174BD262EF7D271265E6A65E40A5077F0E50B2222E
+B6F2B5.pygtex)
+<pic8.png, id=244, 607.51968pt x 155.07938pt>
+File: pic8.png Graphic file (type png)
+<use pic8.png>
+Package pdftex.def Info: pic8.png  used on input line 575.
+(pdftex.def)             Requested size: 425.26086pt x 108.55481pt.
+\openout3 = `report_labs.pyg'.
+
+
+(_minted-report_labs/EF6FF07B59F8AC199755E3A9A781A63765E6A65E40A5077F0E50B2222E
+B6F2B5.pygtex) [14 <./pic7.png> <./pic8.png>]
+<pic9.png, id=253, 719.68875pt x 156.585pt>
+File: pic9.png Graphic file (type png)
+<use pic9.png>
+Package pdftex.def Info: pic9.png  used on input line 601.
+(pdftex.def)             Requested size: 431.81659pt x 93.95172pt.
+\openout3 = `report_labs.pyg'.
+
+
+(_minted-report_labs/6A33AD60AC73944C731288E35CA3D37665E6A65E40A5077F0E50B2222E
+B6F2B5.pygtex) [15 <./pic9.png>]
+<view_select_butters.png, id=260, 483.30562pt x 115.18031pt>
+File: view_select_butters.png Graphic file (type png)
+<use view_select_butters.png>
+Package pdftex.def Info: view_select_butters.png  used on input line 663.
+(pdftex.def)             Requested size: 226.83656pt x 54.06006pt.
+<view_select_cartman.png, id=261, 485.56406pt x 112.92188pt>
+File: view_select_cartman.png Graphic file (type png)
+<use view_select_cartman.png>
+Package pdftex.def Info: view_select_cartman.png  used on input line 664.
+(pdftex.def)             Requested size: 232.46054pt x 54.06006pt.
+
+Overfull \hbox (4.8385pt too wide) in paragraph at lines 664--665
+[]|[]| 
+ []
+
+<ingredient_select_butters.png, id=262, 301.125pt x 74.52844pt>
+File: ingredient_select_butters.png Graphic file (type png)
+<use ingredient_select_butters.png>
+Package pdftex.def Info: ingredient_select_butters.png  used on input line 672.
+
+(pdftex.def)             Requested size: 229.92336pt x 56.9055pt.
+
+Overfull \hbox (2.30132pt too wide) in paragraph at lines 672--672
+[]|[]| 
+ []
+
+<ingredient_select_cartman.png, id=263, 301.125pt x 113.67468pt>
+File: ingredient_select_cartman.png Graphic file (type png)
+<use ingredient_select_cartman.png>
+Package pdftex.def Info: ingredient_select_cartman.png  used on input line 673.
+
+(pdftex.def)             Requested size: 233.65433pt x 88.2037pt.
+
+Overfull \hbox (6.03229pt too wide) in paragraph at lines 673--674
+[]|[]| 
+ []
+
+<order_select_butters.png, id=264, 259.7203pt x 74.52844pt>
+File: order_select_butters.png Graphic file (type png)
+<use order_select_butters.png>
+Package pdftex.def Info: order_select_butters.png  used on input line 681.
+(pdftex.def)             Requested size: 198.3089pt x 56.9055pt.
+<order_select_cartman.png, id=265, 321.45094pt x 110.66344pt>
+File: order_select_cartman.png Graphic file (type png)
+<use order_select_cartman.png>
+Package pdftex.def Info: order_select_cartman.png  used on input line 682.
+(pdftex.def)             Requested size: 231.42978pt x 79.6678pt.
+
+Overfull \hbox (3.80774pt too wide) in paragraph at lines 682--683
+[]|[]| 
+ []
+
+<ri_select_butters.png, id=266, 328.22626pt x 70.01157pt>
+File: ri_select_butters.png Graphic file (type png)
+<use ri_select_butters.png>
+Package pdftex.def Info: ri_select_butters.png  used on input line 690.
+(pdftex.def)             Requested size: 226.77185pt x 48.36958pt.
+<ri_select_cartman.png, id=267, 438.13687pt x 112.16907pt>
+File: ri_select_cartman.png Graphic file (type png)
+<use ri_select_cartman.png>
+Package pdftex.def Info: ri_select_cartman.png  used on input line 691.
+(pdftex.def)             Requested size: 233.38806pt x 59.75095pt.
+
+Overfull \hbox (5.76602pt too wide) in paragraph at lines 691--692
+[]|[]| 
+ []
+
+<dish_select_butters.png, id=268, 249.93375pt x 71.51718pt>
+File: dish_select_butters.png Graphic file (type png)
+<use dish_select_butters.png>
+Package pdftex.def Info: dish_select_butters.png  used on input line 699.
+(pdftex.def)             Requested size: 198.87181pt x 56.9055pt.
+<dish_select_cartman.png, id=269, 886.06032pt x 109.1578pt>
+File: dish_select_cartman.png Graphic file (type png)
+<use dish_select_cartman.png>
+Package pdftex.def Info: dish_select_cartman.png  used on input line 700.
+(pdftex.def)             Requested size: 230.95161pt x 28.45274pt.
+
+Overfull \hbox (3.32957pt too wide) in paragraph at lines 700--701
+[]|[]| 
+ []
+
+
+Overfull \hbox (37.80627pt too wide) in paragraph at lines 652--705
+ [][] 
+ []
+
+[16]
+<ld_select_butters.png, id=274, 316.93407pt x 68.50594pt>
+File: ld_select_butters.png Graphic file (type png)
+<use ld_select_butters.png>
+Package pdftex.def Info: ld_select_butters.png  used on input line 722.
+(pdftex.def)             Requested size: 223.77707pt x 48.36958pt.
+<ld_select_cartman.png, id=275, 319.94531pt x 111.41624pt>
+File: ld_select_cartman.png Graphic file (type png)
+<use ld_select_cartman.png>
+Package pdftex.def Info: ld_select_cartman.png  used on input line 723.
+(pdftex.def)             Requested size: 228.77869pt x 79.6678pt.
+
+Overfull \hbox (1.15665pt too wide) in paragraph at lines 723--724
+[]|[]| 
+ []
+
+File: ingredient_select_butters.png Graphic file (type png)
+<use ingredient_select_butters.png>
+Package pdftex.def Info: ingredient_select_butters.png  used on input line 733.
+
+(pdftex.def)             Requested size: 229.92336pt x 56.9055pt.
+
+Overfull \hbox (2.30132pt too wide) in paragraph at lines 733--733
+[]|[]| 
+ []
+
+<ingredient_insert_cartman.png, id=276, 302.63063pt x 120.45pt>
+File: ingredient_insert_cartman.png Graphic file (type png)
+<use ingredient_insert_cartman.png>
+Package pdftex.def Info: ingredient_insert_cartman.png  used on input line 734.
+
+(pdftex.def)             Requested size: 221.6158pt x 88.2037pt.
+File: order_select_butters.png Graphic file (type png)
+<use order_select_butters.png>
+Package pdftex.def Info: order_select_butters.png  used on input line 744.
+(pdftex.def)             Requested size: 198.3089pt x 56.9055pt.
+<order_insert_cartman.png, id=277, 323.70938pt x 130.23656pt>
+File: order_insert_cartman.png Graphic file (type png)
+<use order_insert_cartman.png>
+Package pdftex.def Info: order_insert_cartman.png  used on input line 745.
+(pdftex.def)             Requested size: 219.2353pt x 88.2037pt.
+File: ri_select_butters.png Graphic file (type png)
+<use ri_select_butters.png>
+Package pdftex.def Info: ri_select_butters.png  used on input line 756.
+(pdftex.def)             Requested size: 226.77185pt x 48.36958pt.
+<ri_insert_cartman.png, id=278, 436.63126pt x 110.66344pt>
+File: ri_insert_cartman.png Graphic file (type png)
+<use ri_insert_cartman.png>
+Package pdftex.def Info: ri_insert_cartman.png  used on input line 757.
+(pdftex.def)             Requested size: 224.53114pt x 56.9055pt.
+
+Overfull \hbox (38.29758pt too wide) in paragraph at lines 711--762
+ [][] 
+ []
+
+[17 <./view_select_butters.png> <./view_select_cartman.png> <./ingredient_selec
+t_butters.png> <./ingredient_select_cartman.png> <./order_select_butters.png> <
+./order_select_cartman.png> <./ri_select_butters.png> <./ri_select_cartman.png>
+ <./dish_select_butters.png> <./dish_select_cartman.png>]
+File: dish_select_butters.png Graphic file (type png)
+<use dish_select_butters.png>
+Package pdftex.def Info: dish_select_butters.png  used on input line 782.
+(pdftex.def)             Requested size: 198.87181pt x 56.9055pt.
+<dish_insert_cartman.png, id=295, 886.81313pt x 116.68594pt>
+File: dish_insert_cartman.png Graphic file (type png)
+<use dish_insert_cartman.png>
+Package pdftex.def Info: dish_insert_cartman.png  used on input line 783.
+(pdftex.def)             Requested size: 216.23595pt x 28.45274pt.
+File: ld_select_butters.png Graphic file (type png)
+<use ld_select_butters.png>
+Package pdftex.def Info: ld_select_butters.png  used on input line 794.
+(pdftex.def)             Requested size: 223.77707pt x 48.36958pt.
+<ld_insert_cartman.png, id=296, 308.65312pt x 110.66344pt>
+File: ld_insert_cartman.png Graphic file (type png)
+<use ld_insert_cartman.png>
+Package pdftex.def Info: ld_insert_cartman.png  used on input line 795.
+(pdftex.def)             Requested size: 222.21594pt x 79.6678pt.
+File: ingredient_select_butters.png Graphic file (type png)
+<use ingredient_select_butters.png>
+Package pdftex.def Info: ingredient_select_butters.png  used on input line 803.
+
+(pdftex.def)             Requested size: 229.92336pt x 56.9055pt.
+
+Overfull \hbox (2.30132pt too wide) in paragraph at lines 803--803
+[]|[]| 
+ []
+
+<ingredient_delete_cartman.png, id=297, 438.8897pt x 159.59625pt>
+File: ingredient_delete_cartman.png Graphic file (type png)
+<use ingredient_delete_cartman.png>
+Package pdftex.def Info: ingredient_delete_cartman.png  used on input line 804.
+
+(pdftex.def)             Requested size: 226.91136pt x 82.51282pt.
+File: order_select_butters.png Graphic file (type png)
+<use order_select_butters.png>
+Package pdftex.def Info: order_select_butters.png  used on input line 812.
+(pdftex.def)             Requested size: 198.3089pt x 56.9055pt.
+<order_delete_cartman.png, id=298, 396.7322pt x 147.55125pt>
+File: order_delete_cartman.png Graphic file (type png)
+<use order_delete_cartman.png>
+Package pdftex.def Info: order_delete_cartman.png  used on input line 813.
+(pdftex.def)             Requested size: 229.51157pt x 85.35826pt.
+
+Overfull \hbox (1.88953pt too wide) in paragraph at lines 813--814
+[]|[]| 
+ []
+
+
+Overfull \hbox (37.80627pt too wide) in paragraph at lines 768--818
+ [][] 
+ []
+
+[18 <./ld_select_butters.png> <./ld_select_cartman.png> <./ingredient_insert_ca
+rtman.png> <./order_insert_cartman.png> <./ri_insert_cartman.png>]
+File: ri_select_butters.png Graphic file (type png)
+<use ri_select_butters.png>
+Package pdftex.def Info: ri_select_butters.png  used on input line 835.
+(pdftex.def)             Requested size: 226.77185pt x 48.36958pt.
+<ri_delete_cartman.png, id=309, 536.75531pt x 156.585pt>
+File: ri_delete_cartman.png Graphic file (type png)
+<use ri_delete_cartman.png>
+Package pdftex.def Info: ri_delete_cartman.png  used on input line 836.
+(pdftex.def)             Requested size: 224.33pt x 65.44142pt.
+File: dish_select_butters.png Graphic file (type png)
+<use dish_select_butters.png>
+Package pdftex.def Info: dish_select_butters.png  used on input line 844.
+(pdftex.def)             Requested size: 198.87181pt x 56.9055pt.
+<dish_delete_cartman.png, id=310, 799.48688pt x 150.5625pt>
+File: dish_delete_cartman.png Graphic file (type png)
+<use dish_delete_cartman.png>
+Package pdftex.def Info: dish_delete_cartman.png  used on input line 845.
+(pdftex.def)             Requested size: 226.62401pt x 42.67912pt.
+File: ld_select_butters.png Graphic file (type png)
+<use ld_select_butters.png>
+Package pdftex.def Info: ld_select_butters.png  used on input line 853.
+(pdftex.def)             Requested size: 223.77707pt x 48.36958pt.
+<ld_delete_cartman.png, id=311, 531.48563pt x 151.3153pt>
+File: ld_delete_cartman.png Graphic file (type png)
+<use ld_delete_cartman.png>
+Package pdftex.def Info: ld_delete_cartman.png  used on input line 854.
+(pdftex.def)             Requested size: 229.85626pt x 65.44142pt.
+
+Overfull \hbox (2.23422pt too wide) in paragraph at lines 854--855
+[]|[]| 
+ []
+
+File: ingredient_select_butters.png Graphic file (type png)
+<use ingredient_select_butters.png>
+Package pdftex.def Info: ingredient_select_butters.png  used on input line 862.
+
+(pdftex.def)             Requested size: 229.92336pt x 56.9055pt.
+
+Overfull \hbox (2.30132pt too wide) in paragraph at lines 862--862
+[]|[]| 
+ []
+
+<ingredient_update_cartman.png, id=312, 299.61937pt x 107.65219pt>
+File: ingredient_update_cartman.png Graphic file (type png)
+<use ingredient_update_cartman.png>
+Package pdftex.def Info: ingredient_update_cartman.png  used on input line 863.
+
+(pdftex.def)             Requested size: 229.6561pt x 82.51282pt.
+
+Overfull \hbox (2.03406pt too wide) in paragraph at lines 863--864
+[]|[]| 
+ []
+
+File: order_select_butters.png Graphic file (type png)
+<use order_select_butters.png>
+Package pdftex.def Info: order_select_butters.png  used on input line 873.
+(pdftex.def)             Requested size: 198.3089pt x 56.9055pt.
+<order_update_cartman.png, id=313, 325.96782pt x 109.91063pt>
+File: order_update_cartman.png Graphic file (type png)
+<use order_update_cartman.png>
+Package pdftex.def Info: order_update_cartman.png  used on input line 874.
+(pdftex.def)             Requested size: 227.84265pt x 76.82234pt.
+
+Overfull \hbox (38.29756pt too wide) in paragraph at lines 824--879
+ [][] 
+ []
+
+[19 <./dish_insert_cartman.png> <./ld_insert_cartman.png> <./ingredient_delete_
+cartman.png> <./order_delete_cartman.png>]
+File: ri_select_butters.png Graphic file (type png)
+<use ri_select_butters.png>
+Package pdftex.def Info: ri_select_butters.png  used on input line 898.
+(pdftex.def)             Requested size: 226.77185pt x 48.36958pt.
+<ri_update_cartman.png, id=324, 438.8897pt x 112.16907pt>
+File: ri_update_cartman.png Graphic file (type png)
+<use ri_update_cartman.png>
+Package pdftex.def Info: ri_update_cartman.png  used on input line 899.
+(pdftex.def)             Requested size: 222.65213pt x 56.9055pt.
+File: dish_select_butters.png Graphic file (type png)
+<use dish_select_butters.png>
+Package pdftex.def Info: dish_select_butters.png  used on input line 907.
+(pdftex.def)             Requested size: 198.87181pt x 56.9055pt.
+<dish_update_cartman.png, id=325, 883.80188pt x 108.405pt>
+File: dish_update_cartman.png Graphic file (type png)
+<use dish_update_cartman.png>
+Package pdftex.def Info: dish_update_cartman.png  used on input line 908.
+(pdftex.def)             Requested size: 231.96776pt x 28.45274pt.
+
+Overfull \hbox (4.34572pt too wide) in paragraph at lines 908--909
+[]|[]| 
+ []
+
+File: ld_select_butters.png Graphic file (type png)
+<use ld_select_butters.png>
+Package pdftex.def Info: ld_select_butters.png  used on input line 918.
+(pdftex.def)             Requested size: 223.77707pt x 48.36958pt.
+<ld_update_cartman.png, id=326, 319.1925pt x 108.405pt>
+File: ld_update_cartman.png Graphic file (type png)
+<use ld_update_cartman.png>
+Package pdftex.def Info: ld_update_cartman.png  used on input line 919.
+(pdftex.def)             Requested size: 226.2094pt x 76.82234pt.
+<client_select_butters.png, id=327, 268.00125pt x 71.51718pt>
+File: client_select_butters.png Graphic file (type png)
+<use client_select_butters.png>
+Package pdftex.def Info: client_select_butters.png  used on input line 927.
+(pdftex.def)             Requested size: 181.26106pt x 48.36958pt.
+File: client_select_butters.png Graphic file (type png)
+<use client_select_butters.png>
+Package pdftex.def Info: client_select_butters.png  used on input line 928.
+(pdftex.def)             Requested size: 181.26106pt x 48.36958pt.
+
+Overfull \hbox (37.80627pt too wide) in paragraph at lines 885--933
+ [][] 
+ []
+
+[20 <./ri_delete_cartman.png> <./dish_delete_cartman.png> <./ld_delete_cartman.
+png> <./ingredient_update_cartman.png> <./order_update_cartman.png>]
+\openout3 = `report_labs.pyg'.
+
+ [21 <./ri_update_cartman.png> <./dish_update_cartman.png> <./ld_update_cartman
+.png> <./client_select_butters.png>]
+(_minted-report_labs/661B74DD14DF096F36CF232987E8317465E6A65E40A5077F0E50B2222E
+B6F2B5.pygtex)
+\openout3 = `report_labs.pyg'.
+
+
+(_minted-report_labs/96575B85BADD77287B4066C2580EE39F65E6A65E40A5077F0E50B2222E
+B6F2B5.pygtex)
+<function_success_result.png, id=347, 304.88907pt x 162.6075pt>
+File: function_success_result.png Graphic file (type png)
+<use function_success_result.png>
+Package pdftex.def Info: function_success_result.png  used on input line 1008.
+(pdftex.def)             Requested size: 213.42088pt x 113.82446pt.
+ [22]
+\openout3 = `report_labs.pyg'.
+
+
+(_minted-report_labs/E0A5CF04D23114F210D52E77D9F018B565E6A65E40A5077F0E50B2222E
+B6F2B5.pygtex)
+<function_success_result2.png, id=356, 243.15843pt x 60.225pt>
+File: function_success_result2.png Graphic file (type png)
+<use function_success_result2.png>
+Package pdftex.def Info: function_success_result2.png  used on input line 1033.
+
+(pdftex.def)             Requested size: 170.20973pt x 42.1572pt.
+\openout3 = `report_labs.pyg'.
+
+
+(_minted-report_labs/79C5C80DE0B5E122B39DB278DA1FEFE065E6A65E40A5077F0E50B2222E
+B6F2B5.pygtex)
+<function_failure_result.png, id=357, 500.62032pt x 51.94406pt>
+File: function_failure_result.png Graphic file (type png)
+<use function_failure_result.png>
+Package pdftex.def Info: function_failure_result.png  used on input line 1058.
+(pdftex.def)             Requested size: 350.43182pt x 36.36058pt.
+ [23 <./function_success_result.png> <./function_success_result2.png> <./functi
+on_failure_result.png>]
+\openout3 = `report_labs.pyg'.
+
+
+(_minted-report_labs/4D2AF9C8745B19364D34B882063FE10565E6A65E40A5077F0E50B2222E
+B6F2B5.pygtex) [24]
+Overfull \hbox (3.81094pt too wide) in paragraph at lines 1144--1145
+\T2A/cmr/m/n/12 ад-рес ре-сто-ра-на, restaurant_registration_info - ре-ги-стра-
+ци-он-ную ин-фор-ма-цию, ingredient
+ []
+
+[25]
+\openout3 = `report_labs.pyg'.
+
+
+(_minted-report_labs/D654AF262245BE74BF6C1FA45578A0EB65E6A65E40A5077F0E50B2222E
+B6F2B5.pygtex)
+<procedure_restaurant.png, id=377, 776.14969pt x 158.09062pt>
+File: procedure_restaurant.png Graphic file (type png)
+<use procedure_restaurant.png>
+Package pdftex.def Info: procedure_restaurant.png  used on input line 1179.
+(pdftex.def)             Requested size: 465.6934pt x 94.85509pt.
+<procedure_ingredient.png, id=378, 254.45062pt x 156.585pt>
+File: procedure_ingredient.png Graphic file (type png)
+<use procedure_ingredient.png>
+Package pdftex.def Info: procedure_ingredient.png  used on input line 1186.
+(pdftex.def)             Requested size: 178.11421pt x 109.60873pt.
+<procedure_storage.png, id=379, 427.5975pt x 182.18062pt>
+File: procedure_storage.png Graphic file (type png)
+<use procedure_storage.png>
+Package pdftex.def Info: procedure_storage.png  used on input line 1193.
+(pdftex.def)             Requested size: 299.31621pt x 127.52554pt.
+ [26 <./procedure_restaurant.png> <./procedure_ingredient.png>]
+\openout3 = `report_labs.pyg'.
+
+
+(_minted-report_labs/95F5CD1204B72DD74A75C4955937BFDA65E6A65E40A5077F0E50B2222E
+B6F2B5.pygtex)
+<procedure_restaurant2.png, id=389, 775.39688pt x 152.82094pt>
+File: procedure_restaurant2.png Graphic file (type png)
+<use procedure_restaurant2.png>
+Package pdftex.def Info: procedure_restaurant2.png  used on input line 1221.
+(pdftex.def)             Requested size: 465.24171pt x 91.69325pt.
+<procedure_storage2.png, id=390, 425.33907pt x 152.82094pt>
+File: procedure_storage2.png Graphic file (type png)
+<use procedure_storage2.png>
+Package pdftex.def Info: procedure_storage2.png  used on input line 1228.
+(pdftex.def)             Requested size: 297.7353pt x 106.9739pt.
+\openout3 = `report_labs.pyg'.
+
+ [27 <./procedure_storage.png> <./procedure_restaurant2.png> <./procedure_stora
+ge2.png>]
+(_minted-report_labs/CF459E84172A46218268A3B26ED42AA465E6A65E40A5077F0E50B2222E
+B6F2B5.pygtex)
+<procedure_ingredient3.png, id=403, 254.45062pt x 157.33781pt>
+File: procedure_ingredient3.png Graphic file (type png)
+<use procedure_ingredient3.png>
+Package pdftex.def Info: procedure_ingredient3.png  used on input line 1257.
+(pdftex.def)             Requested size: 178.11421pt x 110.13571pt.
+<procedure_storage3.png, id=404, 425.33907pt x 156.585pt>
+File: procedure_storage3.png Graphic file (type png)
+<use procedure_storage3.png>
+Package pdftex.def Info: procedure_storage3.png  used on input line 1264.
+(pdftex.def)             Requested size: 297.7353pt x 109.60873pt.
+
+Overfull \hbox (21.66321pt too wide) in paragraph at lines 1270--1271
+[]\T2A/cmr/m/n/12 Следующий за-прос об-но-вит ко-ли-че-ство ин-гре-ди-ен-тов в 
+таб-ли-це \T2A/cmtt/m/n/12 ingredient_in_storage
+ []
+
+\openout3 = `report_labs.pyg'.
+
+
+(_minted-report_labs/83EC7264EC4A830CA90157D1491E8DAB65E6A65E40A5077F0E50B2222E
+B6F2B5.pygtex)
+<procedure_storage4.png, id=405, 426.84468pt x 154.32657pt>
+File: procedure_storage4.png Graphic file (type png)
+<use procedure_storage4.png>
+Package pdftex.def Info: procedure_storage4.png  used on input line 1293.
+(pdftex.def)             Requested size: 298.78925pt x 108.02785pt.
+ [28 <./procedure_ingredient3.png> <./procedure_storage3.png>]
+<begin_transaction.png, id=415, 102.3825pt x 28.60687pt>
+File: begin_transaction.png Graphic file (type png)
+<use begin_transaction.png>
+Package pdftex.def Info: begin_transaction.png  used on input line 1315.
+(pdftex.def)             Requested size: 102.38225pt x 28.6068pt.
+File: begin_transaction.png Graphic file (type png)
+<use begin_transaction.png>
+Package pdftex.def Info: begin_transaction.png  used on input line 1321.
+(pdftex.def)             Requested size: 102.38225pt x 28.6068pt.
+<transaction1_read1.png, id=416, 643.6547pt x 59.47218pt>
+File: transaction1_read1.png Graphic file (type png)
+<use transaction1_read1.png>
+Package pdftex.def Info: transaction1_read1.png  used on input line 1328.
+(pdftex.def)             Requested size: 225.28252pt x 20.81557pt.
+<transaction2_update.png, id=417, 97.11281pt x 25.59563pt>
+File: transaction2_update.png Graphic file (type png)
+<use transaction2_update.png>
+Package pdftex.def Info: transaction2_update.png  used on input line 1336.
+(pdftex.def)             Requested size: 97.11256pt x 25.59555pt.
+
+Overfull \hbox (12.27261pt too wide) in paragraph at lines 1307--1340
+ [] 
+ []
+
+[29 <./procedure_storage4.png>]
+<commit.png, id=424, 52.69687pt x 21.83156pt>
+File: commit.png Graphic file (type png)
+<use commit.png>
+Package pdftex.def Info: commit.png  used on input line 1352.
+(pdftex.def)             Requested size: 52.69673pt x 21.8315pt.
+<trans2.png, id=425, 637.63219pt x 57.96657pt>
+File: trans2.png Graphic file (type png)
+<use trans2.png>
+Package pdftex.def Info: trans2.png  used on input line 1359.
+(pdftex.def)             Requested size: 223.1746pt x 20.28859pt.
+File: trans2.png Graphic file (type png)
+<use trans2.png>
+Package pdftex.def Info: trans2.png  used on input line 1366.
+(pdftex.def)             Requested size: 223.1746pt x 20.28859pt.
+
+Overfull \hbox (28.7051pt too wide) in paragraph at lines 1345--1369
+ [] 
+ []
+
+[30 <./begin_transaction.png> <./transaction1_read1.png> <./transaction2_update
+.png>] [31 <./commit.png> <./trans2.png>] [32] [33] (report_labs.aux)
+Package rerunfilecheck Info: File `report_labs.out' has not changed.
+(rerunfilecheck)             Checksum: 75693DDB145A3D0778ED59EC3AB6778A;5162.
+runsystem(del report_labs.pyg)...executed.
+
+ ) 
+Here is how much of TeX's memory you used:
+ 20428 strings out of 475385
+ 351458 string characters out of 2793322
+ 738397 words of memory out of 3000000
+ 41211 multiletter control sequences out of 15000+600000
+ 487432 words of font info for 77 fonts, out of 8000000 for 9000
+ 1141 hyphenation exceptions out of 8191
+ 74i,15n,81p,1070b,724s stack positions out of 10000i,1000n,20000p,200000b,80000s
+ <C:\Users\iasta\AppData\Local\MiKTeX\fonts/pk/ljfour/lh/lh-t2a/dpi600\latt14
+40.pk> <C:\Users\iasta\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\
+tctt1000.pk> <C:\Users\iasta\AppData\Local\MiKTeX\fonts/pk/ljfour/lh/lh-t2a/dpi
+600\lait1000.pk> <C:\Users\iasta\AppData\Local\MiKTeX\fonts/pk/ljfour/lh/lh-t2a
+/dpi600\labx1440.pk> <C:\Users\iasta\AppData\Local\MiKTeX\fonts/pk/ljfour/lh/lh
+-t2a/dpi600\latt1000.pk> <C:\Users\iasta\AppData\Local\MiKTeX\fonts/pk/ljfour/l
+h/lh-t2a/dpi600\larm0600.pk> <C:\Users\iasta\AppData\Local\MiKTeX\fonts/pk/ljfo
+ur/lh/lh-t2a/dpi600\labx1728.pk> <C:\Users\iasta\AppData\Local\MiKTeX\fonts/pk/
+ljfour/jknappen/ec/dpi600\tcrm1200.pk> <C:\Users\iasta\AppData\Local\MiKTeX\fon
+ts/pk/ljfour/lh/lh-t2a/dpi600\latt1200.pk> <C:\Users\iasta\AppData\Local\MiKTeX
+\fonts/pk/ljfour/lh/lh-t2a/dpi600\labx1200.pk> <C:\Users\iasta\AppData\Local\Mi
+KTeX\fonts/pk/ljfour/lh/lh-t2a/dpi600\labx2074.pk> <C:\Users\iasta\AppData\Loca
+l\MiKTeX\fonts/pk/ljfour/lh/lh-t2a/dpi600\larm1200.pk> <C:\Users\iasta\AppData\
+Local\MiKTeX\fonts/pk/ljfour/lh/lh-t2a/dpi600\larm1728.pk> <C:\Users\iasta\AppD
+ata\Local\MiKTeX\fonts/pk/ljfour/lh/lh-t2a/dpi600\larm1440.pk><D:/MiKTeX/fonts/
+type1/public/amsfonts/cm/cmmi12.pfb><D:/MiKTeX/fonts/type1/public/amsfonts/cm/c
+mmi6.pfb><D:/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><D:/MiKTeX/fonts/t
+ype1/public/amsfonts/cm/cmr8.pfb><D:/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy
+6.pfb>
+Output written on report_labs.pdf (33 pages, 1088713 bytes).
+PDF statistics:
+ 1231 PDF objects out of 1440 (max. 8388607)
+ 109 named destinations out of 1000 (max. 500000)
+ 502 words of extra memory for PDF output out of 10000 (max. 10000000)
+

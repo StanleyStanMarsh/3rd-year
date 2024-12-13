@@ -1,0 +1,5 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{SELECT}
+\PYG{+w}{	}\PYG{n}{get\PYGZus{}initials\PYGZus{}with\PYGZus{}surname}\PYG{p}{(}\PYG{n}{surname}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{name}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{patronymic}\PYG{p}{)}\PYG{+w}{ }\PYG{k}{AS}\PYG{+w}{ }\PYG{l+s+ss}{\PYGZdq{}ิศฮ\PYGZdq{}}
+\PYG{k}{FROM}\PYG{+w}{ }\PYG{n}{dish}\PYG{p}{;}
+\end{Verbatim}

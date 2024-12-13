@@ -1,0 +1,20 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{CREATE}\PYG{+w}{ }\PYG{k}{OR}\PYG{+w}{ }\PYG{k}{REPLACE}\PYG{+w}{ }\PYG{k}{VIEW}\PYG{+w}{ }\PYG{n}{ingredient\PYGZus{}view}\PYG{+w}{ }\PYG{k}{AS}
+\PYG{+w}{	}\PYG{k}{SELECT}
+\PYG{+w}{    	}\PYG{n}{i}\PYG{p}{.}\PYG{n}{id\PYGZus{}ingredient}\PYG{p}{,}
+\PYG{+w}{    	}\PYG{n}{i}\PYG{p}{.}\PYG{n}{name}\PYG{p}{,}
+\PYG{+w}{    	}\PYG{k}{COUNT}\PYG{p}{(}\PYG{k}{DISTINCT}\PYG{+w}{ }\PYG{n}{d}\PYG{p}{.}\PYG{n}{id\PYGZus{}dish}\PYG{p}{)}\PYG{+w}{ }\PYG{k}{AS}\PYG{+w}{ }\PYG{n}{num\PYGZus{}dishes}\PYG{p}{,}
+\PYG{+w}{    	}\PYG{k}{COUNT}\PYG{p}{(}\PYG{n}{o}\PYG{p}{.}\PYG{n}{id\PYGZus{}order}\PYG{p}{)}\PYG{+w}{ }\PYG{k}{AS}\PYG{+w}{ }\PYG{n}{num\PYGZus{}orders}
+\PYG{+w}{	}\PYG{k}{FROM}
+\PYG{+w}{    	}\PYG{n}{ingredient}\PYG{+w}{ }\PYG{n}{i}
+\PYG{+w}{	}\PYG{k}{LEFT}\PYG{+w}{ }\PYG{k}{JOIN}
+\PYG{+w}{    	}\PYG{n}{ready\PYGZus{}ingredient}\PYG{+w}{ }\PYG{n}{ri}\PYG{+w}{ }\PYG{k}{ON}\PYG{+w}{ }\PYG{n}{i}\PYG{p}{.}\PYG{n}{id\PYGZus{}ingredient}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{ri}\PYG{p}{.}\PYG{n}{id\PYGZus{}ingredient}
+\PYG{+w}{	}\PYG{k}{LEFT}\PYG{+w}{ }\PYG{k}{JOIN}
+\PYG{+w}{    	}\PYG{n}{dish}\PYG{+w}{ }\PYG{n}{d}\PYG{+w}{ }\PYG{k}{ON}\PYG{+w}{ }\PYG{n}{ri}\PYG{p}{.}\PYG{n}{id\PYGZus{}dish}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{d}\PYG{p}{.}\PYG{n}{id\PYGZus{}dish}
+\PYG{+w}{	}\PYG{k}{LEFT}\PYG{+w}{ }\PYG{k}{JOIN}
+\PYG{+w}{    	}\PYG{n}{list\PYGZus{}of\PYGZus{}dishes}\PYG{+w}{ }\PYG{n}{lod}\PYG{+w}{ }\PYG{k}{ON}\PYG{+w}{ }\PYG{n}{d}\PYG{p}{.}\PYG{n}{id\PYGZus{}dish}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{lod}\PYG{p}{.}\PYG{n}{id\PYGZus{}dish}
+\PYG{+w}{	}\PYG{k}{LEFT}\PYG{+w}{ }\PYG{k}{JOIN}
+\PYG{+w}{		}\PYG{l+s+ss}{\PYGZdq{}order\PYGZdq{}}\PYG{+w}{ }\PYG{n}{o}\PYG{+w}{ }\PYG{k}{ON}\PYG{+w}{ }\PYG{n}{lod}\PYG{p}{.}\PYG{n}{id\PYGZus{}order}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{o}\PYG{p}{.}\PYG{n}{id\PYGZus{}order}
+\PYG{+w}{	}\PYG{k}{GROUP}\PYG{+w}{ }\PYG{k}{BY}
+\PYG{+w}{		}\PYG{n}{i}\PYG{p}{.}\PYG{n}{id\PYGZus{}ingredient}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{i}\PYG{p}{.}\PYG{n}{name}\PYG{p}{;}
+\end{Verbatim}

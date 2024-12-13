@@ -1,0 +1,5 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{UPDATE}\PYG{+w}{ }\PYG{n}{restaurant}
+\PYG{k}{SET}\PYG{+w}{ }\PYG{n}{name}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+s+s1}{\PYGZsq{}¬кусный берег\PYGZsq{}}
+\PYG{k}{WHERE}\PYG{+w}{ }\PYG{n}{id\PYGZus{}restaurant}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{4}\PYG{p}{;}
+\end{Verbatim}

@@ -1,0 +1,37 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{CREATE}\PYG{+w}{ }\PYG{k}{OR}\PYG{+w}{ }\PYG{k}{REPLACE}\PYG{+w}{ }\PYG{k}{FUNCTION}\PYG{+w}{ }\PYG{n}{update\PYGZus{}restaurant\PYGZus{}clients}\PYG{p}{()}
+\PYG{k}{RETURNS}\PYG{+w}{ }\PYG{k}{TRIGGER}
+\PYG{k}{LANGUAGE}\PYG{+w}{ }\PYG{n}{plpgsql}
+\PYG{k}{AS}\PYG{+w}{ }\PYG{err}{\PYGZdl{}\PYGZdl{}}
+\PYG{k}{BEGIN}
+\PYG{+w}{    }\PYG{k}{IF}\PYG{+w}{ }\PYG{n}{TG\PYGZus{}OP}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+s+s1}{\PYGZsq{}INSERT\PYGZsq{}}\PYG{+w}{ }\PYG{k}{THEN}
+\PYG{+w}{        }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Вставляет новую строку в restaurant\PYGZus{}clients с числом клиентов по умолчанию равным 0}
+\PYG{+w}{        }\PYG{k}{INSERT}\PYG{+w}{ }\PYG{k}{INTO}\PYG{+w}{ }\PYG{n}{restaurant\PYGZus{}clients}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{id\PYGZus{}restaurant}\PYG{p}{,}\PYG{+w}{ }\PYG{l+s+ss}{\PYGZdq{}name\PYGZdq{}}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{address}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{clients\PYGZus{}count}\PYG{p}{)}
+\PYG{+w}{        }\PYG{k}{VALUES}\PYG{+w}{ }\PYG{p}{(}\PYG{k}{NEW}\PYG{p}{.}\PYG{n}{id\PYGZus{}restaurant}\PYG{p}{,}\PYG{+w}{ }\PYG{k}{NEW}\PYG{p}{.}\PYG{l+s+ss}{\PYGZdq{}name\PYGZdq{}}\PYG{p}{,}\PYG{+w}{ }\PYG{k}{NEW}\PYG{p}{.}\PYG{n}{address}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{);}
+
+\PYG{+w}{    }\PYG{k}{ELSIF}\PYG{+w}{ }\PYG{n}{TG\PYGZus{}OP}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+s+s1}{\PYGZsq{}UPDATE\PYGZsq{}}\PYG{+w}{ }\PYG{k}{THEN}
+\PYG{+w}{        }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Обновляет соответствующую строку в restaurant\PYGZus{}clients}
+\PYG{+w}{        }\PYG{k}{UPDATE}\PYG{+w}{ }\PYG{n}{restaurant\PYGZus{}clients}
+\PYG{+w}{        }\PYG{k}{SET}\PYG{+w}{ }\PYG{l+s+ss}{\PYGZdq{}name\PYGZdq{}}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{k}{NEW}\PYG{p}{.}\PYG{l+s+ss}{\PYGZdq{}name\PYGZdq{}}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{address}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{k}{NEW}\PYG{p}{.}\PYG{n}{address}
+\PYG{+w}{        }\PYG{k}{WHERE}\PYG{+w}{ }\PYG{n}{id\PYGZus{}restaurant}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{k}{OLD}\PYG{p}{.}\PYG{n}{id\PYGZus{}restaurant}\PYG{p}{;}
+
+\PYG{+w}{    }\PYG{k}{ELSIF}\PYG{+w}{ }\PYG{n}{TG\PYGZus{}OP}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+s+s1}{\PYGZsq{}DELETE\PYGZsq{}}\PYG{+w}{ }\PYG{k}{THEN}
+\PYG{+w}{        }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Удаляет соответствующую строку из restaurant\PYGZus{}clients}
+\PYG{+w}{        }\PYG{k}{DELETE}\PYG{+w}{ }\PYG{k}{FROM}\PYG{+w}{ }\PYG{n}{restaurant\PYGZus{}clients}
+\PYG{+w}{        }\PYG{k}{WHERE}\PYG{+w}{ }\PYG{n}{id\PYGZus{}restaurant}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{k}{OLD}\PYG{p}{.}\PYG{n}{id\PYGZus{}restaurant}\PYG{p}{;}
+\PYG{+w}{    }\PYG{k}{END}\PYG{+w}{ }\PYG{k}{IF}\PYG{p}{;}
+\PYG{+w}{    }\PYG{k}{RETURN}\PYG{+w}{ }\PYG{k}{NULL}\PYG{p}{;}
+\PYG{k}{END}\PYG{p}{;}
+\PYG{err}{\PYGZdl{}\PYGZdl{}}\PYG{p}{;}
+
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Триггер для вставки и удаления}
+\PYG{k}{CREATE}\PYG{+w}{ }\PYG{k}{TRIGGER}\PYG{+w}{ }\PYG{n}{restaurant\PYGZus{}clients\PYGZus{}insert}
+\PYG{k}{AFTER}\PYG{+w}{ }\PYG{k}{INSERT}\PYG{+w}{ }\PYG{k}{OR}\PYG{+w}{ }\PYG{k}{DELETE}\PYG{+w}{ }\PYG{k}{ON}\PYG{+w}{ }\PYG{n}{restaurant}
+\PYG{k}{FOR}\PYG{+w}{ }\PYG{k}{EACH}\PYG{+w}{ }\PYG{k}{ROW}\PYG{+w}{ }\PYG{k}{EXECUTE}\PYG{+w}{ }\PYG{k}{FUNCTION}\PYG{+w}{ }\PYG{n}{update\PYGZus{}restaurant\PYGZus{}clients}\PYG{p}{();}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Триггер для обновления названия или адреса ресторана}
+\PYG{k}{CREATE}\PYG{+w}{ }\PYG{k}{TRIGGER}\PYG{+w}{ }\PYG{n}{restaurant\PYGZus{}clients\PYGZus{}update}
+\PYG{k}{AFTER}\PYG{+w}{ }\PYG{k}{UPDATE}\PYG{+w}{ }\PYG{k}{OF}\PYG{+w}{ }\PYG{n}{name}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{address}\PYG{+w}{ }\PYG{k}{ON}\PYG{+w}{ }\PYG{n}{restaurant}
+\PYG{k}{FOR}\PYG{+w}{ }\PYG{k}{EACH}\PYG{+w}{ }\PYG{k}{ROW}\PYG{+w}{ }\PYG{k}{EXECUTE}\PYG{+w}{ }\PYG{k}{FUNCTION}\PYG{+w}{ }\PYG{n}{update\PYGZus{}restaurant\PYGZus{}clients}\PYG{p}{();}
+\end{Verbatim}

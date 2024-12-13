@@ -1,0 +1,14 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{SELECT}
+\PYG{+w}{	}\PYG{n}{cnd}\PYG{p}{.}\PYG{n}{id\PYGZus{}condition}\PYG{p}{,}
+\PYG{+w}{	}\PYG{n}{cnd}\PYG{p}{.}\PYG{n}{condition}\PYG{p}{,}
+\PYG{+w}{	}\PYG{k}{SUM}\PYG{p}{(}\PYG{n}{iv}\PYG{p}{.}\PYG{n}{num\PYGZus{}dishes}\PYG{p}{)}\PYG{+w}{ }\PYG{k}{AS}\PYG{+w}{ }\PYG{n}{number\PYGZus{}of\PYGZus{}dishes}
+\PYG{k}{FROM}
+\PYG{+w}{	}\PYG{n}{condition}\PYG{+w}{ }\PYG{n}{cnd}
+\PYG{k}{JOIN}
+\PYG{+w}{	}\PYG{n}{ready\PYGZus{}ingredient}\PYG{+w}{ }\PYG{n}{ri}\PYG{+w}{ }\PYG{k}{ON}\PYG{+w}{ }\PYG{n}{cnd}\PYG{p}{.}\PYG{n}{id\PYGZus{}condition}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{ri}\PYG{p}{.}\PYG{n}{id\PYGZus{}condition}
+\PYG{k}{JOIN}
+\PYG{+w}{	}\PYG{n}{ingredient\PYGZus{}view}\PYG{+w}{ }\PYG{n}{iv}\PYG{+w}{ }\PYG{k}{ON}\PYG{+w}{ }\PYG{n}{ri}\PYG{p}{.}\PYG{n}{id\PYGZus{}ingredient}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{iv}\PYG{p}{.}\PYG{n}{id\PYGZus{}ingredient}
+\PYG{k}{GROUP}\PYG{+w}{ }\PYG{k}{BY}
+\PYG{+w}{	}\PYG{n}{cnd}\PYG{p}{.}\PYG{n}{id\PYGZus{}condition}\PYG{p}{;}
+\end{Verbatim}

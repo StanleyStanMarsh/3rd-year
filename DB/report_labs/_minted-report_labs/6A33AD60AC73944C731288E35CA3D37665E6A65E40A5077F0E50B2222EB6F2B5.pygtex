@@ -1,0 +1,14 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Создание пользователя butters и назначение прав}
+\PYG{k}{CREATE}\PYG{+w}{ }\PYG{k}{USER}\PYG{+w}{ }\PYG{n}{butters}\PYG{+w}{ }\PYG{k}{WITH}\PYG{+w}{ }\PYG{n}{PASSWORD}\PYG{+w}{ }\PYG{l+s+s1}{\PYGZsq{}1234\PYGZsq{}}\PYG{p}{;}
+\PYG{k}{GRANT}\PYG{+w}{ }\PYG{k}{SELECT}\PYG{+w}{ }\PYG{k}{ON}\PYG{+w}{ }\PYG{n}{ingredient\PYGZus{}view}\PYG{+w}{ }\PYG{k}{TO}\PYG{+w}{ }\PYG{n}{butters}\PYG{p}{;}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Создание пользователя cartman и назначение прав}
+\PYG{k}{CREATE}\PYG{+w}{ }\PYG{k}{USER}\PYG{+w}{ }\PYG{n}{cartman}\PYG{+w}{ }\PYG{k}{WITH}\PYG{+w}{ }\PYG{n}{PASSWORD}\PYG{+w}{ }\PYG{l+s+s1}{\PYGZsq{}1234\PYGZsq{}}\PYG{p}{;}
+\PYG{k}{GRANT}\PYG{+w}{ }\PYG{k}{SELECT}\PYG{p}{,}\PYG{+w}{ }\PYG{k}{INSERT}\PYG{p}{,}\PYG{+w}{ }\PYG{k}{DELETE}\PYG{p}{,}\PYG{+w}{ }\PYG{k}{UPDATE}\PYG{+w}{ }\PYG{k}{ON}\PYG{+w}{ }\PYG{n}{ingredient}\PYG{+w}{ }\PYG{k}{TO}\PYG{+w}{ }\PYG{n}{cartman}\PYG{p}{;}
+\PYG{k}{GRANT}\PYG{+w}{ }\PYG{k}{SELECT}\PYG{p}{,}\PYG{+w}{ }\PYG{k}{INSERT}\PYG{p}{,}\PYG{+w}{ }\PYG{k}{DELETE}\PYG{p}{,}\PYG{+w}{ }\PYG{k}{UPDATE}\PYG{+w}{ }\PYG{k}{ON}\PYG{+w}{ }\PYG{l+s+ss}{\PYGZdq{}order\PYGZdq{}}\PYG{+w}{ }\PYG{k}{TO}\PYG{+w}{ }\PYG{n}{cartman}\PYG{p}{;}
+\PYG{k}{GRANT}\PYG{+w}{ }\PYG{k}{SELECT}\PYG{p}{,}\PYG{+w}{ }\PYG{k}{INSERT}\PYG{p}{,}\PYG{+w}{ }\PYG{k}{DELETE}\PYG{p}{,}\PYG{+w}{ }\PYG{k}{UPDATE}\PYG{+w}{ }\PYG{k}{ON}\PYG{+w}{ }\PYG{n}{ready\PYGZus{}ingredient}\PYG{+w}{ }\PYG{k}{TO}\PYG{+w}{ }\PYG{n}{cartman}\PYG{p}{;}
+\PYG{k}{GRANT}\PYG{+w}{ }\PYG{k}{SELECT}\PYG{p}{,}\PYG{+w}{ }\PYG{k}{INSERT}\PYG{p}{,}\PYG{+w}{ }\PYG{k}{DELETE}\PYG{p}{,}\PYG{+w}{ }\PYG{k}{UPDATE}\PYG{+w}{ }\PYG{k}{ON}\PYG{+w}{ }\PYG{n}{dish}\PYG{+w}{ }\PYG{k}{TO}\PYG{+w}{ }\PYG{n}{cartman}\PYG{p}{;}
+\PYG{k}{GRANT}\PYG{+w}{ }\PYG{k}{SELECT}\PYG{p}{,}\PYG{+w}{ }\PYG{k}{INSERT}\PYG{p}{,}\PYG{+w}{ }\PYG{k}{DELETE}\PYG{p}{,}\PYG{+w}{ }\PYG{k}{UPDATE}\PYG{+w}{ }\PYG{k}{ON}\PYG{+w}{ }\PYG{n}{list\PYGZus{}of\PYGZus{}dishes}\PYG{+w}{ }\PYG{k}{TO}\PYG{+w}{ }\PYG{n}{cartman}\PYG{p}{;}
+\PYG{k}{GRANT}\PYG{+w}{ }\PYG{k}{SELECT}\PYG{+w}{ }\PYG{k}{ON}\PYG{+w}{ }\PYG{n}{ingredient\PYGZus{}view}\PYG{+w}{ }\PYG{k}{TO}\PYG{+w}{ }\PYG{n}{cartman}\PYG{p}{;}
+\end{Verbatim}

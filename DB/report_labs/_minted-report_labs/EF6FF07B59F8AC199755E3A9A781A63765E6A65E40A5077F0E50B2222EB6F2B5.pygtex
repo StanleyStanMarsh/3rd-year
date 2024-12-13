@@ -1,0 +1,8 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{SELECT}
+\PYG{+w}{	}\PYG{k}{trigger\PYGZus{}name}\PYG{p}{,}
+\PYG{+w}{	}\PYG{n}{event\PYGZus{}object\PYGZus{}table}\PYG{p}{,}
+\PYG{+w}{	}\PYG{n}{event\PYGZus{}manipulation}\PYG{p}{,}
+\PYG{+w}{	}\PYG{n}{action\PYGZus{}statement}
+\PYG{k}{FROM}\PYG{+w}{ }\PYG{n}{information\PYGZus{}schema}\PYG{p}{.}\PYG{n}{triggers}\PYG{p}{;}
+\end{Verbatim}

@@ -1,0 +1,3 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{DELETE}\PYG{+w}{ }\PYG{k}{FROM}\PYG{+w}{ }\PYG{n}{restaurant}\PYG{+w}{ }\PYG{k}{WHERE}\PYG{+w}{ }\PYG{n}{id\PYGZus{}restaurant}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{51}\PYG{p}{;}
+\end{Verbatim}

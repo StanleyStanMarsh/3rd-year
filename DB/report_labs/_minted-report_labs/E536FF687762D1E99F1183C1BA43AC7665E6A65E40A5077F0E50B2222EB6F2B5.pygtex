@@ -1,0 +1,3 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{DELETE}\PYG{+w}{ }\PYG{k}{FROM}\PYG{+w}{ }\PYG{n}{client}\PYG{+w}{ }\PYG{k}{WHERE}\PYG{+w}{ }\PYG{n}{id\PYGZus{}client}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{500}\PYG{p}{;}
+\end{Verbatim}

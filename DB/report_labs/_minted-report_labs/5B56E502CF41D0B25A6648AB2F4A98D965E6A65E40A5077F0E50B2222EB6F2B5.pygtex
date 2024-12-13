@@ -1,0 +1,4 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{INSERT}\PYG{+w}{ }\PYG{k}{INTO}\PYG{+w}{ }\PYG{n}{restaurant}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{id\PYGZus{}restaurant}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{name}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{registration\PYGZus{}info}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{address}\PYG{p}{,}\PYG{+w}{ }\PYG{k}{space}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{capacity}\PYG{p}{)}
+\PYG{k}{VALUES}\PYG{+w}{ }\PYG{p}{(}\PYG{l+m+mi}{51}\PYG{p}{,}\PYG{+w}{ }\PYG{l+s+s1}{\PYGZsq{}ГастроLAB\PYGZsq{}}\PYG{p}{,}\PYG{+w}{ }\PYG{l+s+s1}{\PYGZsq{}ИНН 8901234567\PYGZsq{}}\PYG{p}{,}\PYG{+w}{ }\PYG{l+s+s1}{\PYGZsq{}Новосибирск, ул. Ленина, д. 20\PYGZsq{}}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{120}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{150}\PYG{p}{);}
+\end{Verbatim}

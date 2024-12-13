@@ -1,0 +1,9 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{CALL}\PYG{+w}{ }\PYG{n}{upsert\PYGZus{}restaurant\PYGZus{}ingredient}\PYG{p}{(}
+\PYG{+w}{	}\PYG{l+s+s1}{\PYGZsq{}Закусочная Весла\PYGZsq{}}\PYG{p}{,}
+\PYG{+w}{	}\PYG{l+s+s1}{\PYGZsq{}Краснодар, ул. Восточная, д. 21\PYGZsq{}}\PYG{p}{,}
+\PYG{+w}{	}\PYG{l+s+s1}{\PYGZsq{}ИНН 1234567890\PYGZsq{}}\PYG{p}{,}
+\PYG{+w}{	}\PYG{l+s+s1}{\PYGZsq{}Желатин сухой пищевой\PYGZsq{}}\PYG{p}{,}
+\PYG{+w}{	}\PYG{l+m+mi}{222}
+\PYG{p}{);}
+\end{Verbatim}
