@@ -1,0 +1,205 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 YaBrowser/24.10.0.0 Safari/537.36" version="25.0.3">
+  <diagram name="Page-1" id="-skcOhgaIUTTsAP3ynV0">
+    <mxGraphModel dx="1050" dy="567" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="dk2yf-TxN15IphiMM7zw-1" value="" style="endArrow=none;html=1;fontFamily=Times New Roman;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="40" y="40" as="sourcePoint" />
+            <mxPoint x="40" y="760" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dk2yf-TxN15IphiMM7zw-2" value="" style="endArrow=none;html=1;fontFamily=Times New Roman;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1120" y="40" as="sourcePoint" />
+            <mxPoint x="1120" y="760" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dk2yf-TxN15IphiMM7zw-3" value="" style="endArrow=none;html=1;fontFamily=Times New Roman;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="40" y="760" as="sourcePoint" />
+            <mxPoint x="1120" y="760" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dk2yf-TxN15IphiMM7zw-4" value="" style="endArrow=none;html=1;fontFamily=Times New Roman;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="30" y="30" as="sourcePoint" />
+            <mxPoint x="30" y="770" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dk2yf-TxN15IphiMM7zw-5" value="" style="endArrow=none;html=1;fontFamily=Times New Roman;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1130" y="30" as="sourcePoint" />
+            <mxPoint x="1130" y="770" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dk2yf-TxN15IphiMM7zw-6" value="" style="endArrow=none;html=1;fontFamily=Times New Roman;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="30" y="770" as="sourcePoint" />
+            <mxPoint x="1130" y="770" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dk2yf-TxN15IphiMM7zw-7" value="" style="endArrow=none;html=1;fontFamily=Times New Roman;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="40" y="720" as="sourcePoint" />
+            <mxPoint x="1120" y="720" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dk2yf-TxN15IphiMM7zw-8" value="" style="endArrow=none;html=1;fontFamily=Times New Roman;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="200" y="720" as="sourcePoint" />
+            <mxPoint x="200" y="760" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dk2yf-TxN15IphiMM7zw-9" value="" style="endArrow=none;html=1;fontFamily=Times New Roman;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="840" y="720" as="sourcePoint" />
+            <mxPoint x="840" y="760" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dk2yf-TxN15IphiMM7zw-10" value="&lt;font style=&quot;font-size: 14px&quot;&gt;Узел:&lt;br&gt;&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Times New Roman;" vertex="1" parent="1">
+          <mxGeometry x="40" y="720" width="160" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="dk2yf-TxN15IphiMM7zw-11" value="&lt;font style=&quot;font-size: 14px&quot;&gt;Заголовок:&lt;br&gt;&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Times New Roman;" vertex="1" parent="1">
+          <mxGeometry x="200" y="720" width="160" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="dk2yf-TxN15IphiMM7zw-12" value="&lt;font style=&quot;font-size: 14px&quot;&gt;Номер:&lt;br&gt;&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Times New Roman;" vertex="1" parent="1">
+          <mxGeometry x="840" y="720" width="160" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="dk2yf-TxN15IphiMM7zw-13" value="&lt;font style=&quot;font-size: 16px&quot;&gt;&lt;b&gt;A2&lt;/b&gt;&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;fontFamily=Times New Roman;" vertex="1" parent="1">
+          <mxGeometry x="100" y="725" width="40" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="dk2yf-TxN15IphiMM7zw-14" value="&lt;font style=&quot;font-size: 16px&quot;&gt;&lt;b&gt;4&lt;/b&gt;&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;fontFamily=Times New Roman;" vertex="1" parent="1">
+          <mxGeometry x="965" y="725" width="30" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="dk2yf-TxN15IphiMM7zw-15" value="&lt;span style=&quot;font-size: 14px;&quot;&gt;&lt;b&gt;Разработать класс, описывающий структуру мультимножества&lt;/b&gt;&lt;/span&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;fontFamily=Times New Roman;" vertex="1" parent="1">
+          <mxGeometry x="305" y="730" width="430" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="dk2yf-TxN15IphiMM7zw-16" style="edgeStyle=orthogonalEdgeStyle;shape=connector;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Times New Roman;fontSize=11;fontColor=default;labelBackgroundColor=default;endArrow=classic;" edge="1" parent="1" source="dk2yf-TxN15IphiMM7zw-17" target="dk2yf-TxN15IphiMM7zw-39">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="495" y="255" />
+              <mxPoint x="495" y="345" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dk2yf-TxN15IphiMM7zw-17" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;Определить базовую структуру класса&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Times New Roman;" vertex="1" parent="1">
+          <mxGeometry x="331" y="210" width="150" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="dk2yf-TxN15IphiMM7zw-19" value="&lt;span style=&quot;font-size: 14px;&quot;&gt;A21&lt;/span&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Times New Roman;" vertex="1" parent="1">
+          <mxGeometry x="441" y="280" width="40" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="dk2yf-TxN15IphiMM7zw-85" style="edgeStyle=orthogonalEdgeStyle;shape=connector;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.25;entryY=1;entryDx=0;entryDy=0;strokeColor=#9933FF;align=center;verticalAlign=middle;fontFamily=Times New Roman;fontSize=11;fontColor=default;labelBackgroundColor=default;endArrow=classic;" edge="1" parent="1" source="dk2yf-TxN15IphiMM7zw-23" target="dk2yf-TxN15IphiMM7zw-17">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="440" y="620" />
+              <mxPoint x="368" y="620" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dk2yf-TxN15IphiMM7zw-87" style="edgeStyle=orthogonalEdgeStyle;shape=connector;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.25;entryY=1;entryDx=0;entryDy=0;strokeColor=#9933FF;align=center;verticalAlign=middle;fontFamily=Times New Roman;fontSize=11;fontColor=default;labelBackgroundColor=default;endArrow=classic;" edge="1" parent="1" source="dk2yf-TxN15IphiMM7zw-23" target="dk2yf-TxN15IphiMM7zw-39">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="440" y="560" />
+              <mxPoint x="742" y="560" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dk2yf-TxN15IphiMM7zw-23" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;Программист&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Times New Roman;" vertex="1" parent="1">
+          <mxGeometry x="390" y="660" width="100" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="dk2yf-TxN15IphiMM7zw-86" style="edgeStyle=orthogonalEdgeStyle;shape=connector;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.75;entryY=1;entryDx=0;entryDy=0;strokeColor=#00FF00;align=center;verticalAlign=middle;fontFamily=Times New Roman;fontSize=11;fontColor=default;labelBackgroundColor=default;endArrow=classic;" edge="1" parent="1" source="dk2yf-TxN15IphiMM7zw-27" target="dk2yf-TxN15IphiMM7zw-17">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="745" y="630" />
+              <mxPoint x="700" y="630" />
+              <mxPoint x="700" y="520" />
+              <mxPoint x="444" y="520" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dk2yf-TxN15IphiMM7zw-88" style="edgeStyle=orthogonalEdgeStyle;shape=connector;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.75;entryY=1;entryDx=0;entryDy=0;strokeColor=#00FF00;align=center;verticalAlign=middle;fontFamily=Times New Roman;fontSize=11;fontColor=default;labelBackgroundColor=default;endArrow=classic;" edge="1" parent="1" source="dk2yf-TxN15IphiMM7zw-27" target="dk2yf-TxN15IphiMM7zw-39">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="745" y="630" />
+              <mxPoint x="808" y="630" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dk2yf-TxN15IphiMM7zw-27" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;Язык программирования С++&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Times New Roman;" vertex="1" parent="1">
+          <mxGeometry x="670" y="650" width="150" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="dk2yf-TxN15IphiMM7zw-29" style="edgeStyle=orthogonalEdgeStyle;shape=connector;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeColor=#FF0000;align=center;verticalAlign=middle;fontFamily=Times New Roman;fontSize=11;fontColor=default;labelBackgroundColor=default;endArrow=classic;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="dk2yf-TxN15IphiMM7zw-32" target="dk2yf-TxN15IphiMM7zw-39">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="600" y="130" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dk2yf-TxN15IphiMM7zw-32" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;Стандарт языка C++ 17 ISO/IEC&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Times New Roman;" vertex="1" parent="1">
+          <mxGeometry x="440" y="50" width="285" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="dk2yf-TxN15IphiMM7zw-36" value="" style="endArrow=none;html=1;rounded=0;fontFamily=Times New Roman;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="40" y="40" as="sourcePoint" />
+            <mxPoint x="1120" y="40" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dk2yf-TxN15IphiMM7zw-37" value="" style="endArrow=none;html=1;rounded=0;fontFamily=Times New Roman;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="30" y="30" as="sourcePoint" />
+            <mxPoint x="1130" y="30" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dk2yf-TxN15IphiMM7zw-89" style="edgeStyle=orthogonalEdgeStyle;shape=connector;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Times New Roman;fontSize=11;fontColor=default;labelBackgroundColor=default;endArrow=classic;" edge="1" parent="1" source="dk2yf-TxN15IphiMM7zw-39">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="960" y="344.75" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dk2yf-TxN15IphiMM7zw-39" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;Реализовать функцию заполнения мультимножества&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Times New Roman;" vertex="1" parent="1">
+          <mxGeometry x="710" y="300" width="130" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="dk2yf-TxN15IphiMM7zw-44" value="" style="endArrow=classic;html=1;rounded=1;strokeColor=#FF0000;align=center;verticalAlign=middle;fontFamily=Times New Roman;fontSize=11;fontColor=default;labelBackgroundColor=default;edgeStyle=orthogonalEdgeStyle;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="dk2yf-TxN15IphiMM7zw-32" target="dk2yf-TxN15IphiMM7zw-17">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="733.5" y="170" as="sourcePoint" />
+            <mxPoint x="721" y="200" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dk2yf-TxN15IphiMM7zw-45" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;А22&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Times New Roman;" vertex="1" parent="1">
+          <mxGeometry x="800" y="370" width="40" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="dk2yf-TxN15IphiMM7zw-64" style="edgeStyle=orthogonalEdgeStyle;shape=connector;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.75;entryDx=0;entryDy=0;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Times New Roman;fontSize=11;fontColor=default;labelBackgroundColor=default;endArrow=classic;strokeWidth=1;" edge="1" parent="1" source="dk2yf-TxN15IphiMM7zw-65" target="dk2yf-TxN15IphiMM7zw-17">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dk2yf-TxN15IphiMM7zw-51" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;ТЗ для структуры класса мультимножества&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Times New Roman;fontSize=11;fontColor=default;labelBackgroundColor=none;" vertex="1" parent="1">
+          <mxGeometry x="60" y="170" width="110" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="dk2yf-TxN15IphiMM7zw-54" value="" style="endArrow=none;html=1;rounded=1;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Times New Roman;fontSize=11;fontColor=default;labelBackgroundColor=default;edgeStyle=isometricEdgeStyle;strokeWidth=0.5;entryX=0.25;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="551" y="345" as="sourcePoint" />
+            <mxPoint x="580.62" y="315" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dk2yf-TxN15IphiMM7zw-55" value="&lt;span style=&quot;font-size: 14px;&quot;&gt;Структура класса мультимножества&lt;/span&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Times New Roman;fontSize=11;fontColor=default;labelBackgroundColor=none;" vertex="1" parent="1">
+          <mxGeometry x="530" y="271" width="109" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="dk2yf-TxN15IphiMM7zw-91" style="edgeStyle=orthogonalEdgeStyle;shape=connector;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.75;entryDx=0;entryDy=0;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Times New Roman;fontSize=11;fontColor=default;labelBackgroundColor=default;endArrow=classic;" edge="1" parent="1" source="dk2yf-TxN15IphiMM7zw-65" target="dk2yf-TxN15IphiMM7zw-39">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="250" y="445" />
+              <mxPoint x="250" y="368" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dk2yf-TxN15IphiMM7zw-65" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;Класс, описывающий структуру универсума&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Times New Roman;fontSize=11;fontColor=default;labelBackgroundColor=none;" vertex="1" parent="1">
+          <mxGeometry x="60" y="420" width="110" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="dk2yf-TxN15IphiMM7zw-68" style="edgeStyle=orthogonalEdgeStyle;shape=connector;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=-0.007;entryY=0.142;entryDx=0;entryDy=0;entryPerimeter=0;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Times New Roman;fontSize=11;fontColor=default;labelBackgroundColor=default;endArrow=classic;strokeWidth=2;" edge="1" parent="1" source="dk2yf-TxN15IphiMM7zw-51" target="dk2yf-TxN15IphiMM7zw-17">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dk2yf-TxN15IphiMM7zw-90" value="&lt;span style=&quot;font-size: 14px;&quot;&gt;Класс, описывающий структуру мультимножества&lt;/span&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Times New Roman;fontSize=11;fontColor=default;labelBackgroundColor=none;" vertex="1" parent="1">
+          <mxGeometry x="965" y="310" width="115" height="70" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
