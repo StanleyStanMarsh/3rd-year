@@ -1,0 +1,9 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{def} \PYG{n+nf+fm}{\PYGZus{}\PYGZus{}init\PYGZus{}\PYGZus{}}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{,} \PYG{n}{rows}\PYG{p}{:} \PYG{n+nb}{int}\PYG{p}{,} \PYG{n}{cols}\PYG{p}{:} \PYG{n+nb}{int}\PYG{p}{):}
+	\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{rows} \PYG{o}{=} \PYG{n}{rows}
+	\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{cols} \PYG{o}{=} \PYG{n}{cols}
+	\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{grid} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{empty}\PYG{p}{((}\PYG{n}{rows}\PYG{p}{,} \PYG{n}{cols}\PYG{p}{),} \PYG{n}{dtype}\PYG{o}{=}\PYG{n}{Cell}\PYG{p}{)}
+	\PYG{k}{for} \PYG{n}{r} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{n}{rows}\PYG{p}{):}
+		\PYG{k}{for} \PYG{n}{c} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{n}{cols}\PYG{p}{):}
+			\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{grid}\PYG{p}{[}\PYG{n}{r}\PYG{p}{,} \PYG{n}{c}\PYG{p}{]} \PYG{o}{=} \PYG{n}{Cell}\PYG{p}{(}\PYG{k+kc}{False}\PYG{p}{)}
+\end{Verbatim}

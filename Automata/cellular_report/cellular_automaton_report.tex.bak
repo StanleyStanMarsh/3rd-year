@@ -1,0 +1,739 @@
+\documentclass[a4paper, final]{article}
+%\usepackage{literat} % Нормальные шрифты
+\usepackage[14pt]{extsizes} % для того чтобы задать нестандартный 14-ый размер шрифта
+\usepackage{cmap}
+\usepackage[T2A]{fontenc}
+\usepackage[cp1251]{inputenc}
+\usepackage[russian]{babel}
+\usepackage{amsmath}
+\usepackage[left=25mm, top=20mm, right=20mm, bottom=20mm, footskip=10mm]{geometry}
+\usepackage{ragged2e} %для растягивания по ширине
+\usepackage{setspace} %для межстрочного интервала
+\usepackage{moreverb} %для работы с листингами
+\usepackage{indentfirst} % для абзацного отступа
+\usepackage{moreverb} %для печати в листинге исходного кода программ
+\renewcommand\verbatimtabsize{4\relax}
+\renewcommand\listingoffset{0.2em} %отступ от номеров строк в листинге
+\renewcommand{\arraystretch}{1.4} % изменяю высоту строки в таблице
+\usepackage[font=small, singlelinecheck=false, justification=raggedleft, format=plain, labelsep=period]{caption} %для настройки заголовка таблицы
+\usepackage{amssymb}
+\usepackage{listings} %листинги
+\usepackage{xcolor} % цвета
+\usepackage{hyperref}% для гиперссылок
+\usepackage{enumitem} %для перечислений
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{multirow}
+
+%\makeatletter 
+%\@namedef{ver@float.sty}{3000/12/31}
+%\makeatother
+
+\usepackage{minted}
+%\usemintedstyle{vs}
+\definecolor{LightGray}{gray}{0.9}
+
+\setlist[enumerate,itemize]{leftmargin=1.2cm} %отступ в перечислениях
+
+\hypersetup{colorlinks,
+	allcolors=[RGB]{010 090 200}} %красивые гиперссылки (не красные)
+
+\begin{document}
+
+		% НАЧАЛО ТИТУЛЬНОГО ЛИСТА
+	\begin{center}
+		\hfill \break
+		\hfill \break
+		\normalsize{МИНИСТЕРСТВО НАУКИ И ВЫСШЕГО ОБРАЗОВАНИЯ РОССИЙСКОЙ ФЕДЕРАЦИИ\\
+			федеральное государственное автономное образовательное учреждение высшего образования «Санкт-Петербургский политехнический университет Петра Великого»\\[10pt]}
+		\normalsize{Институт компьютерных наук и кибербезопасности}\\[10pt] 
+		\normalsize{Высшая школа технологий искусственного интеллекта}\\[10pt] 
+		\normalsize{Направление: 02.03.01 <<Математика и компьютерные науки>>}\\
+		
+		\hfill \break
+		\hfill \break
+		\hfill \break
+		\hfill \break
+		\large{Отчет о выполнении лабораторной работы №1 по предмету}\\
+		\large{<<Теория алгоритмов>>}\\
+		\hfill \break
+		\hfill \break
+		\hfill \break
+		
+		\hfill \break
+		\hfill \break
+	\end{center}
+	
+	\small{ 
+		\begin{tabular}{lrrl}
+			\!\!\!Студент, & \hspace{2cm} & & \\
+			\!\!\!группы 5130201/20101 & \hspace{2cm} & \underline{\hspace{3cm}} &Астафьев И. Е. \\\\
+			\!\!\!Преподаватель & \hspace{2cm} &  \underline{\hspace{3cm}} &  Востров А. В.\\\\
+			&&\hspace{5cm}
+		\end{tabular}
+		\begin{flushright}
+			<<\underline{\hspace{1cm}}>>\underline{\hspace{2.5cm}} 2024г.
+		\end{flushright}
+	}
+	
+	\hfill \break
+	\begin{center} \small{Санкт-Петербург, 2024} \end{center}
+	\thispagestyle{empty} % выключаем отображение номера для этой страницы
+	
+	% КОНЕЦ ТИТУЛЬНОГО ЛИСТА
+	\newpage
+	
+	\tableofcontents
+	
+	\newpage
+
+\section*{Введение}
+	\addcontentsline{toc}{section}{Введение}
+	
+	В ходе выполнения лабораторной работы была создана программа на языке Python, которая включает в себя реализацию двумерного клеточного автомата с тороидальными граничными условиями и окрестностью фон Неймана. Программа представлена в виде приложения с графическим интерфейсом, поддерживающим различные способы задания начальных условий автомата.
+
+	
+	\newpage
+	\section{Постановка задачи}
+	
+	В данной лабораторной работе необходимо \cite{lit0}:
+
+\begin{itemize}
+\item создать клеточный автомат по правилу 617232;
+\item использовать тороидальные граничные условия;
+\item создать графическое окно с полями для ввода: количества строк в сетке, количества столбцов в сетке, количества итераций;
+\item создать графическое окно, отображающее созданный клеточный автомат и содержащее элементы управления им:
+\begin{itemize}
+\item выбор способа задания начальных условий: вручную или случайно;
+\item слайдер (ползунок) для перелистывания итераций состояния автомата;
+\end{itemize}
+\item обработать некорректный пользовательский ввод.
+\end{itemize}
+
+	\newpage
+	
+	\section{Математическое описание}
+	
+	\subsection{Клеточный автомат}
+	
+	Клеточные автоматы представляют собой математические модели, имитирующие поведение физических систем, где пространство и время дискретны, то есть разбиты на отдельные ячейки и временные шаги соответственно \cite{lit0}. Клеточный автомат состоит из однородной решетки, обычно бесконечной по протяженности, с дискретной переменной в каждом узле - ячейке.  В таких системах каждая ячейка может принимать одно из ограниченного набора возможных состояний.
+	
+	Каждое состояние клеточного автомата полностью определяется значениями всех ячеек в данный момент времени. Эволюция системы происходит пошагово: на каждом новом временном шаге состояние каждой ячейки изменяется под влиянием состояния соседних ячеек на предыдущем шаге. Соседние клетки и сама клетка образуют окрестность. Все изменения происходят синхронно для всех ячеек согласно заранее установленным правилам, определяющим новые состояния на основе предыдущих состояний клеток в окрестности.
+	
+	Одномерный автомат задается (бесконечной) строкой клеток, каждая из которых может принимать \(k\) различных значений. Чаще всего рассматриваются автоматы, в которых клетки принимают значения 1 или 0.
+	
+	Для одномерного клеточного автомата окрестность представляет 3 клетки: центральная рассматриваемая клетка \(s_0\) и две ее соседние клетки \(s_1\), \(s_2\).
+	\\
+	\\
+	$\cdots | s_1 | s_0 | s_2 | \cdots$
+	\\
+	\par Ниже показан пример набора локальных правил для элементарного одномерного клеточного автомата \cite{lit0}. В верхней строке приведены все возможные (\(2^3=8\)) значения трех клеток в окрестности, а под каждой из них указано значение, которое получит центральная клетка на следующем временном шаге в соответствии с определенным локальным правилом.
+	\\
+	\\
+	$\dfrac{111}{0} \dfrac{110}{1} \dfrac{101}{0} \dfrac{100}{1} \dfrac{011}{1} \dfrac{010}{0} \dfrac{001}{1} \dfrac{000}{0}$
+	\\
+	\par Локальные правила для одномерного клеточного автомата с окрестностью из 3 клеток описываются восьмизначным двоичным числом, как в примере выше. (При описании клеточных автоматов мы используем это двоичное число взаимозаменяемо с его десятичным эквивалентом.) Поскольку любое восьмизначное двоичное число определяет клеточный автомат, возможны \(2^{2^3} = 256\) различных правила одномерного клеточного автомата с окрестностями из трех клеток. 
+	Таким образом, если клетки автомата могут принимать лишь два значения, то для описания конкретного правила можно использовать бинаную функцию от трех переменных: \(s_0^{t+1} = f(s_0^t, s_1^t, s_2^t)\), где каждому набору состояний окрестности сопоставлено новое состояние центральной клетки.
+	
+	Аналогично можно рассмотреть двумерный клеточный автомат. Двумерный клеточный автомат представляется (бесконечным) двумерным массивом с клетками, которые могут принимать \(k\) различных значений.
+	
+	Существует два основных типа окрестности в двумерном пространстве: окрестность Мура (Рис. 1) и окрестность фон Неймана (Рис. 2).
+	
+	Окрестность Мура - окрестность квадртаной формы, которую можно использовать для определения набора ячеек, окружающих заданную ячейку \(x_0, y_0\) (где \(x_0, y_0\) - координаты клетки в двумерном пространстве), которые могут повлиять на эволюцию двумерного клеточного автомата на квадратной сетке \cite{lit1}. Окрестность Мура с радиусом $r$ определяется как
+
+	\[ N_{(x_0, y_0)}^M = \{ (x, y) : |x - x_0| \leq r, |y - y_0| \leq r \}. \]
+
+	
+	Окрестность фон Неймана - ромбовидная окрестность (или крестовидная), которую можно использовать для определения набора ячеек, окружающих заданную ячейку \(x_0, y_0\) (где \(x_0, y_0\) - координаты клетки в двумерном пространстве), которые могут повлиять на эволюцию двумерного клеточного автомата на квадратной сетке \cite{lit2}. Окрестность фон Неймана с радиусом $r$ определяется как
+
+	\[ N_{(x_0, y_0)}^V = \{ (x, y) : |x - x_0| + |y - y_0| \leq r \}. \]
+	
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=1]{D:/python/cellular_automaton/report/CA-Moore.png}
+  \caption{\centering Красные ячейки - это окрестности Мура для синей ячейки.\label{overflow}}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=1]{D:/python/cellular_automaton/report/CA-von-Neumann.png}
+  \caption{\centering Красные ячейки являются окрестностью фон Неймана для синей ячейки. <<Перекрестная окрестность>> диапазона-2 также включает розовые ячейки.\label{overflow}}
+\end{figure}
+
+	Однако для данного двумерного автомата будет рассматриваться окрестность фон Неймана с радиусом \(r=1\).
+	
+	Таким образом, для задания правил двумерного клеточного автомата с клетками, принимающими два значения, можно использовать булеву функцию от 5 переменных (клетки из окрестности фон Неймана), которая будет задавать новое состояние рассматриваемой клетки \(s_0^{t+1} = f(s_0^t, s_1^t, s_2^t, s_3^t, s_4^t)\) \cite{lit3}. Тогда существует \(2^{2^5} = 2^{32}\) возможных функций перехода состояний.
+	
+	$\dfrac{\dfrac{|s_1|}{|s_3|s_0|s_4|}}{|s_2|}$
+	
+	В итоге по заданному вектору значений функции \(f\), например заданному десятиричным числом, можно однозначно соотносить предыдущие состояния окрестности с новым состоянием данной клетки.
+	
+	Вектор значений функции в работе считается по формуле:
+	
+	\(f =\) \texttt{номер варианта * 11 * год рождения * день * месяц}
+	
+\(f = 2 \cdot 11 \cdot 2004 \cdot 14 \cdot 1 = 617232_{10} = 00000000000010010110101100010000_2\)
+
+	Так как функция \(f\) от пяти переменных, то вектор функции дополнен незначащими нулями в начале, чтобы получить вектор из 32 значений (\ref{truthtable}).
+	
+\begin{table}[H]
+\caption{Таблица истинности по вектору значения функции \(f\)}
+\label{truthtable}
+\begin{center}
+\renewcommand{\arraystretch}{0.8}
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+$x_0$ & $x_1$ & $x_2$ & $x_3$ & $x_4$ & $f$ \\
+\hline
+0 & 0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 1 & 0 \\
+0 & 0 & 0 & 1 & 0 & 0 \\
+0 & 0 & 0 & 1 & 1 & 0 \\
+0 & 0 & 1 & 0 & 0 & 0 \\
+0 & 0 & 1 & 0 & 1 & 0 \\
+0 & 0 & 1 & 1 & 0 & 0 \\
+0 & 0 & 1 & 1 & 1 & 0 \\
+0 & 1 & 0 & 0 & 0 & 0 \\
+0 & 1 & 0 & 0 & 1 & 0 \\
+0 & 1 & 0 & 1 & 0 & 0 \\
+0 & 1 & 0 & 1 & 1 & 0 \\
+0 & 1 & 1 & 0 & 0 & 1 \\
+0 & 1 & 1 & 0 & 1 & 0 \\
+0 & 1 & 1 & 1 & 0 & 0 \\
+0 & 1 & 1 & 1 & 1 & 1 \\
+1 & 0 & 0 & 0 & 0 & 0 \\
+1 & 0 & 0 & 0 & 1 & 1 \\
+1 & 0 & 0 & 1 & 0 & 1 \\
+1 & 0 & 0 & 1 & 1 & 0 \\
+1 & 0 & 1 & 0 & 0 & 1 \\
+1 & 0 & 1 & 0 & 1 & 0 \\
+1 & 0 & 1 & 1 & 0 & 1 \\
+1 & 0 & 1 & 1 & 1 & 1 \\
+1 & 1 & 0 & 0 & 0 & 0 \\
+1 & 1 & 0 & 0 & 1 & 0 \\
+1 & 1 & 0 & 1 & 0 & 0 \\
+1 & 1 & 0 & 1 & 1 & 1 \\
+1 & 1 & 1 & 0 & 0 & 0 \\
+1 & 1 & 1 & 0 & 1 & 0 \\
+1 & 1 & 1 & 1 & 0 & 0 \\
+1 & 1 & 1 & 1 & 1 & 0 \\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+	Так как модель клеточного автомата реализуется на поле конечного размера, то требуется определить граничные условия, которые описывают ситуации, когда клетка находится на краю поля. Это включает в себя установление значений для соседних клеток за пределами границы сетки. В данной работе были выбраны тороидальные условия границ, при которых происходит следующее: когда клетка у верхнего края, ее верхний сосед находится в соответствующем столбце снизу (и наоборот для ситуации у нижней границы), а клетка у левой границы, ее левый сосед находится в соответствующей строке справа (и наоборот для ситуации у правой границы). Такие условия можно представить как склеивание левого и правого краев поля (прямоугольника) в форму цилиндра, а затем склеивание верхнего и нижнего краев полученного цилиндра в виде тора.
+	
+	Ниже приведены общие формулы для вычисления координат клеток из окрестности фон Неймана для граничных случаев для клетки с координатами \((i, j), 0 \leq i < num\_cols, 0 \leq j < num\_rows\), где \(num\_rows\) - количество строк, \(num\_cols\) - количество столбцов поля.
+	
+	\begin{align*}
+s_0 &= (i, j) \\
+s_1 &= ((i + 1) \bmod \text{num\_cols}, j) \\
+s_2 &= ((i - 1) \bmod \text{num\_cols}, j) \\
+s_3 &= (i, (j - 1) \bmod \text{num\_rows}) \\
+s_4 &= (i, (j + 1) \bmod \text{num\_rows})
+\end{align*}
+	
+	\subsection{Классификация}
+	
+	Стивен Вольфрам \cite{lit4} предлагает разделять клеточные автоматы на четыре класса, основываясь на их эволюционном поведении. Эта классификация была первой попыткой систематизировать правила самих автоматов, а не только их поведенческие типы. Классы располагаются в порядке увеличения сложности следующим образом:
+
+\begin{itemize}
+  \item Класс 1: Эволюция из начальных условий приводит к быстрому переходу в гомогенное и стабильное состояние. Любые негомогенные структуры быстро исчезают.
+  \item Класс 2: Эволюция из начальных условий приводит к быстрому переходу в неизменное негомогенное состояние или к зацикленным последовательностям. Большинство начальных структур быстро исчезает, но некоторые сохраняются. Локальные изменения в начальных условиях оказывают влияние лишь на ближайшую область системы.
+  \item Класс 3: В большинстве случаев эволюция начальных условий приводит к псевдо-случайным, хаотическим последовательностям. Любые стабильные структуры, которые появляются, быстро разрушаются из-за окружающего их шума. Локальные изменения начальных условий вызывают неопределённое влияние на эволюцию системы.
+  \item Класс 4: Эволюция порождает структуры, которые взаимодействуют сложным образом, формируя локальные, стойкие образования. В ходе эволюции могут возникать некоторые последовательности характерные для Класса 2. Локальные изменения начальных условий оказывают неопределённое влияние на развитие системы. Некоторые клеточные автоматы этого класса, такие как Правило 110 и игра "Жизнь", обладают универсальностью в смысле Тьюринга.
+\end{itemize}
+
+	\newpage
+	\section{Особенности реализации}
+	
+	\subsection{Константы}
+	
+	Согласно заданию, правило для клеточного автомата задается десятиричным числом:
+	
+	\(f =\) \texttt{номер варианта * 11 * год рождения * день * месяц}
+	
+	В программе эта информация задается  отдельными константами:
+	
+\begin{minted}[
+  frame=lines,
+  framesep=2mm,
+  baselinestretch=1.2,
+  bgcolor=LightGray,
+  fontsize=\footnotesize,
+  linenos,
+  breaklines
+  ]{python}
+VARIANT = 2
+YEAR_OF_BIRTH = 2004
+MONTH_OF_BIRTH = 1
+DAY_OF_BIRTH = 14
+RULE_VALUE = VARIANT * 11 * YEAR_OF_BIRTH * MONTH_OF_BIRTH * DAY_OF_BIRTH
+NUM_OF_VARIABLES = 5
+NUM_OF_DIGITS = 2 ** NUM_OF_VARIABLES
+ALL_RULES = 2 ** NUM_OF_DIGITS
+\end{minted}
+
+\begin{itemize}
+	\item \texttt{RULE\_VALUE} задает правило - функцию перехода клеточного автомата.	
+	\item \texttt{NUM\_OF\_DIGITS} задает длину вектора значений функции перехода состояния.
+\end{itemize}
+	
+	\subsection{Класс Cell}
+	
+	Класс Cell представляет реализацию клетки автомата. Таким образом Cell являет оберткой типа bool.
+	
+	Поля класса:
+	
+\begin{itemize}
+	\item \texttt{state} - состояние клетки, которое может принимать два значения: True или False.
+\end{itemize}	
+
+\subsubsection*{Конструктор}
+
+	\textbf{Вход}: \texttt{state} - состояние для создаваемой клетки.
+	
+	\textbf{Выход}: клетка автомата с заданным состоянием.
+	
+	В конструкторе задается начальное состояние клетки. По умолчанию значение False.
+
+\begin{minted}[
+  frame=lines,
+  framesep=2mm,
+  baselinestretch=1.2,
+  bgcolor=LightGray,
+  fontsize=\footnotesize,
+  linenos,
+  breaklines
+  ]{python}
+class Cell:
+    def __init__(self, state: bool = False):
+        self.state = state	
+\end{minted}
+	
+	\subsubsection*{Метод new\_state()}
+	
+	\textbf{Вход:} \texttt{state} - новое состояние для клетки.
+	
+	\textbf{Выход:} клетка с обновленным состоянием.
+	
+	Метод присваивает текущей клетке новое состояние \texttt{state}.
+	
+\begin{minted}[
+  frame=lines,
+  framesep=2mm,
+  baselinestretch=1.2,
+  bgcolor=LightGray,
+  fontsize=\footnotesize,
+  linenos,
+  breaklines
+  ]{python}
+def new_state(self, state: bool):
+    self.state = state
+\end{minted}
+
+
+	\subsection{Класс AutomataGrid}
+
+	Класс AutomataGrid описывает поле (сетку) клеточного автомата. Класс содержит двумерный массив \texttt{ndarray} библиотеки Numpy, в элементах которого находятся клетки, описываемые классом Cell. Данный класс имеет возможность вычислять следующее состояние конкретной клетки и всей сетки целиком.
+	
+	Поля класса:
+	
+\begin{itemize}
+	\item \texttt{rows} - количество строк в поле;
+	\item \texttt{cols} - количество столбцов в поле;
+	\item \texttt{grid} - двумерный массив поля, содержащий в себе клетки автомата.
+\end{itemize}
+
+	\subsubsection*{Конструктор}
+	
+	\textbf{Вход}: \texttt{rows} - количество строк, \texttt{cols} - количество столбцов.
+	
+	\textbf{Выход}: клеточный автомат с заданными размерами поля.
+	
+	Конструктор создает объект класса AutomataGrid с двумерным \texttt{ndarray} массивом размера \texttt{rows} на \texttt{cols} и заполняет его клетками Cell с начальным состоянием False.
+
+\begin{minted}[
+  frame=lines,
+  framesep=2mm,
+  baselinestretch=1.2,
+  bgcolor=LightGray,
+  fontsize=\footnotesize,
+  linenos,
+  breaklines
+  ]{python}
+def __init__(self, rows: int, cols: int):
+	self.rows = rows
+	self.cols = cols
+	self.grid = np.empty((rows, cols), dtype=Cell)
+	for r in range(rows):
+		for c in range(cols):
+			self.grid[r, c] = Cell(False)
+\end{minted}
+
+	\subsubsection*{fill\_randomly()}
+	
+	\textbf{Вход}: клеточный автомат.
+	
+	\textbf{Выход}: заполненное случайным образом поле клеточного автомата.
+	
+	Метод проходит по всем элементам массива \texttt{grid} здавая случайные значения клеткам автомата.
+	
+\begin{minted}[
+  frame=lines,
+  framesep=2mm,
+  baselinestretch=1.2,
+  bgcolor=LightGray,
+  fontsize=\footnotesize,
+  linenos,
+  breaklines
+  ]{python}
+def fill_randomly(self):
+	for r in range(self.rows):
+		for c in range(self.cols):
+			random_state = np.random.choice([True, False])
+			self.grid[r, c].new_state(random_state)
+\end{minted}
+
+	\subsubsection*{\_\_rule()}
+	
+	\textbf{Вход}: \texttt{cells\_states} - кортеж состояний клеток из окрестности фон Неймана.
+	
+	\textbf{Выход}: новое состояние текущей центральной клетки.
+	
+	Статический метод вычисляет новое состояние клетки согласно заданному вектором значений правилу. Вектор значений булевой функции вычисляется переводом из десятичного представления константы \texttt{NUM\_OF\_DIGITS} в двоичное и добавлением незначащих нулей. Затем кортеж значений переводится в десятичное число, которое обозначает номер строки в таблице истинности. Затем по индексу из всектора берется новое значение состояния.
+	
+\begin{minted}[
+  frame=lines,
+  framesep=2mm,
+  baselinestretch=1.2,
+  bgcolor=LightGray,
+  fontsize=\footnotesize,
+  linenos,
+  breaklines
+  ]{python}
+@staticmethod
+def __rule(cells_states: Neumann) -> bool:
+	initial_rule_value = const.RULE_VALUE
+	num_of_state = bools_to_int(cells_states)
+	bin_rule_value = format(initial_rule_value, f'0{const.NUM_OF_DIGITS}b')
+	string_result = bin_rule_value[num_of_state]
+	return str_to_bool(string_result)
+\end{minted}
+
+	\subsubsection*{\_\_cell\_next\_state()}
+	
+	Вход: \texttt{row} - номер строки клетки, \texttt{col} - номер столбца клетки.
+	
+	Выход: клетка с новым состоянием.
+	
+	Метод вычисляет новое состояние для клетки с заданными координатами. Координаты соседних клеток определяются согласно тороидальным граничным условиям. Затем для кортежа клеток окрестности вызывается метод \texttt{\_\_rule()}.
+	
+\begin{minted}[
+  frame=lines,
+  framesep=2mm,
+  baselinestretch=1.2,
+  bgcolor=LightGray,
+  fontsize=\footnotesize,
+  linenos,
+  breaklines
+  ]{python}
+def __cell_next_state(self, row: int, col: int) -> Cell:
+	num_rows = self.rows
+	num_cols = self.cols
+
+	# Get the current cell and its neighbors using modular arithmetic for wrapping
+	s_0 = self.grid[row, col]
+	s_1 = self.grid[(row + 1) % num_rows, col]  # Down
+	s_2 = self.grid[(row - 1) % num_rows, col]  # Up
+	s_3 = self.grid[row, (col - 1) % num_cols]  # Left
+	s_4 = self.grid[row, (col + 1) % num_cols]  # Right
+
+	# Collect the states of the Neumann neighborhood
+	neumann_neighbourhood = (s_0.state, s_1.state, s_2.state, s_3.state, s_4.state)
+	return Cell(self.__rule(neumann_neighbourhood))
+\end{minted}
+
+	\subsubsection*{next\_iteration()}
+	
+	Вход: клеточный автомат в текущем состоянии.
+	
+	Выход: клеточный автомат в следующем итерации.
+	
+	Метод определяет состояния всех клеток автомата в следующий момент времени с помощью метода \texttt{\_\_cell\_next\_state()} и задает состояние автомата в следующей итерации в целом.
+	
+\begin{minted}[
+  frame=lines,
+  framesep=2mm,
+  baselinestretch=1.2,
+  bgcolor=LightGray,
+  fontsize=\footnotesize,
+  linenos,
+  breaklines
+  ]{python}
+def next_iteration(self):
+	grid_copy = np.empty((self.rows, self.cols), dtype=Cell)
+	for row in range(self.rows):
+		for col in range(self.cols):
+			grid_copy[row, col] = self.__cell_next_state(row, col)
+	self.grid = grid_copy
+\end{minted}
+
+	\subsection{Интерфейс}
+	
+	Интерфейс реализован с помощью фреймворка Qt. Используется набор расширений PyQt6, в частности модули QtCore и QtWidgets.
+	
+	На основе QWidget из QtWidgets создано окно ChooseWindow с полями выбора размера сетки автомата и количества итераций. В классе данного окна есть обработка пользовательского некорректного ввода: неверные числовые значения и нечисловые значения. Нажатие на кнопку <<Создать поле>> создает новое окно с полем клеточного автомата.
+	
+	Окно поля клеточного автомата UIGrid так же создано на основе QWidget. Оно представляет собой: поле заданного размера состоящее из кнопок, которые имеют белый цвет для состояния False и красный для состояния True; кнопки управления режимом работы (ручное или случайное задание начального состояния); слайдер для перелистывания итераций; кнопку для просчитывания итераций; а также кнопку очистки. Кнопки отображающие состояние клеток автомата активны в ручном режиме и отключены (не <<кликабельны>>) в режиме случайной генерации.
+	
+	При нажатии на кнопку <<Просчитать итерации>> для заданного состояния клеточного автомата вычисляются состояния в \texttt{n} следующих итерациях с помощью метода \texttt{next\_iteration()}. При перемещении слайдера будут отображаться соответствующии этапы эволюции изначального автомата.
+
+	\newpage
+	\section{Результаты работы}
+	
+	При запуске приложения открывается окно с выбором размера поля и количества итераций (Рис. \ref{choosewindow}).
+	
+	\captionsetup{justification=centering}
+	\begin{figure}[H]
+		\centering
+		 \includegraphics[scale=1]{pic1.png}
+		\caption{Начальное окно}
+		\label{choosewindow}
+	\end{figure}
+	
+	При вводе некорректных данных, пользователю выводится соответствующее окно с предупреждением (Рис. \ref{wrongint}, \ref{wrongstr}).
+	
+	\captionsetup{justification=centering}
+	\begin{figure}[H]
+		\centering
+		 \includegraphics[scale=1]{pic2.png}
+		\caption{Неверные числовые значения}
+		\label{wrongint}
+	\end{figure}
+	
+	\captionsetup{justification=centering}
+	\begin{figure}[H]
+		\centering
+		 \includegraphics[scale=1]{pic3.png}
+		\caption{Случай ввода строки вместо числового значения}
+		\label{wrongstr}
+	\end{figure}
+	
+	После нажатия на кнопку <<Создать поле>> открывается окно с полем клеточного автомата (Рис. \ref{emptyautomata}). По умолчанию включен ручной режим задания начальных условий.
+	
+	\captionsetup{justification=centering}
+	\begin{figure}[H]
+		\centering
+		 \includegraphics[scale=1]{pic4.png}
+		\caption{Окно поля автомата}
+		\label{emptyautomata}
+	\end{figure}
+	
+	Затем, задав начальное состояние автомата (Рис. \ref{manuallyautomata}), можно нажать на кнопку <<Просчитать итерации>>, после чего активируется слайдер перелистывания итераций. При передвижении <<ползунка>> слайдера вправо в окне будет отображаться соответствующий этап эволюции автомата (Рис. \ref{manuallyautomata2}).
+	
+	\captionsetup{justification=centering}
+	\begin{figure}[H]
+		\centering
+		 \includegraphics[scale=1]{pic5.png}
+		\caption{Клеточный автомат, заданный вручную}
+		\label{manuallyautomata}
+	\end{figure}
+	
+	\captionsetup{justification=centering}
+	\begin{figure}[H]
+		\centering
+		 \includegraphics[scale=1]{pic6.png}
+		\caption{2 итерация автомата, заданного вручную}
+		\label{manuallyautomata2}
+	\end{figure}
+	
+	Также, если переключить режим на <<Случайно>>, можно сгенерировать случайное начальное состояние автомата (Рис. \ref{randomlyautomata}).
+	
+	\captionsetup{justification=centering}
+	\begin{figure}[H]
+		\centering
+		 \includegraphics[scale=1]{pic7.png}
+		\caption{Клеточный автомат, заданный случайно}
+		\label{randomlyautomata}
+	\end{figure}
+	
+	\newpage
+	\section{Анализ клеточного автомата}
+	
+	Для анализа автомата было задано поле размером 15 х 15 и 10 итераций. Эволюция автомата с пустого поля всегда оставляет поле пустым начиная с первой итерации (Рис. \ref{evolutionempty}).
+	
+	\captionsetup{justification=centering}
+	\begin{figure}[H]
+		\centering
+		 \includegraphics[scale=1]{pic8.png}
+		\caption{Эволюция автомата с пустым полем}
+		\label{evolutionempty}
+	\end{figure}
+	
+	При задании поля с <<активными>> клетками по периметру, клетки постепепенно будут исчезать и на 9 итерации поле станет пустым (Рис. \ref{borderbegin} - Рис. \ref{borderend}).
+	
+	\captionsetup{justification=centering}
+	\begin{figure}[H]
+		\centering
+		 \includegraphics[scale=1]{pic9.png}
+		\caption{Эволюция автомата с клетками по периметру. Начальное состояние}
+		\label{borderbegin}
+	\end{figure}
+	
+		\captionsetup{justification=centering}
+	\begin{figure}[H]
+		\centering
+		 \includegraphics[scale=1]{pic10.png}
+		\caption{Эволюция автомата с клетками по периметру. 2 итерация}
+	\end{figure}
+	
+		\captionsetup{justification=centering}
+	\begin{figure}[H]
+		\centering
+		 \includegraphics[scale=1]{pic11.png}
+		\caption{Эволюция автомата с клетками по периметру. 4 итерация}
+	\end{figure}
+	
+		\captionsetup{justification=centering}
+	\begin{figure}[H]
+		\centering
+		 \includegraphics[scale=1]{pic12.png}
+		\caption{Эволюция автомата с клетками по периметру. 6 итерация}
+	\end{figure}
+	
+		\captionsetup{justification=centering}
+	\begin{figure}[H]
+		\centering
+		 \includegraphics[scale=1]{pic13.png}
+		\caption{Эволюция автомата с клетками по периметру. 8 итерация}
+	\end{figure}
+	
+		\captionsetup{justification=centering}
+	\begin{figure}[H]
+		\centering
+		 \includegraphics[scale=1]{pic14.png}
+		\caption{Эволюция автомата с клетками по периметру. 9 итерация}
+		\label{borderend}
+	\end{figure}
+	
+	Далее автомат был запущен на случайных начальных условиях (Рис. \ref{random1begin} - Рис. \ref{random1end}). Начиная с 4 итерации автомат сохраняет статичное состояние на всех последующих иетрациях.
+	
+		\captionsetup{justification=centering}
+	\begin{figure}[H]
+		\centering
+		 \includegraphics[scale=1]{pic15.png}
+		\caption{Эволюция автомата со случайными начальными условиями}
+		\label{random1begin}
+	\end{figure}
+	
+		\captionsetup{justification=centering}
+	\begin{figure}[H]
+		\centering
+		 \includegraphics[scale=1]{pic16.png}
+		\caption{Эволюция автомата со случайными начальными условиями. 2 итерация}
+	\end{figure}
+	
+		\captionsetup{justification=centering}
+	\begin{figure}[H]
+		\centering
+		 \includegraphics[scale=1]{pic17.png}
+		\caption{Эволюция автомата со случайными начальными условиями. 4 итерация}
+	\end{figure}
+	
+		\captionsetup{justification=centering}
+	\begin{figure}[H]
+		\centering
+		 \includegraphics[scale=1]{pic18.png}
+		\caption{Эволюция автомата со случайными начальными условиями. 5 итерация}
+		\label{random1end}
+	\end{figure}
+	
+	Для заполненного вручную поля автомат снова приходит в статичное состояние, в данном случае к пустому полю (Рис. \ref{manually1begin} - Рис. \ref{manually1end}).
+	
+		\captionsetup{justification=centering}
+	\begin{figure}[H]
+		\centering
+		 \includegraphics[scale=1]{pic19.png}
+		\caption{Эволюция автомата с начальными условиями заданными вручную}
+		\label{manually1begin}
+	\end{figure}
+	
+		\captionsetup{justification=centering}
+	\begin{figure}[H]
+		\centering
+		 \includegraphics[scale=1]{pic20.png}
+		\caption{Эволюция автомата с начальными условиями заданными вручную. 1 итерация}
+	\end{figure}
+	
+		\captionsetup{justification=centering}
+	\begin{figure}[H]
+		\centering
+		 \includegraphics[scale=1]{pic21.png}
+		\caption{Эволюция автомата с начальными условиями заданными вручную. 2 итерация}
+	\end{figure}
+	
+			\captionsetup{justification=centering}
+	\begin{figure}[H]
+		\centering
+		 \includegraphics[scale=1]{pic22.png}
+		\caption{Эволюция автомата с начальными условиями заданными вручную. 3 итерация}
+		\label{manually1end}
+	\end{figure}
+	
+	На Рис. \ref{plot} изображен график усредненных значений живых клеток на каждой итерации. Значения были получены при запуске эволюции в 50 итераций для 20 случайно сгенерированных клеточных автоматов размера 15 x 15.
+	
+		\captionsetup{justification=centering}
+	\begin{figure}[H]
+		\centering
+		 \includegraphics[scale=1]{pic23.png}
+		\caption{График количества живых клеток во время эволюции автомата}
+		\label{plot}
+	\end{figure}
+	
+	Из проведенного вручную анализа и построенного графика можно заключить, что клеточный автомат всегда будет приходить к гомогенному состоянию: либо к пустому полю, либо к полю со статичными фигурами из постоянного количества живых клеток. Таким образом, автомат можно отнести к 1 классу по классификации Вольфрама \cite{lit4}.
+	
+	\newpage
+	\section*{Заключение}
+	\addcontentsline{toc}{section}{Заключение}
+	 
+	Во время выполнения лабораторной работы был разработан двумерный клеточный автомат с графическим отображением, с окрестностью фон Неймана, и работающий по правилу в соответствии с заданным номером варианта. Граничные условия выбраны тороидальными. Пользователь имеет возможность задать размер поля и количество итераций, а в отдельном окне просматривать состояния автомата по разным итерациям. Также предусмотрен ввод различных начальных условий — как вручную, так и случайным образом, в зависимости от выбора пользователя. Был проведен анализ клеточного автомата, в результате которого установлено, что он относится к первому классу по классификации Стивена Вольфрама.
+
+	Достоинства: 
+\begin{itemize}
+	\item Разделение программы на интерфейсную и вычислительную части.
+	\item Кросплатформенность приложения за счет использования расширения фреймворка Qt для Python.
+	\item Графическое представление клеточного автомата.
+\end{itemize}
+
+	Недостатки: 
+\begin{itemize}
+	\item Для размера поля больше чем 30 x 30 происходит снижение скорости работы приложения в связи с использованием языка Python и кнопок QPushButton в качестве клеток поля.
+	\item Сложный код интерфейса на PyQt, так как не был использован компоновщик форм графического интерфейса Qt Designer.
+	\item Отсутствие буферизации, то есть хранение всех состояний автомата в оперативной памяти даже для большого размера поля и большого количества итераций.
+\end{itemize}
+
+	Масштабирование программы: 
+\begin{itemize}
+	\item Добавить другие граничные условия.
+	\item Реализовать алгоритмы сжатия данных или буферизацию, чтобы уменьшать потребление памяти при больших размерах поля и числе итераций.
+\end{itemize}
+
+	Программа была разработана в среде разработки PyCharm Community Edition 2023.1 и Python версии 3.11.
+
+	\newpage
+
+	\addcontentsline{toc}{section}{Список используемой литературы}
+	\begin{thebibliography}{4}
+		\bibitem{lit0} Stephen Wolfram, Statistical mechanics of cellular automata // Rev. Mod. Phys. – Princeton : American Physical Society, 1983. – С. 601-644.
+		\bibitem{lit1} Weisstein, Eric W. \href{https://mathworld.wolfram.com/MooreNeighborhood.html}{Moore Neighborhood} // MathWorld--A Wolfram Web Resource. - URL: https://mathworld.wolfram.com/MooreNeighborhood.html (дата обращения 01.11.2024)
+		\bibitem{lit2} Weisstein, Eric W. \href{https://mathworld.wolfram.com/vonNeumannNeighborhood.html}{von Neumann Neighborhood} // MathWorld--A Wolfram Web Resource. - URL: https://mathworld.wolfram.com/vonNeumannNeighborhood.html (дата обращения 01.11.2024)
+		\bibitem{lit3} Stephen Wolfram, Norman H. Packard, Two-dimensional cellular automata // Journal of Statistical Physics : Springer, 1985. – С. 901-946.
+		\bibitem{lit4} Stephen Wolfram, A New Kind of Science : Wolfram Media, 2002. – 1197 с. – ISBN 1-57955-008-8.
+		
+	\end{thebibliography}
+	
+	
+	
+\end{document}

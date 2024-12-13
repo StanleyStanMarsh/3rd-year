@@ -1,0 +1,22 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kn}{import} \PYG{n+nn}{pandas} \PYG{k}{as} \PYG{n+nn}{pd}
+\PYG{k+kn}{from} \PYG{n+nn}{sympy} \PYG{k+kn}{import} \PYG{n}{symbols}
+\PYG{k+kn}{from} \PYG{n+nn}{sympy.logic.boolalg} \PYG{k+kn}{import} \PYG{n}{Or}\PYG{p}{,} \PYG{n}{And}
+
+\PYG{n}{data} \PYG{o}{=} \PYG{n}{pd}\PYG{o}{.}\PYG{n}{read\PYGZus{}csv}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}table\PYGZus{}is.csv\PYGZdq{}}\PYG{p}{)}
+
+\PYG{n}{a}\PYG{p}{,} \PYG{n}{b}\PYG{p}{,} \PYG{n}{q1}\PYG{p}{,} \PYG{n}{q2}\PYG{p}{,} \PYG{n}{q3}\PYG{p}{,} \PYG{n}{q4} \PYG{o}{=} \PYG{n}{symbols}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}a b q1 q2 q3 q4\PYGZsq{}}\PYG{p}{)}
+\PYG{n}{inputs} \PYG{o}{=} \PYG{p}{[}\PYG{n}{a}\PYG{p}{,} \PYG{n}{b}\PYG{p}{,} \PYG{n}{q1}\PYG{p}{,} \PYG{n}{q2}\PYG{p}{,} \PYG{n}{q3}\PYG{p}{,} \PYG{n}{q4}\PYG{p}{]}
+
+\PYG{n}{output\PYGZus{}columns} \PYG{o}{=} \PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}i1\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}i2\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}i3\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}i4\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}i5\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}i6\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}i7\PYGZsq{}}\PYG{p}{]}
+
+\PYG{n}{expressions} \PYG{o}{=} \PYG{p}{\PYGZob{}\PYGZcb{}}
+
+\PYG{k}{for} \PYG{n}{output} \PYG{o+ow}{in} \PYG{n}{output\PYGZus{}columns}\PYG{p}{:}
+    \PYG{n}{terms} \PYG{o}{=} \PYG{p}{[]}
+    \PYG{k}{for} \PYG{n}{\PYGZus{}}\PYG{p}{,} \PYG{n}{row} \PYG{o+ow}{in} \PYG{n}{data}\PYG{o}{.}\PYG{n}{iterrows}\PYG{p}{():}
+        \PYG{k}{if} \PYG{n}{row}\PYG{p}{[}\PYG{n}{output}\PYG{p}{]} \PYG{o}{==} \PYG{l+m+mi}{1}\PYG{p}{:}
+            \PYG{n}{term} \PYG{o}{=} \PYG{n}{And}\PYG{p}{(}\PYG{o}{*}\PYG{p}{[}\PYG{n}{var} \PYG{k}{if} \PYG{n}{row}\PYG{p}{[}\PYG{n}{var}\PYG{o}{.}\PYG{n}{name}\PYG{p}{]} \PYG{o}{==} \PYG{l+m+mi}{1} \PYG{k}{else} \PYG{o}{\PYGZti{}}\PYG{n}{var} \PYG{k}{for} \PYG{n}{var} \PYG{o+ow}{in} \PYG{n}{inputs}\PYG{p}{])}
+            \PYG{n}{terms}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{n}{term}\PYG{p}{)}
+    \PYG{n}{expressions}\PYG{p}{[}\PYG{n}{output}\PYG{p}{]} \PYG{o}{=} \PYG{n}{Or}\PYG{p}{(}\PYG{o}{*}\PYG{n}{terms}\PYG{p}{)}
+\end{Verbatim}

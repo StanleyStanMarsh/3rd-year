@@ -1,0 +1,41 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kn}{import} \PYG{n+nn}{pandas} \PYG{k}{as} \PYG{n+nn}{pd}
+\PYG{k+kn}{from} \PYG{n+nn}{sympy.logic.boolalg} \PYG{k+kn}{import} \PYG{n}{SOPform}
+\PYG{k+kn}{from} \PYG{n+nn}{sympy} \PYG{k+kn}{import} \PYG{n}{symbols}
+
+\PYG{n}{table} \PYG{o}{=} \PYG{n}{pd}\PYG{o}{.}\PYG{n}{read\PYGZus{}csv}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}table\PYGZus{}state\PYGZus{}to\PYGZus{}state.csv\PYGZdq{}}\PYG{p}{)}
+
+\PYG{n}{columns} \PYG{o}{=} \PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}a\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}b\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}q1\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}q2\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}q3\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}q4\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Q1\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Q2\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Q3\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Q4\PYGZsq{}}\PYG{p}{]}
+\PYG{n}{result} \PYG{o}{=} \PYG{n}{pd}\PYG{o}{.}\PYG{n}{DataFrame}\PYG{p}{(}\PYG{n}{columns}\PYG{o}{=}\PYG{n}{columns}\PYG{p}{)}
+\PYG{k}{for} \PYG{n}{i} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{table}\PYG{p}{)):}
+    \PYG{n}{row} \PYG{o}{=} \PYG{n}{table}\PYG{o}{.}\PYG{n}{iloc}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}
+    \PYG{n}{a}\PYG{p}{,} \PYG{n}{b} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{p}{,} \PYG{l+m+mi}{0}
+    \PYG{k}{match} \PYG{n}{row}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}X\PYGZsq{}}\PYG{p}{]:}
+        \PYG{k}{case} \PYG{l+s+s1}{\PYGZsq{}a\PYGZsq{}}\PYG{p}{:}
+            \PYG{n}{a} \PYG{o}{=} \PYG{l+m+mi}{1}
+            \PYG{n}{b} \PYG{o}{=} \PYG{l+m+mi}{0}
+        \PYG{k}{case} \PYG{l+s+s1}{\PYGZsq{}b\PYGZsq{}}\PYG{p}{:}
+            \PYG{n}{a} \PYG{o}{=} \PYG{l+m+mi}{0}
+            \PYG{n}{b} \PYG{o}{=} \PYG{l+m+mi}{1}
+        \PYG{k}{case} \PYG{l+s+s1}{\PYGZsq{}ab\PYGZsq{}}\PYG{p}{:}
+            \PYG{n}{a} \PYG{o}{=} \PYG{l+m+mi}{1}
+            \PYG{n}{b} \PYG{o}{=} \PYG{l+m+mi}{1}
+    \PYG{n}{q1}\PYG{p}{,} \PYG{n}{q2}\PYG{p}{,} \PYG{n}{q3}\PYG{p}{,} \PYG{n}{q4} \PYG{o}{=} \PYG{n}{states\PYGZus{}dict}\PYG{p}{[}\PYG{n}{row}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}current state\PYGZsq{}}\PYG{p}{]]}
+    \PYG{n}{Q1}\PYG{p}{,} \PYG{n}{Q2}\PYG{p}{,} \PYG{n}{Q3}\PYG{p}{,} \PYG{n}{Q4} \PYG{o}{=} \PYG{n}{states\PYGZus{}dict}\PYG{p}{[}\PYG{n}{row}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}next state\PYGZsq{}}\PYG{p}{]]}
+    \PYG{n}{result}\PYG{o}{.}\PYG{n}{loc}\PYG{p}{[}\PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{result}\PYG{p}{)]} \PYG{o}{=} \PYG{p}{[}\PYG{n}{a}\PYG{p}{,} \PYG{n}{b}\PYG{p}{,} \PYG{n}{q1}\PYG{p}{,} \PYG{n}{q2}\PYG{p}{,} \PYG{n}{q3}\PYG{p}{,} \PYG{n}{q4}\PYG{p}{,} \PYG{n}{Q1}\PYG{p}{,} \PYG{n}{Q2}\PYG{p}{,} \PYG{n}{Q3}\PYG{p}{,} \PYG{n}{Q4}\PYG{p}{]}
+
+\PYG{n}{a}\PYG{p}{,} \PYG{n}{b}\PYG{p}{,} \PYG{n}{q1}\PYG{p}{,} \PYG{n}{q2}\PYG{p}{,} \PYG{n}{q3}\PYG{p}{,} \PYG{n}{q4}\PYG{p}{,} \PYG{n}{Q1}\PYG{p}{,} \PYG{n}{Q2}\PYG{p}{,} \PYG{n}{Q3}\PYG{p}{,} \PYG{n}{Q4} \PYG{o}{=} \PYG{n}{symbols}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}a b q1 q2 q3 q4 Q1 Q2 Q3 Q4\PYGZsq{}}\PYG{p}{)}
+
+\PYG{n}{inputs} \PYG{o}{=} \PYG{p}{[[}\PYG{n}{result}\PYG{o}{.}\PYG{n}{iloc}\PYG{p}{[}\PYG{n}{i}\PYG{p}{][}\PYG{n}{j}\PYG{p}{]} \PYG{k}{for} \PYG{n}{j} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{l+m+mi}{6}\PYG{p}{)]} \PYG{k}{for} \PYG{n}{i} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{result}\PYG{p}{))]}
+
+\PYG{n}{outputs} \PYG{o}{=} \PYG{p}{\PYGZob{}}
+    \PYG{l+s+s1}{\PYGZsq{}Q1\PYGZsq{}}\PYG{p}{:} \PYG{n}{result}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}Q1\PYGZsq{}}\PYG{p}{]}\PYG{o}{.}\PYG{n}{to\PYGZus{}list}\PYG{p}{(),}
+    \PYG{l+s+s1}{\PYGZsq{}Q2\PYGZsq{}}\PYG{p}{:} \PYG{n}{result}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}Q2\PYGZsq{}}\PYG{p}{]}\PYG{o}{.}\PYG{n}{to\PYGZus{}list}\PYG{p}{(),}
+    \PYG{l+s+s1}{\PYGZsq{}Q3\PYGZsq{}}\PYG{p}{:} \PYG{n}{result}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}Q3\PYGZsq{}}\PYG{p}{]}\PYG{o}{.}\PYG{n}{to\PYGZus{}list}\PYG{p}{(),}
+    \PYG{l+s+s1}{\PYGZsq{}Q4\PYGZsq{}}\PYG{p}{:} \PYG{n}{result}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}Q4\PYGZsq{}}\PYG{p}{]}\PYG{o}{.}\PYG{n}{to\PYGZus{}list}\PYG{p}{()}
+\PYG{p}{\PYGZcb{}}
+
+\PYG{n}{answers} \PYG{o}{=} \PYG{n+nb}{dict}\PYG{p}{()}
+\PYG{k}{for} \PYG{n}{k} \PYG{o+ow}{in} \PYG{n}{outputs}\PYG{o}{.}\PYG{n}{keys}\PYG{p}{():}
+    \PYG{n}{answers}\PYG{o}{.}\PYG{n}{update}\PYG{p}{(\PYGZob{}}\PYG{n}{k}\PYG{p}{:} \PYG{n}{SOPform}\PYG{p}{([}\PYG{n}{a}\PYG{p}{,} \PYG{n}{b}\PYG{p}{,} \PYG{n}{q1}\PYG{p}{,} \PYG{n}{q2}\PYG{p}{,} \PYG{n}{q3}\PYG{p}{,} \PYG{n}{q4}\PYG{p}{],} \PYG{p}{[}\PYG{n}{inputs}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]} \PYG{k}{for} \PYG{n}{i} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{outputs}\PYG{p}{[}\PYG{n}{k}\PYG{p}{]))} \PYG{k}{if} \PYG{n}{outputs}\PYG{p}{[}\PYG{n}{k}\PYG{p}{][}\PYG{n}{i}\PYG{p}{]} \PYG{o}{==} \PYG{l+m+mi}{1}\PYG{p}{])\PYGZcb{})}
+\end{Verbatim}

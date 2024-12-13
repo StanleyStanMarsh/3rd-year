@@ -1,0 +1,7 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{def} \PYG{n+nf}{fill\PYGZus{}randomly}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{):}
+	\PYG{k}{for} \PYG{n}{r} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{rows}\PYG{p}{):}
+		\PYG{k}{for} \PYG{n}{c} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{cols}\PYG{p}{):}
+			\PYG{n}{random\PYGZus{}state} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{random}\PYG{o}{.}\PYG{n}{choice}\PYG{p}{([}\PYG{k+kc}{True}\PYG{p}{,} \PYG{k+kc}{False}\PYG{p}{])}
+			\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{grid}\PYG{p}{[}\PYG{n}{r}\PYG{p}{,} \PYG{n}{c}\PYG{p}{]}\PYG{o}{.}\PYG{n}{new\PYGZus{}state}\PYG{p}{(}\PYG{n}{random\PYGZus{}state}\PYG{p}{)}
+\end{Verbatim}
